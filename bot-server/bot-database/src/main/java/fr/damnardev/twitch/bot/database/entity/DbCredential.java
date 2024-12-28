@@ -1,6 +1,8 @@
 package fr.damnardev.twitch.bot.database.entity;
 
+import fr.damnardev.twitch.bot.database.converter.JasyptAttributeConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class DbCredential {
 	private Long id;
 
 	@Column(name = "refresh_token")
+	@Convert(converter = JasyptAttributeConverter.class)
 	private String refreshToken;
 
 }
