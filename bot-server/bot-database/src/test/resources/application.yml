@@ -13,3 +13,7 @@ spring:
     password: sa
   liquibase:
     enabled: true
+
+jasypt:
+  encryptor:
+    password: password

@@ -52,6 +52,12 @@
 			</dependency>
 
 			<dependency>
+				<groupId>com.github.ulisesbocchio</groupId>
+				<artifactId>jasypt-spring-boot-starter</artifactId>
+				<version>3.0.5</version>
+			</dependency>
+
+			<dependency>
 				<groupId>com.github.twitch4j</groupId>
 				<artifactId>twitch4j</artifactId>
 				<version>${twitch4j.version}</version>

@@ -20,19 +20,19 @@
 	<dependencies>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-model</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
 			<artifactId>bot-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-primary-adapter</artifactId>
+			<artifactId>bot-database</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-database</artifactId>
+			<artifactId>bot-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.damnardev.twitch</groupId>
+			<artifactId>bot-primary-adapter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>

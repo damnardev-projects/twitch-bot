@@ -9,10 +9,11 @@ services:
     environment:
       CLIENT_ID: ${CLIENT_ID}
       DATABASE_DRIVER: org.postgresql.Driver
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
       DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       DATABASE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
       DATABASE_USERNAME: ${POSTGRES_USER}
-      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      JASYPT_PASSWORD: ${JASYPT_PASSWORD}
       TWITCH_SAINT_URL: ${TWITCH_SAINT_URL}
       TWITCH_SCHEDULED_CRON: ${TWITCH_SCHEDULED_CRON}
     depends_on:
