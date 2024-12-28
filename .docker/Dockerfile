@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN mvn clean package -DskipTests
+RUN mvn -Pall clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-noble
 
