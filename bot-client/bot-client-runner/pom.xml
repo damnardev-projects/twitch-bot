@@ -24,11 +24,7 @@
 		</dependency>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-client-primary-adapter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-client-secondary-adapter</artifactId>
+			<artifactId>bot-client-adapter</artifactId>
 		</dependency>
 
 		<dependency>

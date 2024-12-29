@@ -16,8 +16,7 @@
 	<modules>
 		<module>bot-server-model</module>
 		<module>bot-server-core</module>
-		<module>bot-server-primary-adapter</module>
-		<module>bot-server-secondary-adapter</module>
+		<module>bot-server-adapter</module>
 		<module>bot-server-database</module>
 		<module>bot-server-runner</module>
 	</modules>

@@ -33,19 +33,16 @@
 		</dependency>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-server-primary-adapter</artifactId>
+			<artifactId>bot-server-adapter</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-server-secondary-adapter</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
 			<artifactId>bot-client-model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-client-primary-adapter</artifactId>
+			<artifactId>bot-client-adapter</artifactId>
 		</dependency>
 	</dependencies>
 
