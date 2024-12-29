@@ -93,11 +93,6 @@
 			</dependency>
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
-				<artifactId>bot-server-secondary-adapter</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>fr.damnardev.twitch</groupId>
 				<artifactId>bot-server-database</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -110,11 +105,6 @@
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
 				<artifactId>bot-client-adapter</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>fr.damnardev.twitch</groupId>
-				<artifactId>bot-client-secondary-adapter</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

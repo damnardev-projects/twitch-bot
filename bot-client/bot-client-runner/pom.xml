@@ -26,10 +26,6 @@
 			<groupId>fr.damnardev.twitch</groupId>
 			<artifactId>bot-client-adapter</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-client-secondary-adapter</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
