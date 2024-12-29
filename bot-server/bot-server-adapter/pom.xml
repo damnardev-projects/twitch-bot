@@ -6,11 +6,11 @@
 
 	<parent>
 		<groupId>fr.damnardev.twitch</groupId>
-		<artifactId>bot-parent</artifactId>
+		<artifactId>bot-server</artifactId>
 		<version>0.0.3-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>bot-tests</artifactId>
+	<artifactId>bot-server-adapter</artifactId>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -21,48 +21,32 @@
 	<dependencies>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-server-core</artifactId>
+			<artifactId>bot-server-model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
 			<artifactId>bot-server-database</artifactId>
 		</dependency>
+
 		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-server-model</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-server-adapter</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-client-model</artifactId>
+			<groupId>com.github.twitch4j</groupId>
+			<artifactId>twitch4j</artifactId>
 		</dependency>
+
 		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-client-adapter</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
-				<executions>
-					<execution>
-						<id>report</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>report-aggregate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

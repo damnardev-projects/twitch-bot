@@ -28,7 +28,7 @@
 		</dependency>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-server-primary-adapter</artifactId>
+			<artifactId>bot-server-adapter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>

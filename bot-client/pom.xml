@@ -16,8 +16,7 @@
 	<modules>
 		<module>bot-client-model</module>
 		<module>bot-client-javajfx</module>
-		<module>bot-client-primary-adapter</module>
-		<module>bot-client-secondary-adapter</module>
+		<module>bot-client-adapter</module>
 		<module>bot-client-runner</module>
 	</modules>
 

@@ -88,7 +88,7 @@
 			</dependency>
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
-				<artifactId>bot-server-primary-adapter</artifactId>
+				<artifactId>bot-server-adapter</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -109,7 +109,7 @@
 			</dependency>
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
-				<artifactId>bot-client-primary-adapter</artifactId>
+				<artifactId>bot-client-adapter</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
