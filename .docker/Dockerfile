@@ -4,13 +4,13 @@ WORKDIR /app
 
 COPY . /app
 
-RUN mvn -Pall clean package -DskipTests
+RUN mvn -P server clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-noble
 
 WORKDIR /app
 
-COPY --from=builder /app/bot-server/bot-runners/target/twitch-bot-server.jar /app/twitch-bot-server.jar
+COPY --from=builder /app/bot-server/bot-server-runner/target/twitch-bot-server.jar /app/twitch-bot-server.jar
 
 EXPOSE 8080
 
