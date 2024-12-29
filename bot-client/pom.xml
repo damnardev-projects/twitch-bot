@@ -14,7 +14,11 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>bot-javajfx-adapter</module>
+		<module>bot-client-model</module>
+		<module>bot-client-javajfx</module>
+		<module>bot-client-primary-adapter</module>
+		<module>bot-client-secondary-adapter</module>
+		<module>bot-client-runner</module>
 	</modules>
 
 </project>

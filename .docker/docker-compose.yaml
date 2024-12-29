@@ -14,8 +14,12 @@ services:
       DATABASE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
       DATABASE_USERNAME: ${POSTGRES_USER}
       JASYPT_PASSWORD: ${JASYPT_PASSWORD}
+      SECURITY_USER_NAME: ${SECURITY_USER_NAME}
+      SECURITY_USER_PASSWORD: ${SECURITY_USER_PASSWORD}
       TWITCH_SAINT_URL: ${TWITCH_SAINT_URL}
       TWITCH_SCHEDULED_CRON: ${TWITCH_SCHEDULED_CRON}
+    ports:
+      - "127.0.0.1:8080:8080"
     depends_on:
       - db
     deploy:
@@ -26,7 +30,6 @@ services:
         reservations:
           cpus: "0.01"
           memory: 500M
-
     restart: unless-stopped
 
   db:

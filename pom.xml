@@ -32,12 +32,14 @@
 		<liquibase-maven-plugin.version>4.30.0</liquibase-maven-plugin.version>
 		<maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
 		<checkstyle.version>10.21.0</checkstyle.version>
-		<spring-javaformat-checkstyle.version>0.0.43</spring-javaformat-checkstyle.version>
+		<spring-javaformat-checkstyle.version>0.0.43
+		</spring-javaformat-checkstyle.version>
 
 		<sonar.language>java</sonar.language>
 		<sonar.projectKey>twitch-bot</sonar.projectKey>
 		<sonar.projectName>Twitch Bot</sonar.projectName>
-		<aggregate.report.dir>bot-tests/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
+		<aggregate.report.dir>bot-tests/target/site/jacoco-aggregate/jacoco.xml
+		</aggregate.report.dir>
 		<sonar-maven-plugin.version>5.0.0.4389</sonar-maven-plugin.version>
 	</properties>
 
@@ -76,32 +78,48 @@
 
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
-				<artifactId>bot-model</artifactId>
+				<artifactId>bot-server-model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
-				<artifactId>bot-core</artifactId>
+				<artifactId>bot-server-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
-				<artifactId>bot-secondary-adapter</artifactId>
+				<artifactId>bot-server-primary-adapter</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
-				<artifactId>bot-database</artifactId>
+				<artifactId>bot-server-secondary-adapter</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
-				<artifactId>bot-primary-adapter</artifactId>
+				<artifactId>bot-server-database</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>fr.damnardev.twitch</groupId>
+				<artifactId>bot-client-model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
-				<artifactId>bot-javajfx-adapter</artifactId>
+				<artifactId>bot-client-primary-adapter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>fr.damnardev.twitch</groupId>
+				<artifactId>bot-client-secondary-adapter</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>fr.damnardev.twitch</groupId>
+				<artifactId>bot-client-javajfx</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>
@@ -147,7 +165,8 @@
 						<inherited>true</inherited>
 						<configuration>
 							<configLocation>checkstyle/checkstyle.xml</configLocation>
-							<suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+							<suppressionsLocation>checkstyle/checkstyle-suppressions.xml
+							</suppressionsLocation>
 							<includeTestSourceDirectory>true</includeTestSourceDirectory>
 						</configuration>
 						<goals>
@@ -175,7 +194,20 @@
 		<profile>
 			<id>all</id>
 			<modules>
+				<module>bot-server</module>
 				<module>bot-client</module>
+				<module>bot-tests</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>client</id>
+			<modules>
+				<module>bot-client</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>server</id>
+			<modules>
 				<module>bot-server</module>
 			</modules>
 		</profile>

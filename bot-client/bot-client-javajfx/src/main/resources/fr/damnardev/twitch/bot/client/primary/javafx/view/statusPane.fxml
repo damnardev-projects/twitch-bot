@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<VBox fx:controller="fr.damnardev.twitch.bot.client.javafx.controller.StatusController"
+	  prefHeight="30" prefWidth="600" xmlns="http://javafx.com/javafx/17.0.12"
+	  xmlns:fx="http://javafx.com/fxml/1">
+
+	<Label VBox.vgrow="ALWAYS" fx:id="labelStatus" maxHeight="Infinity"
+		   maxWidth="Infinity" styleClass="app-padding"/>
+
+</VBox>
