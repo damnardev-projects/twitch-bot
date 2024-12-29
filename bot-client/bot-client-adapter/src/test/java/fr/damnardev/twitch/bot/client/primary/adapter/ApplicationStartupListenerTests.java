@@ -1,5 +1,6 @@
 package fr.damnardev.twitch.bot.client.primary.adapter;
 
+import fr.damnardev.twitch.bot.client.handler.ReconnectionHandler;
 import fr.damnardev.twitch.bot.client.port.primary.StartupService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +30,9 @@ class ApplicationStartupListenerTests {
 	@Mock
 	private StartupService startupService;
 
+	@Mock
+	private ReconnectionHandler reconnectionHandler;
+
 	@Test
 	void run_shouldInvokeStartupServiceRun_whenCalled() {
 		// Given
@@ -41,6 +45,7 @@ class ApplicationStartupListenerTests {
 		then(this.executor).should().execute(captor.capture());
 		captor.getValue().run();
 		then(this.startupService).should().run(any(), any(), any());
+		then(this.reconnectionHandler).should().connect();
 		verifyNoMoreInteractions(this.executor, this.startupService);
 	}
 
