@@ -142,8 +142,8 @@ public class ChannelManagementController implements ChannelService {
 	}
 
 	public void onChannelFindEvent(ChannelFetchedAllEvent event) {
-		log.info("Channels found [size]: {}", event.getValue().size());
-		var wrappers = event.getValue().stream().map(this::buildWrapper).toList();
+		log.info("Channels found [size]: {}", event.value().size());
+		var wrappers = event.value().stream().map(this::buildWrapper).toList();
 		this.tableView.getItems().clear();
 		this.tableView.getItems().addAll(wrappers);
 		sort();

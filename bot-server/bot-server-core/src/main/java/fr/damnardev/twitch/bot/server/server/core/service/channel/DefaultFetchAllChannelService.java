@@ -25,7 +25,7 @@ public class DefaultFetchAllChannelService implements FetchAllChannelService {
 
 	private void doInternal() {
 		var channels = this.findChannelRepository.findAll();
-		var event = ChannelFetchedAllEvent.builder().channels(channels).build();
+		var event = ChannelFetchedAllEvent.builder().value(channels).build();
 		this.eventPublisher.publish(event);
 	}
 

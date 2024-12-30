@@ -14,7 +14,7 @@ public class ChannelController {
 
 	@MessageMapping("/channels/fetchAll")
 	public void fetchAll() {
-		fetchAllChannelService.fetchAll();
+		this.fetchAllChannelService.fetchAll();
 	}
 
 }

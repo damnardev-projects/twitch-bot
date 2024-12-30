@@ -66,7 +66,7 @@ class DefaultFetchAllChannelServiceTests {
 		// Given
 		var channel = Channel.builder().build();
 		var channels = Collections.singletonList(channel);
-		var event = ChannelFetchedAllEvent.builder().channels(channels).build();
+		var event = ChannelFetchedAllEvent.builder().value(channels).build();
 
 		given(this.findChannelRepository.findAll()).willReturn(channels);
 
