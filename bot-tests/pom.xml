@@ -14,11 +14,27 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}
-		</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.coverage.jacoco.xmlReportPaths>${basedir}/../${aggregate.report.dir}</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>fr.damnardev.twitch</groupId>
+			<artifactId>bot-client-adapter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.damnardev.twitch</groupId>
+			<artifactId>bot-client-javajfx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.damnardev.twitch</groupId>
+			<artifactId>bot-client-model</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>fr.damnardev.twitch</groupId>
+			<artifactId>bot-server-adapter</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
 			<artifactId>bot-server-core</artifactId>
@@ -30,19 +46,6 @@
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
 			<artifactId>bot-server-model</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-server-adapter</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-client-model</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>fr.damnardev.twitch</groupId>
-			<artifactId>bot-client-adapter</artifactId>
 		</dependency>
 	</dependencies>
 
