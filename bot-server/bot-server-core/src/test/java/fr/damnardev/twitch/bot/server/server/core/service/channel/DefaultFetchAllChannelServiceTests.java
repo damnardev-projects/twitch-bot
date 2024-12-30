@@ -44,7 +44,7 @@ class DefaultFetchAllChannelServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenExceptionThrown() {
+	void fetchAll_shouldPublishEvent_whenExceptionThrown() {
 		// Given
 		var exception = new RuntimeException();
 		var event = ErrorEvent.builder().exception(exception).build();
@@ -52,7 +52,7 @@ class DefaultFetchAllChannelServiceTests {
 		given(this.findChannelRepository.findAll()).willThrow(exception);
 
 		// When
-		this.findAllChannelService.process();
+		this.findAllChannelService.fetchAll();
 
 		// Then
 		then(this.tryService).should().doTry(any());
@@ -62,16 +62,16 @@ class DefaultFetchAllChannelServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenListFound() {
+	void fetchAll_shouldPublishEvent_whenListFound() {
 		// Given
 		var channel = Channel.builder().build();
 		var channels = Collections.singletonList(channel);
-		var event = ChannelFetchedAllEvent.builder().channels(channels).build();
+		var event = ChannelFetchedAllEvent.builder().value(channels).build();
 
 		given(this.findChannelRepository.findAll()).willReturn(channels);
 
 		// When
-		this.findAllChannelService.process();
+		this.findAllChannelService.fetchAll();
 
 		// Then
 		then(this.tryService).should().doTry(any());

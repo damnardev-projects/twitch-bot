@@ -4,6 +4,8 @@ import java.lang.reflect.Type;
 import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
+import fr.damnardev.twitch.bot.client.model.event.ChannelFetchedAllEvent;
+import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,15 +35,18 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 
 	private final StatusService statusService;
 
+	private final ChannelService channelService;
+
 	private StompSession session;
 
-	public ReconnectionHandler(WebSocketStompClient stompClient, @Value("${spring.security.user.name}") String username, @Value("${spring.security.user.password}") String password, @Value("${spring.server.url}") String url, ThreadPoolTaskExecutor taskExecutor, StatusService statusService) {
+	public ReconnectionHandler(WebSocketStompClient stompClient, @Value("${spring.security.user.name}") String username, @Value("${spring.security.user.password}") String password, @Value("${spring.server.url}") String url, ThreadPoolTaskExecutor taskExecutor, StatusService statusService, ChannelService channelService) {
 		this.stompClient = stompClient;
 		this.username = username;
 		this.password = password;
 		this.url = url;
 		this.taskExecutor = taskExecutor;
 		this.statusService = statusService;
+		this.channelService = channelService;
 	}
 
 	public void connect() {
@@ -65,15 +70,24 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 	public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
 		log.info("New WebSocket connection established with session id: {}", session.getSessionId());
 		this.session = session;
+		this.session.subscribe("/response/channels/fetchedAll", this);
+		this.session.send("/request/channels/fetchAll", null);
 	}
 
 	@Override
 	public Type getPayloadType(StompHeaders headers) {
+		var destination = headers.getDestination();
+		if ("/response/channels/fetchedAll".equals(destination)) {
+			return ChannelFetchedAllEvent.class;
+		}
 		return String.class;
 	}
 
 	@Override
 	public void handleFrame(StompHeaders headers, Object payload) {
+		if (payload instanceof ChannelFetchedAllEvent) {
+			this.channelService.fetchAll(((ChannelFetchedAllEvent) payload));
+		}
 		log.info("Received message: {}", payload);
 	}
 

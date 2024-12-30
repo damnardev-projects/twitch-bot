@@ -5,7 +5,6 @@ import java.util.Collections;
 import fr.damnardev.twitch.bot.server.model.Channel;
 import fr.damnardev.twitch.bot.server.port.secondary.AuthenticationRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.ChatRepository;
-import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.StreamRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.UpdateChannelRepository;
@@ -17,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.verifyNoMoreInteractions;
@@ -44,9 +42,6 @@ class DefaultStartupServiceTests {
 	@Mock
 	private UpdateChannelRepository updateChannelRepository;
 
-	@Mock
-	private EventPublisher eventPublisher;
-
 	@Test
 	void run_shouldRenewAuthenticationAndInitializeStreams() {
 		// Given
@@ -69,8 +64,8 @@ class DefaultStartupServiceTests {
 		then(this.chatRepository).should().joinAll(channels);
 		then(this.chatRepository).should().reconnect();
 		then(this.streamRepository).should().computeOnline(channels);
-		then(this.eventPublisher).should().publish(any());
-		verifyNoMoreInteractions(this.authenticationRepository, this.findChannelRepository, this.chatRepository, this.streamRepository, this.eventPublisher);
+		then(this.updateChannelRepository).should().updateAll(channelsAfterCompute);
+		verifyNoMoreInteractions(this.authenticationRepository, this.findChannelRepository, this.chatRepository, this.streamRepository, this.updateChannelRepository);
 	}
 
 }

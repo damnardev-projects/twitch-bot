@@ -4,23 +4,7 @@ import java.util.List;
 
 import fr.damnardev.twitch.bot.server.model.Channel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
 
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-@Value
-public class ChannelFetchedAllEvent extends Event<List<Channel>> {
-
-	@Builder
-	public ChannelFetchedAllEvent(List<Channel> channels) {
-		super(channels);
-	}
-
-	@Override
-	public boolean hasError() {
-		return false;
-	}
-
+@Builder
+public record ChannelFetchedAllEvent(List<Channel> value) {
 }

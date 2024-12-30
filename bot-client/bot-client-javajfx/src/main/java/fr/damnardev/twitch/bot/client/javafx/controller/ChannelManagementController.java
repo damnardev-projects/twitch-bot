@@ -13,6 +13,7 @@ import fr.damnardev.twitch.bot.client.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.client.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.DeleteChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.UpdateChannelForm;
+import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.CreateChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.DeleteChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.FetchAllChannelService;
@@ -29,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @DomainService
 @RequiredArgsConstructor
 @Slf4j
-public class ChannelManagementController {
+public class ChannelManagementController implements ChannelService {
 
 	private final StatusController statusController;
 
@@ -141,8 +142,8 @@ public class ChannelManagementController {
 	}
 
 	public void onChannelFindEvent(ChannelFetchedAllEvent event) {
-		log.info("Channels found [size]: {}", event.getValue().size());
-		var wrappers = event.getValue().stream().map(this::buildWrapper).toList();
+		log.info("Channels found [size]: {}", event.value().size());
+		var wrappers = event.value().stream().map(this::buildWrapper).toList();
 		this.tableView.getItems().clear();
 		this.tableView.getItems().addAll(wrappers);
 		sort();
@@ -169,6 +170,11 @@ public class ChannelManagementController {
 		this.tableView.getItems().removeIf((item) -> item.idProperty().getValue().equals(event.getValue().id()));
 		sort();
 		this.statusController.setLabelText("Channel deleted: " + event.getValue(), false);
+	}
+
+	@Override
+	public void fetchAll(ChannelFetchedAllEvent event) {
+		onChannelFindEvent(event);
 	}
 
 }
