@@ -65,6 +65,8 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 	public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
 		log.info("New WebSocket connection established with session id: {}", session.getSessionId());
 		this.session = session;
+		this.session.subscribe("/response/channels/fetchedAll", this);
+		this.session.send("/request/channels/fetchAll", null);
 	}
 
 	@Override

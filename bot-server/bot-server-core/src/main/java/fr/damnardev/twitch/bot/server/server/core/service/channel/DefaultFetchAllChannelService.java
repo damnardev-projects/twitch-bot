@@ -19,7 +19,7 @@ public class DefaultFetchAllChannelService implements FetchAllChannelService {
 	private final EventPublisher eventPublisher;
 
 	@Override
-	public void process() {
+	public void fetchAll() {
 		this.tryService.doTry(this::doInternal);
 	}
 

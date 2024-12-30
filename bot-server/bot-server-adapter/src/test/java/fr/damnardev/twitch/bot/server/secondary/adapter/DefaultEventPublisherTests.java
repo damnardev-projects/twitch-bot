@@ -1,6 +1,8 @@
 package fr.damnardev.twitch.bot.server.secondary.adapter;
 
-import fr.damnardev.twitch.bot.server.model.event.ApplicationStartedEvent;
+import java.util.Map;
+
+import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.verifyNoMoreInteractions;
@@ -22,18 +24,19 @@ class DefaultEventPublisherTests {
 	private DefaultEventPublisher eventPublisher;
 
 	@Mock
-	private ApplicationEventPublisher publisher;
+	private SimpMessagingTemplate publisher;
 
 	@Test
 	void publish_shouldInvokePublish_whenCalled() {
 		// Given
-		var event = ApplicationStartedEvent.builder().build();
+		var event = ChannelFetchedAllEvent.builder().build();
+		Map<String, Object> headers = Map.of("type", "channelFetchedAll");
 
 		// When
 		this.eventPublisher.publish(event);
 
 		// Then
-		then(this.publisher).should().publishEvent(event);
+		then(this.publisher).should().convertAndSend("/response/channels/fetchedAll", event, headers);
 		verifyNoMoreInteractions(this.publisher);
 	}
 
