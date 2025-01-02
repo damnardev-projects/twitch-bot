@@ -5,7 +5,9 @@ import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
 import fr.damnardev.twitch.bot.client.model.event.ChannelFetchedAllEvent;
+import fr.damnardev.twitch.bot.client.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
+import fr.damnardev.twitch.bot.client.port.primary.RaidConfigurationService;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,9 +39,11 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 
 	private final ChannelService channelService;
 
+	private final RaidConfigurationService raidConfigurationService;
+
 	private StompSession session;
 
-	public ReconnectionHandler(WebSocketStompClient stompClient, @Value("${spring.security.user.name}") String username, @Value("${spring.security.user.password}") String password, @Value("${spring.server.url}") String url, ThreadPoolTaskExecutor taskExecutor, StatusService statusService, ChannelService channelService) {
+	public ReconnectionHandler(WebSocketStompClient stompClient, @Value("${spring.security.user.name}") String username, @Value("${spring.security.user.password}") String password, @Value("${spring.server.url}") String url, ThreadPoolTaskExecutor taskExecutor, StatusService statusService, ChannelService channelService, RaidConfigurationService raidConfigurationService) {
 		this.stompClient = stompClient;
 		this.username = username;
 		this.password = password;
@@ -47,6 +51,7 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 		this.taskExecutor = taskExecutor;
 		this.statusService = statusService;
 		this.channelService = channelService;
+		this.raidConfigurationService = raidConfigurationService;
 	}
 
 	public void connect() {
@@ -71,7 +76,9 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 		log.info("New WebSocket connection established with session id: {}", session.getSessionId());
 		this.session = session;
 		this.session.subscribe("/response/channels/fetchedAll", this);
+		this.session.subscribe("/response/raids/fetchedAll", this);
 		this.session.send("/request/channels/fetchAll", null);
+		this.session.send("/request/raids/fetchAll", null);
 	}
 
 	@Override
@@ -80,6 +87,9 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 		if ("/response/channels/fetchedAll".equals(destination)) {
 			return ChannelFetchedAllEvent.class;
 		}
+		if ("/response/raids/fetchedAll".equals(destination)) {
+			return RaidConfigurationFetchedAllEvent.class;
+		}
 		return String.class;
 	}
 
@@ -87,6 +97,9 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 	public void handleFrame(StompHeaders headers, Object payload) {
 		if (payload instanceof ChannelFetchedAllEvent) {
 			this.channelService.fetchAll(((ChannelFetchedAllEvent) payload));
+		}
+		if (payload instanceof RaidConfigurationFetchedAllEvent) {
+			this.raidConfigurationService.fetchAll(((RaidConfigurationFetchedAllEvent) payload));
 		}
 		log.info("Received message: {}", payload);
 	}
@@ -103,9 +116,9 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 			this.statusService.connected(false);
 			session.disconnect();
 		}
-		connect();
 		try {
 			TimeUnit.SECONDS.sleep(10);
+			connect();
 		}
 		catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();

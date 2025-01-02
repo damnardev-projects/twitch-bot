@@ -19,13 +19,13 @@ public class DefaultFetchAllRaidConfigurationService implements FetchAllRaidConf
 	private final EventPublisher eventPublisher;
 
 	@Override
-	public void process() {
+	public void fetchAll() {
 		this.tryService.doTry(this::raidConfigurations);
 	}
 
 	private void raidConfigurations() {
 		var configurations = this.findRaidConfigurationRepository.findAll();
-		var event = RaidConfigurationFetchedAllEvent.builder().raidConfigurations(configurations).build();
+		var event = RaidConfigurationFetchedAllEvent.builder().value(configurations).build();
 		this.eventPublisher.publish(event);
 	}
 

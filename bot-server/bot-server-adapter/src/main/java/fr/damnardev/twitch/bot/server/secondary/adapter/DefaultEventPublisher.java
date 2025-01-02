@@ -4,6 +4,7 @@ import java.util.Map;
 
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.Event;
+import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,12 @@ public class DefaultEventPublisher implements EventPublisher {
 	public void publish(ChannelFetchedAllEvent event) {
 		Map<String, Object> headers = Map.of("type", "channelFetchedAll");
 		this.messagingTemplate.convertAndSend("/response/channels/fetchedAll", event, headers);
+	}
+
+	@Override
+	public void publish(RaidConfigurationFetchedAllEvent event) {
+		Map<String, Object> headers = Map.of("type", "raidFetchedAll");
+		this.messagingTemplate.convertAndSend("/response/raids/fetchedAll", event, headers);
 	}
 
 }

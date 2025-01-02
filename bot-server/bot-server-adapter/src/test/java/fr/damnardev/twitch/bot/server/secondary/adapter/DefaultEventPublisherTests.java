@@ -3,6 +3,7 @@ package fr.damnardev.twitch.bot.server.secondary.adapter;
 import java.util.Map;
 
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
+import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,7 +28,7 @@ class DefaultEventPublisherTests {
 	private SimpMessagingTemplate publisher;
 
 	@Test
-	void publish_shouldInvokePublish_whenCalled() {
+	void publish_shouldInvokePublishChannelFetchedALl_whenCalled() {
 		// Given
 		var event = ChannelFetchedAllEvent.builder().build();
 		Map<String, Object> headers = Map.of("type", "channelFetchedAll");
@@ -37,6 +38,20 @@ class DefaultEventPublisherTests {
 
 		// Then
 		then(this.publisher).should().convertAndSend("/response/channels/fetchedAll", event, headers);
+		verifyNoMoreInteractions(this.publisher);
+	}
+
+	@Test
+	void publish_shouldInvokePublishRaidFetchedALl_whenCalled() {
+		// Given
+		var event = RaidConfigurationFetchedAllEvent.builder().build();
+		Map<String, Object> headers = Map.of("type", "raidFetchedAll");
+
+		// When
+		this.eventPublisher.publish(event);
+
+		// Then
+		then(this.publisher).should().convertAndSend("/response/raids/fetchedAll", event, headers);
 		verifyNoMoreInteractions(this.publisher);
 	}
 
