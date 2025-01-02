@@ -44,7 +44,7 @@ class DefaultFetchAllRaidConfigurationServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenExceptionThrown() {
+	void fetchAll_shouldPublishEvent_whenExceptionThrown() {
 		// Given
 		var exception = new RuntimeException();
 		var event = ErrorEvent.builder().exception(exception).build();
@@ -52,7 +52,7 @@ class DefaultFetchAllRaidConfigurationServiceTests {
 		given(this.findRaidConfigurationRepository.findAll()).willThrow(exception);
 
 		// When
-		this.findAllRaidConfigurationService.process();
+		this.findAllRaidConfigurationService.fetchAll();
 
 		// Then
 		then(this.tryService).should().doTry(any());
@@ -62,16 +62,16 @@ class DefaultFetchAllRaidConfigurationServiceTests {
 	}
 
 	@Test
-	void findAll_shouldPublishEvent_whenListFound() {
+	void fetchAll_shouldPublishEvent_whenListFound() {
 		// Given
 		var raidConfiguration = RaidConfiguration.builder().build();
 		var raidConfigurations = Collections.singletonList(raidConfiguration);
-		var event = RaidConfigurationFetchedAllEvent.builder().raidConfigurations(raidConfigurations).build();
+		var event = RaidConfigurationFetchedAllEvent.builder().value(raidConfigurations).build();
 
 		given(this.findRaidConfigurationRepository.findAll()).willReturn(raidConfigurations);
 
 		// When
-		this.findAllRaidConfigurationService.process();
+		this.findAllRaidConfigurationService.fetchAll();
 
 		// Then
 		then(this.tryService).should().doTry(any());

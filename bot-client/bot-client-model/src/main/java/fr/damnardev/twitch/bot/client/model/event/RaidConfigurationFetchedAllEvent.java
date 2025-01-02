@@ -4,23 +4,8 @@ import java.util.List;
 
 import fr.damnardev.twitch.bot.client.model.RaidConfiguration;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
 
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-@Value
-public class RaidConfigurationFetchedAllEvent extends Event<List<RaidConfiguration>> {
-
-	@Builder
-	public RaidConfigurationFetchedAllEvent(List<RaidConfiguration> raidConfigurations) {
-		super(raidConfigurations);
-	}
-
-	@Override
-	public boolean hasError() {
-		return false;
-	}
-
+@Builder
+public record RaidConfigurationFetchedAllEvent(List<RaidConfiguration> value) {
 }
+

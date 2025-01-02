@@ -14,6 +14,7 @@ import fr.damnardev.twitch.bot.client.model.event.RaidConfigurationUpdatedEvent;
 import fr.damnardev.twitch.bot.client.model.form.CreateRaidConfigurationMessageForm;
 import fr.damnardev.twitch.bot.client.model.form.DeleteRaidConfigurationMessageForm;
 import fr.damnardev.twitch.bot.client.model.form.UpdateRaidConfigurationForm;
+import fr.damnardev.twitch.bot.client.port.primary.RaidConfigurationService;
 import fr.damnardev.twitch.bot.client.port.secondary.raid.CreateRaidConfigurationMessageRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.raid.DeleteRaidConfigurationMessageRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.raid.FetchAllRaidConfigurationRepository;
@@ -32,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @DomainService
 @RequiredArgsConstructor
 @Slf4j
-public class RaidConfigurationController {
+public class RaidConfigurationController implements RaidConfigurationService {
 
 	private final FetchAllRaidConfigurationRepository fetchAllRaidConfigurationRepository;
 
@@ -183,8 +184,8 @@ public class RaidConfigurationController {
 	}
 
 	public void onRaidConfigurationFindAllEvent(RaidConfigurationFetchedAllEvent event) {
-		log.info("Configurations found [size]: {}", event.getValue().size());
-		var wrappers = event.getValue().stream().map(this::buildWrapper).toList();
+		log.info("Configurations found [size]: {}", event.value().size());
+		var wrappers = event.value().stream().map(this::buildWrapper).toList();
 		this.tableViewRaidConfiguration.getItems().clear();
 		this.tableViewRaidConfiguration.getItems().addAll(wrappers);
 		sort();
@@ -224,6 +225,11 @@ public class RaidConfigurationController {
 
 	public void onChannelDeletedEvent(ChannelDeletedEvent event) {
 		this.tableViewRaidConfiguration.getItems().removeIf((w) -> w.idProperty().getValue().equals(event.getValue().id()));
+	}
+
+	@Override
+	public void fetchAll(RaidConfigurationFetchedAllEvent event) {
+		onRaidConfigurationFindAllEvent(event);
 	}
 
 }
