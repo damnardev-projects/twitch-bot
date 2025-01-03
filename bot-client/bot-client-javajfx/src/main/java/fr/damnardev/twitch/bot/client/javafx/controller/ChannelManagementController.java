@@ -150,10 +150,10 @@ public class ChannelManagementController implements ChannelService {
 	}
 
 	public void onChannelCreatedEvent(ChannelCreatedEvent event) {
-		log.info("Channel created: {}", event.getValue());
-		this.tableView.getItems().add(buildWrapper(event.getValue()));
+		log.info("Channel created: {}", event.value());
+		this.tableView.getItems().add(buildWrapper(event.value()));
 		sort();
-		this.statusController.setLabelText("Channel created: " + event.getValue(), false);
+		this.statusController.setLabelText("Channel created: " + event.value(), false);
 	}
 
 	public void onChannelUpdatedEvent(ChannelUpdatedEvent event) {
@@ -175,6 +175,11 @@ public class ChannelManagementController implements ChannelService {
 	@Override
 	public void fetchAll(ChannelFetchedAllEvent event) {
 		onChannelFindEvent(event);
+	}
+
+	@Override
+	public void create(ChannelCreatedEvent event) {
+		onChannelCreatedEvent(event);
 	}
 
 }

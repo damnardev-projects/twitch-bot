@@ -2,6 +2,7 @@ package fr.damnardev.twitch.bot.server.secondary.adapter;
 
 import java.util.Map;
 
+import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.Event;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
@@ -26,14 +27,22 @@ public class DefaultEventPublisher implements EventPublisher {
 
 	@Override
 	public void publish(ChannelFetchedAllEvent event) {
-		Map<String, Object> headers = Map.of("type", "channelFetchedAll");
-		this.messagingTemplate.convertAndSend("/response/channels/fetchedAll", event, headers);
+		internalPublish("/response/channels/fetchedAll", "channelFetchedAll", event);
+	}
+
+	@Override
+	public void publish(ChannelCreatedEvent event) {
+		internalPublish("/response/channels/created", "channelCreated", event);
 	}
 
 	@Override
 	public void publish(RaidConfigurationFetchedAllEvent event) {
-		Map<String, Object> headers = Map.of("type", "raidFetchedAll");
-		this.messagingTemplate.convertAndSend("/response/raids/fetchedAll", event, headers);
+		internalPublish("/response/raids/fetchedAll", "raidFetchedAll", event);
+	}
+
+	private <T> void internalPublish(String destination, String type, T event) {
+		Map<String, Object> headers = Map.of("type", type);
+		this.messagingTemplate.convertAndSend(destination, event, headers);
 	}
 
 }

@@ -4,14 +4,18 @@ import java.lang.reflect.Type;
 import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
+import fr.damnardev.twitch.bot.client.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.client.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.client.model.event.RaidConfigurationFetchedAllEvent;
+import fr.damnardev.twitch.bot.client.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
 import fr.damnardev.twitch.bot.client.port.primary.RaidConfigurationService;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
+import fr.damnardev.twitch.bot.client.port.secondary.channel.CreateChannelRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -23,7 +27,8 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 @Service
 @Slf4j
-public class ReconnectionHandler extends StompSessionHandlerAdapter {
+public class StompClientBotHandler extends StompSessionHandlerAdapter implements
+		CreateChannelRepository {
 
 	private final WebSocketStompClient stompClient;
 
@@ -43,7 +48,12 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 
 	private StompSession session;
 
-	public ReconnectionHandler(WebSocketStompClient stompClient, @Value("${spring.security.user.name}") String username, @Value("${spring.security.user.password}") String password, @Value("${spring.server.url}") String url, ThreadPoolTaskExecutor taskExecutor, StatusService statusService, ChannelService channelService, RaidConfigurationService raidConfigurationService) {
+	public StompClientBotHandler(WebSocketStompClient stompClient, @Value("${spring.security.user.name}") String username,
+			@Value("${spring.security.user.password}") String password,
+			@Value("${spring.server.url}") String url,
+			ThreadPoolTaskExecutor taskExecutor,
+			StatusService statusService,
+			@Lazy ChannelService channelService, RaidConfigurationService raidConfigurationService) {
 		this.stompClient = stompClient;
 		this.username = username;
 		this.password = password;
@@ -76,6 +86,7 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 		log.info("New WebSocket connection established with session id: {}", session.getSessionId());
 		this.session = session;
 		this.session.subscribe("/response/channels/fetchedAll", this);
+		this.session.subscribe("/response/channels/created", this);
 		this.session.subscribe("/response/raids/fetchedAll", this);
 		this.session.send("/request/channels/fetchAll", null);
 		this.session.send("/request/raids/fetchAll", null);
@@ -87,6 +98,9 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 		if ("/response/channels/fetchedAll".equals(destination)) {
 			return ChannelFetchedAllEvent.class;
 		}
+		if ("/response/channels/created".equals(destination)) {
+			return ChannelCreatedEvent.class;
+		}
 		if ("/response/raids/fetchedAll".equals(destination)) {
 			return RaidConfigurationFetchedAllEvent.class;
 		}
@@ -97,6 +111,9 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 	public void handleFrame(StompHeaders headers, Object payload) {
 		if (payload instanceof ChannelFetchedAllEvent) {
 			this.channelService.fetchAll(((ChannelFetchedAllEvent) payload));
+		}
+		if (payload instanceof ChannelCreatedEvent) {
+			this.channelService.create(((ChannelCreatedEvent) payload));
 		}
 		if (payload instanceof RaidConfigurationFetchedAllEvent) {
 			this.raidConfigurationService.fetchAll(((RaidConfigurationFetchedAllEvent) payload));
@@ -123,6 +140,11 @@ public class ReconnectionHandler extends StompSessionHandlerAdapter {
 		catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
+	}
+
+	@Override
+	public void create(CreateChannelForm event) {
+		this.session.send("/request/channels/create", event);
 	}
 
 }
