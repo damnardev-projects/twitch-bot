@@ -25,7 +25,7 @@ public class DefaultCreateChannelService implements CreateChannelService {
 	private final EventPublisher eventPublisher;
 
 	@Override
-	public void process(CreateChannelForm form) {
+	public void create(CreateChannelForm form) {
 		this.tryService.doTry(this::doInternal, form);
 	}
 
@@ -37,7 +37,7 @@ public class DefaultCreateChannelService implements CreateChannelService {
 		}
 		var channel = Channel.builder().name(name).build();
 		channel = this.saveChannelRepository.save(channel);
-		var event = ChannelCreatedEvent.builder().channel(channel).build();
+		var event = ChannelCreatedEvent.builder().value(channel).build();
 		this.eventPublisher.publish(event);
 	}
 

@@ -53,7 +53,7 @@ class DefaultCreateChannelServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenChannelAlreadyExists() {
+	void create_shouldPublishEvent_whenChannelAlreadyExists() {
 		// Given
 		var channelName = "channelName";
 		var form = CreateChannelForm.builder().name(channelName).build();
@@ -62,7 +62,7 @@ class DefaultCreateChannelServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(Channel.builder().build()));
 
 		// When
-		this.createChannelService.process(form);
+		this.createChannelService.create(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -77,18 +77,18 @@ class DefaultCreateChannelServiceTests {
 	}
 
 	@Test
-	void process_shouldCreateAndPublishEvent_whenChannelDoesNotExist() {
+	void create_shouldCreateAndPublishEvent_whenChannelDoesNotExist() {
 		// Given
 		var channelName = "channelName";
 		var form = CreateChannelForm.builder().name(channelName).build();
 		var channel = Channel.builder().name(channelName).build();
-		var event = ChannelCreatedEvent.builder().channel(channel).build();
+		var event = ChannelCreatedEvent.builder().value(channel).build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.empty());
 		given(this.saveChannelRepository.save(channel)).willReturn(channel);
 
 		// When
-		this.createChannelService.process(form);
+		this.createChannelService.create(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));

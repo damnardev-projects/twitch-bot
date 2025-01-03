@@ -220,7 +220,7 @@ public class RaidConfigurationController implements RaidConfigurationService {
 	}
 
 	public void onChannelCreatedEvent(ChannelCreatedEvent event) {
-		this.fetchRaidConfigurationRepository.fetch(event.getValue().name());
+		this.fetchRaidConfigurationRepository.fetch(event.value().name());
 	}
 
 	public void onChannelDeletedEvent(ChannelDeletedEvent event) {

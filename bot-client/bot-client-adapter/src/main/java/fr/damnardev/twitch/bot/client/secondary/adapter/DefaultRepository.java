@@ -1,12 +1,10 @@
 package fr.damnardev.twitch.bot.client.secondary.adapter;
 
-import fr.damnardev.twitch.bot.client.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.CreateRaidConfigurationMessageForm;
 import fr.damnardev.twitch.bot.client.model.form.DeleteChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.DeleteRaidConfigurationMessageForm;
 import fr.damnardev.twitch.bot.client.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.UpdateRaidConfigurationForm;
-import fr.damnardev.twitch.bot.client.port.secondary.channel.CreateChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.DeleteChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.FetchAllChannelService;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.UpdateChannelService;
@@ -23,15 +21,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class DefaultRepository implements CreateChannelRepository,
-		DeleteChannelRepository, FetchAllChannelService, UpdateChannelService,
+public class DefaultRepository implements DeleteChannelRepository, FetchAllChannelService, UpdateChannelService,
 		CreateRaidConfigurationMessageRepository, DeleteRaidConfigurationMessageRepository,
 		FetchAllRaidConfigurationRepository, FetchRaidConfigurationRepository, UpdateRaidConfigurationRepository {
-
-	@Override
-	public void create(CreateChannelForm event) {
-
-	}
 
 	@Override
 	public void delete(DeleteChannelForm event) {
