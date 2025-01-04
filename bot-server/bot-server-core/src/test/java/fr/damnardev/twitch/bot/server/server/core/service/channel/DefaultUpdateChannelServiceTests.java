@@ -63,7 +63,7 @@ class DefaultUpdateChannelServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenChannelNotFound() {
+	void update_shouldPublishEvent_whenChannelNotFound() {
 		// Given
 		var channelName = "channelName";
 		var form = UpdateChannelForm.builder().name(channelName).build();
@@ -72,7 +72,7 @@ class DefaultUpdateChannelServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.empty());
 
 		// When
-		this.updateEnableChannelService.process(form);
+		this.updateEnableChannelService.update(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -87,20 +87,20 @@ class DefaultUpdateChannelServiceTests {
 	}
 
 	@Test
-	void process_shouldUpdateChannelAndPublishEvent_whenChannelExists() {
+	void update_shouldUpdateChannelAndPublishEvent_whenChannelExists() {
 		// Given
 		var channelName = "channelName";
 		var form = UpdateChannelForm.builder().name(channelName).enabled(true).build();
 		var channel = Channel.builder().id(1L).name(channelName).enabled(false).online(false).build();
 		var updatedChannel_01 = channel.toBuilder().enabled(true).online(false).build();
 		var updatedChannel_02 = channel.toBuilder().enabled(true).online(true).build();
-		var event = ChannelUpdatedEvent.builder().channel(updatedChannel_02).build();
+		var event = ChannelUpdatedEvent.builder().value(updatedChannel_02).build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 		given(this.streamRepository.computeOnline(updatedChannel_01)).willReturn(updatedChannel_02);
 
 		// When
-		this.updateEnableChannelService.process(form);
+		this.updateEnableChannelService.update(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -113,18 +113,18 @@ class DefaultUpdateChannelServiceTests {
 	}
 
 	@Test
-	void process_shouldUpdateChannelAndLeaveAndPublishEvent_whenChannelExists() {
+	void update_shouldUpdateChannelAndLeaveAndPublishEvent_whenChannelExists() {
 		// Given
 		var channelName = "channelName";
 		var form = UpdateChannelForm.builder().name(channelName).enabled(false).build();
 		var channel = Channel.builder().id(1L).name(channelName).enabled(true).online(true).build();
 		var updatedChannel = channel.toBuilder().enabled(false).online(false).build();
-		var event = ChannelUpdatedEvent.builder().channel(updatedChannel).build();
+		var event = ChannelUpdatedEvent.builder().value(updatedChannel).build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 
 		// When
-		this.updateEnableChannelService.process(form);
+		this.updateEnableChannelService.update(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -137,18 +137,18 @@ class DefaultUpdateChannelServiceTests {
 
 	@ParameterizedTest
 	@ValueSource(booleans = { true, false })
-	void process_shouldUpdateChannelAndPublishEvent_whenChannelExists(boolean value) {
+	void update_shouldUpdateChannelAndPublishEvent_whenChannelExists(boolean value) {
 		// Given
 		var channelName = "channelName";
 		var form = UpdateChannelForm.builder().name(channelName).online(value).build();
 		var channel = Channel.builder().id(1L).name(channelName).online(!value).build();
 		var updatedChannel = channel.toBuilder().online(value).build();
-		var event = ChannelUpdatedEvent.builder().channel(updatedChannel).build();
+		var event = ChannelUpdatedEvent.builder().value(updatedChannel).build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 
 		// When
-		this.updateEnableChannelService.process(form);
+		this.updateEnableChannelService.update(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));

@@ -30,7 +30,7 @@ public class DefaultUpdateChannelService implements UpdateChannelService {
 	private final EventPublisher eventPublisher;
 
 	@Override
-	public void process(UpdateChannelForm form) {
+	public void update(UpdateChannelForm form) {
 		this.tryService.doTry(this::doInternal, form);
 	}
 
@@ -54,7 +54,7 @@ public class DefaultUpdateChannelService implements UpdateChannelService {
 			channel = channel.toBuilder().online(form.online()).build();
 		}
 		this.updateChannelRepository.update(channel);
-		var event = ChannelUpdatedEvent.builder().channel(channel).build();
+		var event = ChannelUpdatedEvent.builder().value(channel).build();
 		this.eventPublisher.publish(event);
 	}
 

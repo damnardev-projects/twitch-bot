@@ -2,7 +2,9 @@ package fr.damnardev.twitch.bot.server.secondary.adapter;
 
 import java.util.Map;
 
+import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
+import fr.damnardev.twitch.bot.server.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +30,7 @@ class DefaultEventPublisherTests {
 	private SimpMessagingTemplate publisher;
 
 	@Test
-	void publish_shouldInvokePublishChannelFetchedALl_whenCalled() {
+	void publish_shouldInvokePublishChannelFetchedAll_whenCalled() {
 		// Given
 		var event = ChannelFetchedAllEvent.builder().build();
 		Map<String, Object> headers = Map.of("type", "channelFetchedAll");
@@ -38,6 +40,34 @@ class DefaultEventPublisherTests {
 
 		// Then
 		then(this.publisher).should().convertAndSend("/response/channels/fetchedAll", event, headers);
+		verifyNoMoreInteractions(this.publisher);
+	}
+
+	@Test
+	void publish_shouldInvokePublishChannelCreated_whenCalled() {
+		// Given
+		var event = ChannelCreatedEvent.builder().build();
+		Map<String, Object> headers = Map.of("type", "channelCreated");
+
+		// When
+		this.eventPublisher.publish(event);
+
+		// Then
+		then(this.publisher).should().convertAndSend("/response/channels/created", event, headers);
+		verifyNoMoreInteractions(this.publisher);
+	}
+
+	@Test
+	void publish_shouldInvokePublishChannelUpdatedEvent_whenCalled() {
+		// Given
+		var event = ChannelUpdatedEvent.builder().build();
+		Map<String, Object> headers = Map.of("type", "channelUpdated");
+
+		// When
+		this.eventPublisher.publish(event);
+
+		// Then
+		then(this.publisher).should().convertAndSend("/response/channels/updated", event, headers);
 		verifyNoMoreInteractions(this.publisher);
 	}
 

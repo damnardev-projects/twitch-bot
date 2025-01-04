@@ -4,6 +4,7 @@ import java.util.Map;
 
 import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
+import fr.damnardev.twitch.bot.server.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.Event;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
@@ -33,6 +34,11 @@ public class DefaultEventPublisher implements EventPublisher {
 	@Override
 	public void publish(ChannelCreatedEvent event) {
 		internalPublish("/response/channels/created", "channelCreated", event);
+	}
+
+	@Override
+	public void publish(ChannelUpdatedEvent event) {
+		internalPublish("/response/channels/updated", "channelUpdated", event);
 	}
 
 	@Override

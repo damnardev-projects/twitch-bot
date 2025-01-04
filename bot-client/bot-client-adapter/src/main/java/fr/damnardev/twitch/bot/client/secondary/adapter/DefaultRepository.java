@@ -3,11 +3,9 @@ package fr.damnardev.twitch.bot.client.secondary.adapter;
 import fr.damnardev.twitch.bot.client.model.form.CreateRaidConfigurationMessageForm;
 import fr.damnardev.twitch.bot.client.model.form.DeleteChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.DeleteRaidConfigurationMessageForm;
-import fr.damnardev.twitch.bot.client.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.UpdateRaidConfigurationForm;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.DeleteChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.FetchAllChannelService;
-import fr.damnardev.twitch.bot.client.port.secondary.channel.UpdateChannelService;
 import fr.damnardev.twitch.bot.client.port.secondary.raid.CreateRaidConfigurationMessageRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.raid.DeleteRaidConfigurationMessageRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.raid.FetchAllRaidConfigurationRepository;
@@ -21,7 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class DefaultRepository implements DeleteChannelRepository, FetchAllChannelService, UpdateChannelService,
+public class DefaultRepository implements DeleteChannelRepository, FetchAllChannelService,
 		CreateRaidConfigurationMessageRepository, DeleteRaidConfigurationMessageRepository,
 		FetchAllRaidConfigurationRepository, FetchRaidConfigurationRepository, UpdateRaidConfigurationRepository {
 
@@ -32,11 +30,6 @@ public class DefaultRepository implements DeleteChannelRepository, FetchAllChann
 
 	@Override
 	public void fetchAll() {
-
-	}
-
-	@Override
-	public void update(UpdateChannelForm event) {
 
 	}
 

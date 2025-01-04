@@ -14,10 +14,10 @@ import fr.damnardev.twitch.bot.client.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.DeleteChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
-import fr.damnardev.twitch.bot.client.port.secondary.channel.CreateChannelRepository;
+import fr.damnardev.twitch.bot.client.port.secondary.channel.ChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.DeleteChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.FetchAllChannelService;
-import fr.damnardev.twitch.bot.client.port.secondary.channel.UpdateChannelService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -34,11 +34,9 @@ public class ChannelManagementController implements ChannelService {
 
 	private final StatusController statusController;
 
-	private final CreateChannelRepository createChannelRepository;
+	private final ChannelRepository channelRepository;
 
 	private final FetchAllChannelService fetchAllChannelService;
-
-	private final UpdateChannelService updateChannelService;
 
 	private final DeleteChannelRepository deleteChannelRepository;
 
@@ -98,7 +96,7 @@ public class ChannelManagementController implements ChannelService {
 		var channelWrapper = new ChannelWrapper(channel);
 		channelWrapper.enabledProperty().addListener((observable, oldValue, newValue) -> {
 			var form = UpdateChannelForm.builder().id(channel.id()).name(channel.name()).enabled(newValue).build();
-			this.updateChannelService.update(form);
+			this.channelRepository.update(form);
 		});
 		return channelWrapper;
 	}
@@ -132,7 +130,7 @@ public class ChannelManagementController implements ChannelService {
 		}
 		log.info("Try to add channel: {}", channelName);
 		var form = CreateChannelForm.builder().name(channelName).build();
-		this.createChannelRepository.create(form);
+		this.channelRepository.create(form);
 	}
 
 	private void onButtonDelete(ChannelWrapper channel) {
@@ -157,12 +155,12 @@ public class ChannelManagementController implements ChannelService {
 	}
 
 	public void onChannelUpdatedEvent(ChannelUpdatedEvent event) {
-		log.info("Channel updated: {}", event.getValue());
-		var channel = event.getValue();
+		log.info("Channel updated: {}", event.value());
+		var channel = event.value();
 		var wrapper = this.tableView.getItems().stream().filter((item) -> item.idProperty().getValue().equals(channel.id())).findFirst().orElseThrow();
 		wrapper.enabledProperty().set(channel.enabled());
 		wrapper.onlineProperty().set(channel.online());
-		this.statusController.setLabelText("Channel updated: " + event.getValue(), false);
+		this.statusController.setLabelText("Channel updated: " + event.value(), false);
 	}
 
 	public void onChannelDeletedEvent(ChannelDeletedEvent event) {
@@ -174,12 +172,17 @@ public class ChannelManagementController implements ChannelService {
 
 	@Override
 	public void fetchAll(ChannelFetchedAllEvent event) {
-		onChannelFindEvent(event);
+		Platform.runLater(() -> onChannelFindEvent(event));
 	}
 
 	@Override
 	public void create(ChannelCreatedEvent event) {
-		onChannelCreatedEvent(event);
+		Platform.runLater(() -> onChannelCreatedEvent(event));
+	}
+
+	@Override
+	public void update(ChannelUpdatedEvent event) {
+		Platform.runLater(() -> onChannelUpdatedEvent(event));
 	}
 
 }

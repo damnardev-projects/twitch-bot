@@ -6,12 +6,14 @@ import java.util.concurrent.TimeUnit;
 
 import fr.damnardev.twitch.bot.client.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.client.model.event.ChannelFetchedAllEvent;
+import fr.damnardev.twitch.bot.client.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.client.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.client.model.form.CreateChannelForm;
+import fr.damnardev.twitch.bot.client.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
 import fr.damnardev.twitch.bot.client.port.primary.RaidConfigurationService;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
-import fr.damnardev.twitch.bot.client.port.secondary.channel.CreateChannelRepository;
+import fr.damnardev.twitch.bot.client.port.secondary.channel.ChannelRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +30,7 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 @Service
 @Slf4j
 public class StompClientBotHandler extends StompSessionHandlerAdapter implements
-		CreateChannelRepository {
+		ChannelRepository {
 
 	private final WebSocketStompClient stompClient;
 
@@ -87,6 +89,7 @@ public class StompClientBotHandler extends StompSessionHandlerAdapter implements
 		this.session = session;
 		this.session.subscribe("/response/channels/fetchedAll", this);
 		this.session.subscribe("/response/channels/created", this);
+		this.session.subscribe("/response/channels/updated", this);
 		this.session.subscribe("/response/raids/fetchedAll", this);
 		this.session.send("/request/channels/fetchAll", null);
 		this.session.send("/request/raids/fetchAll", null);
@@ -101,6 +104,9 @@ public class StompClientBotHandler extends StompSessionHandlerAdapter implements
 		if ("/response/channels/created".equals(destination)) {
 			return ChannelCreatedEvent.class;
 		}
+		if ("/response/channels/updated".equals(destination)) {
+			return ChannelUpdatedEvent.class;
+		}
 		if ("/response/raids/fetchedAll".equals(destination)) {
 			return RaidConfigurationFetchedAllEvent.class;
 		}
@@ -114,6 +120,9 @@ public class StompClientBotHandler extends StompSessionHandlerAdapter implements
 		}
 		if (payload instanceof ChannelCreatedEvent) {
 			this.channelService.create(((ChannelCreatedEvent) payload));
+		}
+		if (payload instanceof ChannelUpdatedEvent) {
+			this.channelService.update(((ChannelUpdatedEvent) payload));
 		}
 		if (payload instanceof RaidConfigurationFetchedAllEvent) {
 			this.raidConfigurationService.fetchAll(((RaidConfigurationFetchedAllEvent) payload));
@@ -145,6 +154,11 @@ public class StompClientBotHandler extends StompSessionHandlerAdapter implements
 	@Override
 	public void create(CreateChannelForm event) {
 		this.session.send("/request/channels/create", event);
+	}
+
+	@Override
+	public void update(UpdateChannelForm event) {
+		this.session.send("/request/channels/update", event);
 	}
 
 }

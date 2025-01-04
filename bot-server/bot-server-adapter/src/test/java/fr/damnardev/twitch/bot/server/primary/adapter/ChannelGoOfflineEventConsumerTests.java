@@ -82,7 +82,7 @@ class ChannelGoOfflineEventConsumerTests {
 		then(event).should().getChannel();
 		then(channel).should().getId();
 		then(channel).should().getName();
-		then(this.handler).should().process(model);
+		then(this.handler).should().update(model);
 		verifyNoMoreInteractions(this.executor, this.twitchClient, this.handler, event, channel);
 	}
 

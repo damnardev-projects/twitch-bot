@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class ChannelMessageEventConsumer extends AbstractChannelEventConsumer<ChannelMessageEvent, ChannelMessageEventForm> {
 
 	public ChannelMessageEventConsumer(TwitchClient twitchClient, ThreadPoolTaskExecutor executor, ChannelMessageEventService handler) {
-		super(executor, twitchClient, handler, ChannelMessageEvent.class);
+		super(executor, twitchClient, handler::process, ChannelMessageEvent.class);
 	}
 
 	@Override
