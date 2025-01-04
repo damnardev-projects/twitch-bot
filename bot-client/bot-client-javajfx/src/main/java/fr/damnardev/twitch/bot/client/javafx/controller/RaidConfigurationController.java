@@ -20,6 +20,7 @@ import fr.damnardev.twitch.bot.client.port.secondary.raid.DeleteRaidConfiguratio
 import fr.damnardev.twitch.bot.client.port.secondary.raid.FetchAllRaidConfigurationRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.raid.FetchRaidConfigurationRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.raid.UpdateRaidConfigurationRepository;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -229,7 +230,7 @@ public class RaidConfigurationController implements RaidConfigurationService {
 
 	@Override
 	public void fetchAll(RaidConfigurationFetchedAllEvent event) {
-		onRaidConfigurationFindAllEvent(event);
+		Platform.runLater(() -> onRaidConfigurationFindAllEvent(event));
 	}
 
 }

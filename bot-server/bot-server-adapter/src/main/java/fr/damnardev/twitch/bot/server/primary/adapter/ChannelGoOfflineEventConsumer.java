@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class ChannelGoOfflineEventConsumer extends AbstractChannelEventConsumer<ChannelGoOfflineEvent, UpdateChannelForm> {
 
 	public ChannelGoOfflineEventConsumer(TwitchClient twitchClient, ThreadPoolTaskExecutor executor, UpdateChannelService handler) {
-		super(executor, twitchClient, handler, ChannelGoOfflineEvent.class);
+		super(executor, twitchClient, handler::update, ChannelGoOfflineEvent.class);
 	}
 
 	@Override

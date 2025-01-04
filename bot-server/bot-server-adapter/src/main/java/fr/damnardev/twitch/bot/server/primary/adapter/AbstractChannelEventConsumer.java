@@ -1,8 +1,9 @@
 package fr.damnardev.twitch.bot.server.primary.adapter;
 
+import java.util.function.Consumer;
+
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
-import fr.damnardev.twitch.bot.server.port.primary.EventService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ public abstract class AbstractChannelEventConsumer<E, M> {
 
 	private final TwitchClient twitchClient;
 
-	private final EventService<M> handler;
+	private final Consumer<M> consumer;
 
 	private final Class<E> clazz;
 
@@ -36,7 +37,7 @@ public abstract class AbstractChannelEventConsumer<E, M> {
 	private void doInternal(E event) {
 		var model = toModel(event);
 		log.info("Event: {}", model);
-		this.handler.process(model);
+		this.consumer.accept(model);
 	}
 
 }

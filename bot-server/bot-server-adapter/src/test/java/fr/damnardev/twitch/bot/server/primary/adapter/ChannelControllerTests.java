@@ -1,8 +1,10 @@
 package fr.damnardev.twitch.bot.server.primary.adapter;
 
 import fr.damnardev.twitch.bot.server.model.form.CreateChannelForm;
+import fr.damnardev.twitch.bot.server.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.server.port.primary.channel.CreateChannelService;
 import fr.damnardev.twitch.bot.server.port.primary.channel.FetchAllChannelService;
+import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +29,9 @@ class ChannelControllerTests {
 	@Mock
 	private CreateChannelService createChannelService;
 
+	@Mock
+	private UpdateChannelService updateChannelService;
+
 	@Test
 	void fetchAll_shouldInvokeFetchAllChannelServiceFetchAll_whenCalled() {
 		// Given
@@ -45,11 +50,24 @@ class ChannelControllerTests {
 		var form = CreateChannelForm.builder().build();
 
 		// When
-		this.createChannelService.create(form);
+		this.channelController.create(form);
 
 		// Then
 		then(this.createChannelService).should().create(form);
 		verifyNoMoreInteractions(this.createChannelService);
+	}
+
+	@Test
+	void create_shouldInvokeUpdateChannelServiceUpdate_whenCalled() {
+		// Given
+		var form = UpdateChannelForm.builder().build();
+
+		// When
+		this.channelController.update(form);
+
+		// Then
+		then(this.updateChannelService).should().update(form);
+		verifyNoMoreInteractions(this.updateChannelService);
 	}
 
 }
