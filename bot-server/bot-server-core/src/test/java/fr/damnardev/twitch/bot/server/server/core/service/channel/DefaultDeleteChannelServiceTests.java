@@ -86,7 +86,7 @@ class DefaultDeleteChannelServiceTests {
 		var channelName = "channelName";
 		var form = DeleteChannelForm.builder().name(channelName).build();
 		var channel = Channel.builder().id(1L).name(channelName).build();
-		var event = ChannelDeletedEvent.builder().channel(channel).build();
+		var event = ChannelDeletedEvent.builder().value(channel).build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 
@@ -107,7 +107,7 @@ class DefaultDeleteChannelServiceTests {
 		var channelName = "channelName";
 		var form = DeleteChannelForm.builder().name(channelName).build();
 		var channel = Channel.builder().id(1L).name(channelName).enabled(true).build();
-		var event = ChannelDeletedEvent.builder().channel(channel).build();
+		var event = ChannelDeletedEvent.builder().value(channel).build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 
