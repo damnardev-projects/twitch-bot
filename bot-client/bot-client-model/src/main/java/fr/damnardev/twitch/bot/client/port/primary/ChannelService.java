@@ -14,5 +14,5 @@ public interface ChannelService {
 	void update(ChannelUpdatedEvent event);
 
 	void delete(ChannelDeletedEvent payload);
-	
+
 }
