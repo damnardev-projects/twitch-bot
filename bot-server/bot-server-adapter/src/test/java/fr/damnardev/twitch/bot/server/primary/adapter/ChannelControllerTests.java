@@ -1,8 +1,10 @@
 package fr.damnardev.twitch.bot.server.primary.adapter;
 
 import fr.damnardev.twitch.bot.server.model.form.CreateChannelForm;
+import fr.damnardev.twitch.bot.server.model.form.DeleteChannelForm;
 import fr.damnardev.twitch.bot.server.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.server.port.primary.channel.CreateChannelService;
+import fr.damnardev.twitch.bot.server.port.primary.channel.DeleteChannelService;
 import fr.damnardev.twitch.bot.server.port.primary.channel.FetchAllChannelService;
 import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,9 @@ class ChannelControllerTests {
 	@Mock
 	private UpdateChannelService updateChannelService;
 
+	@Mock
+	private DeleteChannelService deleteChannelService;
+
 	@Test
 	void fetchAll_shouldInvokeFetchAllChannelServiceFetchAll_whenCalled() {
 		// Given
@@ -58,7 +63,7 @@ class ChannelControllerTests {
 	}
 
 	@Test
-	void create_shouldInvokeUpdateChannelServiceUpdate_whenCalled() {
+	void update_shouldInvokeUpdateChannelServiceUpdate_whenCalled() {
 		// Given
 		var form = UpdateChannelForm.builder().build();
 
@@ -68,6 +73,19 @@ class ChannelControllerTests {
 		// Then
 		then(this.updateChannelService).should().update(form);
 		verifyNoMoreInteractions(this.updateChannelService);
+	}
+
+	@Test
+	void delete_shouldInvokeDeleteChannelServiceDelete_whenCalled() {
+		// Given
+		var form = DeleteChannelForm.builder().build();
+
+		// When
+		this.channelController.delete(form);
+
+		// Then
+		then(this.deleteChannelService).should().delete(form);
+		verifyNoMoreInteractions(this.deleteChannelService);
 	}
 
 }

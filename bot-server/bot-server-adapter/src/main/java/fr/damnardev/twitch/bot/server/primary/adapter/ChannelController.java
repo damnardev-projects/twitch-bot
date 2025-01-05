@@ -1,8 +1,10 @@
 package fr.damnardev.twitch.bot.server.primary.adapter;
 
 import fr.damnardev.twitch.bot.server.model.form.CreateChannelForm;
+import fr.damnardev.twitch.bot.server.model.form.DeleteChannelForm;
 import fr.damnardev.twitch.bot.server.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.server.port.primary.channel.CreateChannelService;
+import fr.damnardev.twitch.bot.server.port.primary.channel.DeleteChannelService;
 import fr.damnardev.twitch.bot.server.port.primary.channel.FetchAllChannelService;
 import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ public class ChannelController {
 
 	private final UpdateChannelService updateChannelService;
 
+	private final DeleteChannelService deleteChannelService;
+
 	@MessageMapping("/channels/fetchAll")
 	public void fetchAll() {
 		this.fetchAllChannelService.fetchAll();
@@ -33,6 +37,11 @@ public class ChannelController {
 	@MessageMapping("/channels/update")
 	public void update(UpdateChannelForm form) {
 		this.updateChannelService.update(form);
+	}
+
+	@MessageMapping("/channels/delete")
+	public void delete(DeleteChannelForm form) {
+		this.deleteChannelService.delete(form);
 	}
 
 }
