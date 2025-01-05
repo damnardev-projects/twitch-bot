@@ -57,7 +57,7 @@ class DefaultDeleteChannelServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenChannelNotFound() {
+	void delete_shouldPublishEvent_whenChannelNotFound() {
 		// Given
 		var channelName = "channelName";
 		var form = DeleteChannelForm.builder().name(channelName).build();
@@ -66,7 +66,7 @@ class DefaultDeleteChannelServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.empty());
 
 		// When
-		this.deleteChannelService.process(form);
+		this.deleteChannelService.delete(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -81,7 +81,7 @@ class DefaultDeleteChannelServiceTests {
 	}
 
 	@Test
-	void process_shouldDeleteChannelAndPublishEvent_whenChannelFound() {
+	void delete_shouldDeleteChannelAndPublishEvent_whenChannelFound() {
 		// Given
 		var channelName = "channelName";
 		var form = DeleteChannelForm.builder().name(channelName).build();
@@ -91,7 +91,7 @@ class DefaultDeleteChannelServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 
 		// When
-		this.deleteChannelService.process(form);
+		this.deleteChannelService.delete(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -112,7 +112,7 @@ class DefaultDeleteChannelServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 
 		// When
-		this.deleteChannelService.process(form);
+		this.deleteChannelService.delete(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));

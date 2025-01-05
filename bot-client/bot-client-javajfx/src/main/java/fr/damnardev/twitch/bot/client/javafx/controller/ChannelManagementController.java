@@ -15,7 +15,6 @@ import fr.damnardev.twitch.bot.client.model.form.DeleteChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.ChannelRepository;
-import fr.damnardev.twitch.bot.client.port.secondary.channel.DeleteChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.channel.FetchAllChannelService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -37,8 +36,6 @@ public class ChannelManagementController implements ChannelService {
 	private final ChannelRepository channelRepository;
 
 	private final FetchAllChannelService fetchAllChannelService;
-
-	private final DeleteChannelRepository deleteChannelRepository;
 
 	@FXML
 	public TableColumn<ChannelWrapper, String> columnName;
@@ -111,7 +108,7 @@ public class ChannelManagementController implements ChannelService {
 			if (selectedItem != null) {
 				log.info("Try to delete channel: {}", selectedItem);
 				var form = DeleteChannelForm.builder().id(selectedItem.idProperty().getValue()).name(selectedItem.nameProperty().getValue()).build();
-				this.deleteChannelRepository.delete(form);
+				this.channelRepository.delete(form);
 			}
 		}
 		else if (keyEvent.getCode().equals(KeyCode.E)) {
@@ -136,7 +133,7 @@ public class ChannelManagementController implements ChannelService {
 	private void onButtonDelete(ChannelWrapper channel) {
 		log.info("Try to delete channel: {}", channel);
 		var form = DeleteChannelForm.builder().id(channel.idProperty().getValue()).name(channel.nameProperty().getValue()).build();
-		this.deleteChannelRepository.delete(form);
+		this.channelRepository.delete(form);
 	}
 
 	public void onChannelFindEvent(ChannelFetchedAllEvent event) {
@@ -164,10 +161,10 @@ public class ChannelManagementController implements ChannelService {
 	}
 
 	public void onChannelDeletedEvent(ChannelDeletedEvent event) {
-		log.info("Channel deleted: {}", event.getValue());
-		this.tableView.getItems().removeIf((item) -> item.idProperty().getValue().equals(event.getValue().id()));
+		log.info("Channel deleted: {}", event.value());
+		this.tableView.getItems().removeIf((item) -> item.idProperty().getValue().equals(event.value().id()));
 		sort();
-		this.statusController.setLabelText("Channel deleted: " + event.getValue(), false);
+		this.statusController.setLabelText("Channel deleted: " + event.value(), false);
 	}
 
 	@Override
@@ -183,6 +180,11 @@ public class ChannelManagementController implements ChannelService {
 	@Override
 	public void update(ChannelUpdatedEvent event) {
 		Platform.runLater(() -> onChannelUpdatedEvent(event));
+	}
+
+	@Override
+	public void delete(ChannelDeletedEvent event) {
+		Platform.runLater(() -> onChannelDeletedEvent(event));
 	}
 
 }

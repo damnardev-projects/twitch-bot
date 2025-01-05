@@ -1,6 +1,7 @@
 package fr.damnardev.twitch.bot.client.port.secondary.channel;
 
 import fr.damnardev.twitch.bot.client.model.form.CreateChannelForm;
+import fr.damnardev.twitch.bot.client.model.form.DeleteChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.UpdateChannelForm;
 
 public interface ChannelRepository {
@@ -9,4 +10,6 @@ public interface ChannelRepository {
 
 	void update(UpdateChannelForm event);
 
+	void delete(DeleteChannelForm form);
+	
 }

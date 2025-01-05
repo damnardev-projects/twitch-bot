@@ -27,7 +27,7 @@ public class DefaultDeleteChannelService implements DeleteChannelService {
 	private final EventPublisher eventPublisher;
 
 	@Override
-	public void process(DeleteChannelForm form) {
+	public void delete(DeleteChannelForm form) {
 		this.tryService.doTry(this::doInternal, form);
 	}
 
@@ -41,7 +41,7 @@ public class DefaultDeleteChannelService implements DeleteChannelService {
 			this.chatRepository.leave(channel);
 		}
 		this.deleteChannelRepository.delete(channel);
-		var event = ChannelDeletedEvent.builder().channel(channel).build();
+		var event = ChannelDeletedEvent.builder().value(channel).build();
 		this.eventPublisher.publish(event);
 	}
 

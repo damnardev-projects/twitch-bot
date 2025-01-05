@@ -225,7 +225,7 @@ public class RaidConfigurationController implements RaidConfigurationService {
 	}
 
 	public void onChannelDeletedEvent(ChannelDeletedEvent event) {
-		this.tableViewRaidConfiguration.getItems().removeIf((w) -> w.idProperty().getValue().equals(event.getValue().id()));
+		this.tableViewRaidConfiguration.getItems().removeIf((w) -> w.idProperty().getValue().equals(event.value().id()));
 	}
 
 	@Override

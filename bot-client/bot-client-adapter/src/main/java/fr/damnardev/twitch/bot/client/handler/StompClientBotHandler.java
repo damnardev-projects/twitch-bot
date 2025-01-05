@@ -5,10 +5,12 @@ import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
 import fr.damnardev.twitch.bot.client.model.event.ChannelCreatedEvent;
+import fr.damnardev.twitch.bot.client.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.client.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.client.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.client.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.client.model.form.CreateChannelForm;
+import fr.damnardev.twitch.bot.client.model.form.DeleteChannelForm;
 import fr.damnardev.twitch.bot.client.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
 import fr.damnardev.twitch.bot.client.port.primary.RaidConfigurationService;
@@ -90,6 +92,7 @@ public class StompClientBotHandler extends StompSessionHandlerAdapter implements
 		this.session.subscribe("/response/channels/fetchedAll", this);
 		this.session.subscribe("/response/channels/created", this);
 		this.session.subscribe("/response/channels/updated", this);
+		this.session.subscribe("/response/channels/deleted", this);
 		this.session.subscribe("/response/raids/fetchedAll", this);
 		this.session.send("/request/channels/fetchAll", null);
 		this.session.send("/request/raids/fetchAll", null);
@@ -107,6 +110,9 @@ public class StompClientBotHandler extends StompSessionHandlerAdapter implements
 		if ("/response/channels/updated".equals(destination)) {
 			return ChannelUpdatedEvent.class;
 		}
+		if ("/response/channels/deleted".equals(destination)) {
+			return ChannelDeletedEvent.class;
+		}
 		if ("/response/raids/fetchedAll".equals(destination)) {
 			return RaidConfigurationFetchedAllEvent.class;
 		}
@@ -123,6 +129,9 @@ public class StompClientBotHandler extends StompSessionHandlerAdapter implements
 		}
 		if (payload instanceof ChannelUpdatedEvent) {
 			this.channelService.update(((ChannelUpdatedEvent) payload));
+		}
+		if (payload instanceof ChannelDeletedEvent) {
+			this.channelService.delete(((ChannelDeletedEvent) payload));
 		}
 		if (payload instanceof RaidConfigurationFetchedAllEvent) {
 			this.raidConfigurationService.fetchAll(((RaidConfigurationFetchedAllEvent) payload));
@@ -159,6 +168,11 @@ public class StompClientBotHandler extends StompSessionHandlerAdapter implements
 	@Override
 	public void update(UpdateChannelForm event) {
 		this.session.send("/request/channels/update", event);
+	}
+
+	@Override
+	public void delete(DeleteChannelForm form) {
+		this.session.send("/request/channels/delete", form);
 	}
 
 }

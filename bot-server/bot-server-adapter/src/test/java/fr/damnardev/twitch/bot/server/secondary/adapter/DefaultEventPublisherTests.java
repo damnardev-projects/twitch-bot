@@ -3,6 +3,7 @@ package fr.damnardev.twitch.bot.server.secondary.adapter;
 import java.util.Map;
 
 import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
+import fr.damnardev.twitch.bot.server.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
@@ -68,6 +69,20 @@ class DefaultEventPublisherTests {
 
 		// Then
 		then(this.publisher).should().convertAndSend("/response/channels/updated", event, headers);
+		verifyNoMoreInteractions(this.publisher);
+	}
+
+	@Test
+	void publish_shouldInvokePublishChannelDeletedEvent_whenCalled() {
+		// Given
+		var event = ChannelDeletedEvent.builder().build();
+		Map<String, Object> headers = Map.of("type", "channelDeleted");
+
+		// When
+		this.eventPublisher.publish(event);
+
+		// Then
+		then(this.publisher).should().convertAndSend("/response/channels/deleted", event, headers);
 		verifyNoMoreInteractions(this.publisher);
 	}
 

@@ -3,6 +3,7 @@ package fr.damnardev.twitch.bot.server.secondary.adapter;
 import java.util.Map;
 
 import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
+import fr.damnardev.twitch.bot.server.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.Event;
@@ -39,6 +40,11 @@ public class DefaultEventPublisher implements EventPublisher {
 	@Override
 	public void publish(ChannelUpdatedEvent event) {
 		internalPublish("/response/channels/updated", "channelUpdated", event);
+	}
+
+	@Override
+	public void publish(ChannelDeletedEvent event) {
+		internalPublish("/response/channels/deleted", "channelDeleted", event);
 	}
 
 	@Override
