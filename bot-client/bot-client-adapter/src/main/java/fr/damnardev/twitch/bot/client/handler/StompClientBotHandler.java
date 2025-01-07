@@ -126,6 +126,7 @@ public class StompClientBotHandler extends StompSessionHandlerAdapter implements
 		}
 		if (payload instanceof ChannelCreatedEvent) {
 			this.channelService.create(((ChannelCreatedEvent) payload));
+			this.raidConfigurationService.create(((ChannelCreatedEvent) payload));
 		}
 		if (payload instanceof ChannelUpdatedEvent) {
 			this.channelService.update(((ChannelUpdatedEvent) payload));

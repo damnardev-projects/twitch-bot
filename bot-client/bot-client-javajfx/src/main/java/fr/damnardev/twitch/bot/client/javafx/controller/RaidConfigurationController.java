@@ -233,4 +233,9 @@ public class RaidConfigurationController implements RaidConfigurationService {
 		Platform.runLater(() -> onRaidConfigurationFindAllEvent(event));
 	}
 
+	@Override
+	public void create(ChannelCreatedEvent event) {
+		Platform.runLater(() -> onChannelCreatedEvent(event));
+	}
+
 }
