@@ -7,6 +7,7 @@ import fr.damnardev.twitch.bot.server.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
+import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -87,7 +88,7 @@ class DefaultEventPublisherTests {
 	}
 
 	@Test
-	void publish_shouldInvokePublishRaidFetchedALl_whenCalled() {
+	void publish_shouldInvokePublishRaidFetchedAll_whenCalled() {
 		// Given
 		var event = RaidConfigurationFetchedAllEvent.builder().build();
 		Map<String, Object> headers = Map.of("type", "raidFetchedAll");
@@ -97,6 +98,20 @@ class DefaultEventPublisherTests {
 
 		// Then
 		then(this.publisher).should().convertAndSend("/response/raids/fetchedAll", event, headers);
+		verifyNoMoreInteractions(this.publisher);
+	}
+
+	@Test
+	void publish_shouldInvokePublishRaidUpdated_whenCalled() {
+		// Given
+		var event = RaidConfigurationUpdatedEvent.builder().build();
+		Map<String, Object> headers = Map.of("type", "raidUpdated");
+
+		// When
+		this.eventPublisher.publish(event);
+
+		// Then
+		then(this.publisher).should().convertAndSend("/response/raids/updated", event, headers);
 		verifyNoMoreInteractions(this.publisher);
 	}
 

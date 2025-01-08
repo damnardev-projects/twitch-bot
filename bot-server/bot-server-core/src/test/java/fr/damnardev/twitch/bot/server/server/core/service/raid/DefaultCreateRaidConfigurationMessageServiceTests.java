@@ -122,7 +122,7 @@ class DefaultCreateRaidConfigurationMessageServiceTests {
 		var channel = Channel.builder().name(channelName).build();
 		var configuration = RaidConfiguration.builder().messages(new ArrayList<>()).build();
 		var updateConfiguration = RaidConfiguration.builder().messages(Collections.singletonList("hello")).build();
-		var event = RaidConfigurationUpdatedEvent.builder().raidConfiguration(updateConfiguration).build();
+		var event = RaidConfigurationUpdatedEvent.builder().value(updateConfiguration).build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.of(configuration));

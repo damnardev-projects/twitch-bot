@@ -8,6 +8,7 @@ import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.Event;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
+import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,11 @@ public class DefaultEventPublisher implements EventPublisher {
 	@Override
 	public void publish(RaidConfigurationFetchedAllEvent event) {
 		internalPublish("/response/raids/fetchedAll", "raidFetchedAll", event);
+	}
+
+	@Override
+	public void publish(RaidConfigurationUpdatedEvent event) {
+		internalPublish("/response/raids/updated", "raidUpdated", event);
 	}
 
 	private <T> void internalPublish(String destination, String type, T event) {

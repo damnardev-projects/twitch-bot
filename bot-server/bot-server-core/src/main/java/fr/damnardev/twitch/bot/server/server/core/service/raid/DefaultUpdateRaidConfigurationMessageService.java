@@ -24,7 +24,7 @@ public class DefaultUpdateRaidConfigurationMessageService extends AbstractRaidCo
 	}
 
 	@Override
-	public void process(UpdateRaidConfigurationForm form) {
+	public void update(UpdateRaidConfigurationForm form) {
 		this.tryService.doTry(this::doInternal, form);
 	}
 
@@ -43,7 +43,7 @@ public class DefaultUpdateRaidConfigurationMessageService extends AbstractRaidCo
 			raidConfiguration = raidConfiguration.toBuilder().raidMessageEnabled(form.raidMessageEnabled()).build();
 		}
 		this.updateRaidConfigurationRepository.update(raidConfiguration);
-		var event = RaidConfigurationUpdatedEvent.builder().raidConfiguration(raidConfiguration).build();
+		var event = RaidConfigurationUpdatedEvent.builder().value(raidConfiguration).build();
 		this.eventPublisher.publish(event);
 	}
 
