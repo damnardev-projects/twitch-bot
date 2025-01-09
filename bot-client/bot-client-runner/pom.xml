@@ -34,7 +34,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>twitch-bot-server</finalName>
+		<finalName>twitch-bot-client</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
