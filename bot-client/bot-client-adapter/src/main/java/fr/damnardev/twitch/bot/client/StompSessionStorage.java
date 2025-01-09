@@ -9,7 +9,7 @@ public class StompSessionStorage {
 	private StompSession session;
 
 	public StompSession getSession() {
-		return session;
+		return this.session;
 	}
 
 	public void setSession(StompSession session) {

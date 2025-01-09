@@ -26,5 +26,5 @@ public interface EventPublisher {
 	void publish(RaidConfigurationUpdatedEvent event);
 
 	void publish(AuthenticatedStatusEvent event);
-	
+
 }

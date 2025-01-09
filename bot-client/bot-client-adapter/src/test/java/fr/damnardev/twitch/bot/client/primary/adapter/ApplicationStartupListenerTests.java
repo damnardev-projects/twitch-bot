@@ -29,9 +29,6 @@ class ApplicationStartupListenerTests {
 	@Mock
 	private StartupService startupService;
 
-	@Mock
-	private BotStompHandler stompClientBotHandler;
-
 	@Test
 	void run_shouldInvokeStartupServiceRun_whenCalled() {
 		// Given
@@ -44,7 +41,6 @@ class ApplicationStartupListenerTests {
 		then(this.executor).should().execute(captor.capture());
 		captor.getValue().run();
 		then(this.startupService).should().run(any(), any(), any());
-		then(this.stompClientBotHandler).should().connect();
 		verifyNoMoreInteractions(this.executor, this.startupService);
 	}
 
