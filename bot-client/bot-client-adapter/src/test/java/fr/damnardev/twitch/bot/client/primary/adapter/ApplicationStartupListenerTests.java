@@ -1,6 +1,5 @@
 package fr.damnardev.twitch.bot.client.primary.adapter;
 
-import fr.damnardev.twitch.bot.client.handler.StompClientBotHandler;
 import fr.damnardev.twitch.bot.client.port.primary.StartupService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +30,7 @@ class ApplicationStartupListenerTests {
 	private StartupService startupService;
 
 	@Mock
-	private StompClientBotHandler stompClientBotHandler;
+	private BotStompHandler stompClientBotHandler;
 
 	@Test
 	void run_shouldInvokeStartupServiceRun_whenCalled() {

@@ -9,6 +9,7 @@ import java.util.function.Function;
 import fr.damnardev.twitch.bot.client.DomainService;
 import fr.damnardev.twitch.bot.client.exception.FatalException;
 import fr.damnardev.twitch.bot.client.port.primary.StartupService;
+import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,12 +23,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ApplicationStartedEventListener implements StartupService {
 
+	private final ClientRepository clientRepository;
+
 	@Override
 	public <T> void run(T instance, Consumer<T> closeMethod, Function<T, Function<Class<?>, Object>> getBeanMethod) {
 		Platform.startup(() -> {
 			try {
 				createWindow(instance, closeMethod, getBeanMethod);
 				Platform.setImplicitExit(true);
+				this.clientRepository.connect();
 			}
 			catch (IOException ex) {
 				throw new FatalException(ex);

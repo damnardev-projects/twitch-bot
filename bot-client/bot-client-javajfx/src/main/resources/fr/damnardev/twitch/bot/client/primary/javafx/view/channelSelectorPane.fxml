@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<HBox alignment="CENTER_RIGHT"
+	  fx:controller="fr.damnardev.twitch.bot.client.javafx.controller.MainController"
+	  prefHeight="30" prefWidth="600" xmlns="http://javafx.com/javafx/17.0.12"
+	  xmlns:fx="http://javafx.com/fxml/1">
+
+	<Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxWidth="Infinity"
+		   minWidth="200" styleClass="app-padding" text="Channel"/>
+
+	<ComboBox fx:id="channelComboBox" prefWidth="200" />
+
+</HBox>

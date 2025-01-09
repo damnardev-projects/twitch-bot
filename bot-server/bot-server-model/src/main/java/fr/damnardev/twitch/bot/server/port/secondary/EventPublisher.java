@@ -1,5 +1,6 @@
 package fr.damnardev.twitch.bot.server.port.secondary;
 
+import fr.damnardev.twitch.bot.server.model.event.AuthenticatedStatusEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
@@ -24,4 +25,6 @@ public interface EventPublisher {
 
 	void publish(RaidConfigurationUpdatedEvent event);
 
+	void publish(AuthenticatedStatusEvent event);
+	
 }

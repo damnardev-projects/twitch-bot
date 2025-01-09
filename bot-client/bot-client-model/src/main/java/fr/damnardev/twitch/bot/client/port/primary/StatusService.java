@@ -4,4 +4,6 @@ public interface StatusService {
 
 	void connected(Boolean status);
 
+	void authenticated(Boolean status);
+
 }
