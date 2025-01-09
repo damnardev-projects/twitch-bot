@@ -2,6 +2,7 @@ package fr.damnardev.twitch.bot.server.secondary.adapter;
 
 import java.util.Map;
 
+import fr.damnardev.twitch.bot.server.model.event.AuthenticatedStatusEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
@@ -112,6 +113,20 @@ class DefaultEventPublisherTests {
 
 		// Then
 		then(this.publisher).should().convertAndSend("/response/raids/updated", event, headers);
+		verifyNoMoreInteractions(this.publisher);
+	}
+
+	@Test
+	void publish_shouldInvokePublishAuthenticatedStatusEvent_whenCalled() {
+		// Given
+		var event = AuthenticatedStatusEvent.builder().build();
+		Map<String, Object> headers = Map.of("type", "authenticatedStatus");
+
+		// When
+		this.eventPublisher.publish(event);
+
+		// Then
+		then(this.publisher).should().convertAndSend("/response/authenticated/status", event, headers);
 		verifyNoMoreInteractions(this.publisher);
 	}
 

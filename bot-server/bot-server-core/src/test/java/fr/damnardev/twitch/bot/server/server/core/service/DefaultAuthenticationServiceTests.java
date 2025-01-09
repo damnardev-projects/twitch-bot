@@ -1,7 +1,9 @@
 package fr.damnardev.twitch.bot.server.server.core.service;
 
+import fr.damnardev.twitch.bot.server.model.event.AuthenticatedStatusEvent;
 import fr.damnardev.twitch.bot.server.port.secondary.AuthenticationRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.ChatRepository;
+import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -30,6 +33,9 @@ class DefaultAuthenticationServiceTests {
 	@Mock
 	private ChatRepository chatRepository;
 
+	@Mock
+	private EventPublisher eventPublisher;
+
 	@ParameterizedTest
 	@ValueSource(booleans = { true, false })
 	void isInitialized_shouldReturnExpectedValue_whenCalled(boolean value) {
@@ -41,7 +47,7 @@ class DefaultAuthenticationServiceTests {
 
 		// Then
 		then(this.authenticationRepository).should().isInitialized();
-		verifyNoMoreInteractions(this.authenticationRepository, this.chatRepository);
+		verifyNoMoreInteractions(this.authenticationRepository, this.chatRepository, this.eventPublisher);
 
 		assertThat(result).isEqualTo(value);
 	}
@@ -55,8 +61,9 @@ class DefaultAuthenticationServiceTests {
 		this.startupService.tryRenew();
 
 		// Then
+		then(this.eventPublisher).should().publish(AuthenticatedStatusEvent.builder().value(true).build());
 		then(this.authenticationRepository).should().isValid();
-		verifyNoMoreInteractions(this.authenticationRepository, this.chatRepository);
+		verifyNoMoreInteractions(this.authenticationRepository, this.chatRepository, this.eventPublisher);
 	}
 
 	@Test
@@ -69,10 +76,11 @@ class DefaultAuthenticationServiceTests {
 		this.startupService.tryRenew();
 
 		// Then
-		then(this.authenticationRepository).should().isValid();
+		then(this.authenticationRepository).should(times(2)).isValid();
+		then(this.eventPublisher).should(times(2)).publish(AuthenticatedStatusEvent.builder().value(false).build());
 		then(this.authenticationRepository).should().renew();
 		then(this.chatRepository).should().reconnect();
-		verifyNoMoreInteractions(this.authenticationRepository, this.chatRepository);
+		verifyNoMoreInteractions(this.authenticationRepository, this.chatRepository, this.eventPublisher);
 	}
 
 	@Test
@@ -86,8 +94,9 @@ class DefaultAuthenticationServiceTests {
 
 		// Then
 		then(this.authenticationRepository).should().isValid();
+		then(this.eventPublisher).should().publish(AuthenticatedStatusEvent.builder().value(false).build());
 		then(this.authenticationRepository).should().renew();
-		verifyNoMoreInteractions(this.authenticationRepository, this.chatRepository);
+		verifyNoMoreInteractions(this.authenticationRepository, this.chatRepository, this.eventPublisher);
 	}
 
 }

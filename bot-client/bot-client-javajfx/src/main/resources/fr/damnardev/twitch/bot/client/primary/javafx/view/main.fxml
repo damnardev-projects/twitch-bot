@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.VBox?>
-<VBox maxHeight="Infinity" maxWidth="Infinity" prefHeight="600" prefWidth="600"
-	  xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
-	<TabPane VBox.vgrow="ALWAYS">
-		<Tab closable="false" text="Channel Management">
-			<fx:include source="channelPane.fxml"/>
-		</Tab>
-		<Tab closable="false" text="Raid Configuration">
-			<fx:include source="raidConfiguration.fxml"/>
-		</Tab>
-		<Tab closable="false" fx:id="loggerTab" text="Logger">
-			<fx:include source="logPane.fxml"/>
-		</Tab>
-	</TabPane>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="600" prefWidth="600"
+			xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
-	<fx:include minHeight="30" source="statusPane.fxml"/>
+	<top>
+		<fx:include source="channelSelectorPane.fxml"/>
+	</top>
 
-</VBox>
+	<left>
+		<fx:include source="menuPane.fxml" />
+	</left>
+
+	<bottom>
+		<fx:include source="statusPane.fxml"/>
+	</bottom>
+
+</BorderPane>

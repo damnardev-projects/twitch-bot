@@ -2,6 +2,7 @@ package fr.damnardev.twitch.bot.server.secondary.adapter;
 
 import java.util.Map;
 
+import fr.damnardev.twitch.bot.server.model.event.AuthenticatedStatusEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
@@ -56,6 +57,11 @@ public class DefaultEventPublisher implements EventPublisher {
 	@Override
 	public void publish(RaidConfigurationUpdatedEvent event) {
 		internalPublish("/response/raids/updated", "raidUpdated", event);
+	}
+
+	@Override
+	public void publish(AuthenticatedStatusEvent event) {
+		internalPublish("/response/authenticated/status", "authenticatedStatus", event);
 	}
 
 	private <T> void internalPublish(String destination, String type, T event) {

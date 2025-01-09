@@ -6,4 +6,6 @@ public interface AuthenticationService {
 
 	void tryRenew();
 
+	boolean isAuthenticated();
+
 }

@@ -1,6 +1,5 @@
 package fr.damnardev.twitch.bot.client.primary.adapter;
 
-import fr.damnardev.twitch.bot.client.handler.StompClientBotHandler;
 import fr.damnardev.twitch.bot.client.port.primary.StartupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +21,6 @@ public class ApplicationStartupListener implements ApplicationRunner {
 
 	private final ConfigurableApplicationContext springContext;
 
-	private final StompClientBotHandler stompClientBotHandler;
-
 	@Override
 	public void run(ApplicationArguments args) {
 		this.executor.execute(this::doInternal);
@@ -32,7 +29,6 @@ public class ApplicationStartupListener implements ApplicationRunner {
 	private void doInternal() {
 		log.info("Starting client bot");
 		this.startupService.run(this.springContext, ConfigurableApplicationContext::close, (t) -> t::getBean);
-		this.stompClientBotHandler.connect();
 		log.info("Client bot started");
 	}
 
