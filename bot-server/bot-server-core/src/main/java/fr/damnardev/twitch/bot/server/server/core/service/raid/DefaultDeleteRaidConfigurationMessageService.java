@@ -35,7 +35,7 @@ public class DefaultDeleteRaidConfigurationMessageService extends AbstractRaidCo
 		}
 		raidConfiguration.messages().remove(form.message());
 		this.updateRaidConfigurationRepository.update(raidConfiguration);
-		var event = RaidConfigurationUpdatedEvent.builder().raidConfiguration(raidConfiguration).build();
+		var event = RaidConfigurationUpdatedEvent.builder().value(raidConfiguration).build();
 		this.eventPublisher.publish(event);
 	}
 

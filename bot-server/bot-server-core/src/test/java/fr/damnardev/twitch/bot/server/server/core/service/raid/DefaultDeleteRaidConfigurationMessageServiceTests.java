@@ -120,7 +120,7 @@ class DefaultDeleteRaidConfigurationMessageServiceTests {
 		messages.add(message);
 		messages.add("another message");
 		var raidConfiguration = RaidConfiguration.builder().messages(messages).build();
-		var event = RaidConfigurationUpdatedEvent.builder().raidConfiguration(raidConfiguration).build();
+		var event = RaidConfigurationUpdatedEvent.builder().value(raidConfiguration).build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.of(raidConfiguration));

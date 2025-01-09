@@ -6,6 +6,7 @@ import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.Event;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
+import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
 
 public interface EventPublisher {
 
@@ -20,5 +21,7 @@ public interface EventPublisher {
 	void publish(ChannelDeletedEvent event);
 
 	void publish(RaidConfigurationFetchedAllEvent event);
+
+	void publish(RaidConfigurationUpdatedEvent event);
 
 }
