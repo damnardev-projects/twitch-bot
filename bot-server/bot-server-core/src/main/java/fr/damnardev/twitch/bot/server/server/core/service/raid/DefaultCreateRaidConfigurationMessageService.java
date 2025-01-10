@@ -24,7 +24,7 @@ public class DefaultCreateRaidConfigurationMessageService extends AbstractRaidCo
 	}
 
 	@Override
-	public void process(CreateRaidConfigurationMessageForm form) {
+	public void create(CreateRaidConfigurationMessageForm form) {
 		this.tryService.doTry(this::doInternal, form);
 	}
 

@@ -64,7 +64,7 @@ class DefaultCreateRaidConfigurationMessageServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenChannelNotFound() {
+	void create_shouldPublishEvent_whenChannelNotFound() {
 		// Given
 		var channelName = "channelName";
 		var form = CreateRaidConfigurationMessageForm.builder().channelName(channelName).build();
@@ -73,7 +73,7 @@ class DefaultCreateRaidConfigurationMessageServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.empty());
 
 		// When
-		this.createRaidConfigurationMessageService.process(form);
+		this.createRaidConfigurationMessageService.create(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -88,7 +88,7 @@ class DefaultCreateRaidConfigurationMessageServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenRaidConfigurationNotFound() {
+	void create_shouldPublishEvent_whenRaidConfigurationNotFound() {
 		// Given
 		var channelName = "channelName";
 		var form = CreateRaidConfigurationMessageForm.builder().channelName(channelName).build();
@@ -99,7 +99,7 @@ class DefaultCreateRaidConfigurationMessageServiceTests {
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.empty());
 
 		// When
-		this.createRaidConfigurationMessageService.process(form);
+		this.createRaidConfigurationMessageService.create(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -115,7 +115,7 @@ class DefaultCreateRaidConfigurationMessageServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenRaidConfigurationFound() {
+	void create_shouldPublishEvent_whenRaidConfigurationFound() {
 		// Given
 		var channelName = "channelName";
 		var form = CreateRaidConfigurationMessageForm.builder().channelName(channelName).message("hello").build();
@@ -128,7 +128,7 @@ class DefaultCreateRaidConfigurationMessageServiceTests {
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.of(configuration));
 
 		// When
-		this.createRaidConfigurationMessageService.process(form);
+		this.createRaidConfigurationMessageService.create(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));

@@ -83,7 +83,7 @@ class RaidEventConsumerTests {
 		captor.getValue().run();
 		then(event).should(times(2)).getChannel();
 		then(event).should(times(2)).getRaider();
-		then(this.handler).should().process(model);
+		then(this.handler).should().raid(model);
 		verifyNoMoreInteractions(this.executor, this.twitchClient, this.handler, event, channel);
 	}
 

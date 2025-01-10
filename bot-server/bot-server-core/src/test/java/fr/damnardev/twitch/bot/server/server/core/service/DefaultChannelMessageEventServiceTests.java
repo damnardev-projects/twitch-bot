@@ -72,7 +72,7 @@ class DefaultChannelMessageEventServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenChannelNotFound() {
+	void message_shouldPublishEvent_whenChannelNotFound() {
 		// Given
 		var channelName = "channelName";
 		var form = ChannelMessageEventForm.builder().channelName(channelName).build();
@@ -81,7 +81,7 @@ class DefaultChannelMessageEventServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.empty());
 
 		// When
-		this.channelMessageEventService.process(form);
+		this.channelMessageEventService.message(form);
 
 		// Then
 		then(this.commandInterpreter).should().getCommandTypeInterpreter();
@@ -95,7 +95,7 @@ class DefaultChannelMessageEventServiceTests {
 	}
 
 	@Test
-	void process_shouldDoNothing_whenChannelFoundAndMessageNotStartByToken() {
+	void message_shouldDoNothing_whenChannelFoundAndMessageNotStartByToken() {
 		// Given
 		var channelName = "channelName";
 		var channel = Channel.builder().name(channelName).build();
@@ -104,7 +104,7 @@ class DefaultChannelMessageEventServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 
 		// When
-		this.channelMessageEventService.process(form);
+		this.channelMessageEventService.message(form);
 
 		// Then
 		then(this.commandInterpreter).should().getCommandTypeInterpreter();
@@ -114,7 +114,7 @@ class DefaultChannelMessageEventServiceTests {
 	}
 
 	@Test
-	void process_shouldDoNothing_whenChannelFoundAndCommandIsEmpty() {
+	void message_shouldDoNothing_whenChannelFoundAndCommandIsEmpty() {
 		// Given
 		var channelName = "channelName";
 		var channel = Channel.builder().name(channelName).build();
@@ -125,7 +125,7 @@ class DefaultChannelMessageEventServiceTests {
 
 
 		// When
-		this.channelMessageEventService.process(form);
+		this.channelMessageEventService.message(form);
 
 		// Then
 		then(this.commandInterpreter).should().getCommandTypeInterpreter();
@@ -136,7 +136,7 @@ class DefaultChannelMessageEventServiceTests {
 	}
 
 	@Test
-	void process_shouldDoNothing_whenChannelFoundAndCommandNotFound() {
+	void message_shouldDoNothing_whenChannelFoundAndCommandNotFound() {
 		// Given
 		var channelName = "channelName";
 		var channel = Channel.builder().name(channelName).build();
@@ -149,7 +149,7 @@ class DefaultChannelMessageEventServiceTests {
 		given(this.dateService.now()).willReturn(OffsetDateTime.now().minusHours(1));
 
 		// When
-		this.channelMessageEventService.process(form);
+		this.channelMessageEventService.message(form);
 
 		// Then
 		then(this.commandInterpreter).should().getCommandTypeInterpreter();
@@ -161,7 +161,7 @@ class DefaultChannelMessageEventServiceTests {
 	}
 
 	@Test
-	void process_shouldDoNothing_whenChannelFoundAndCommandFoundButNoValidTime() {
+	void message_shouldDoNothing_whenChannelFoundAndCommandFoundButNoValidTime() {
 		// Given
 		var channelName = "channelName";
 		var channel = Channel.builder().name(channelName).build();
@@ -174,7 +174,7 @@ class DefaultChannelMessageEventServiceTests {
 		given(this.dateService.now()).willReturn(now);
 
 		// When
-		this.channelMessageEventService.process(form);
+		this.channelMessageEventService.message(form);
 
 		// Then
 		then(this.commandInterpreter).should().getCommandTypeInterpreter();
@@ -187,7 +187,7 @@ class DefaultChannelMessageEventServiceTests {
 
 	@ParameterizedTest
 	@ValueSource(booleans = { true, false })
-	void process_shouldDoNothing_whenChannelFoundAndCommandFoundButNoInterpreter(boolean hasLastExecution) {
+	void message_shouldDoNothing_whenChannelFoundAndCommandFoundButNoInterpreter(boolean hasLastExecution) {
 		// Given
 		var channelName = "channelName";
 		var channel = Channel.builder().name(channelName).build();
@@ -200,7 +200,7 @@ class DefaultChannelMessageEventServiceTests {
 		given(this.dateService.now()).willReturn(now);
 
 		// When
-		this.channelMessageEventService.process(form);
+		this.channelMessageEventService.message(form);
 
 		// Then
 		then(this.commandInterpreter).should().getCommandTypeInterpreter();
@@ -213,7 +213,7 @@ class DefaultChannelMessageEventServiceTests {
 
 	@ParameterizedTest
 	@ValueSource(booleans = { true, false })
-	void process_shouldInvokeInterpreter_whenInterpreterFound(boolean hasLastExecution) {
+	void message_shouldInvokeInterpreter_whenInterpreterFound(boolean hasLastExecution) {
 		// Given
 		var channelName = "channelName";
 		var channel = Channel.builder().name(channelName).build();
@@ -230,7 +230,7 @@ class DefaultChannelMessageEventServiceTests {
 		given(this.dateService.now()).willReturn(now);
 
 		// When
-		this.channelMessageEventService.process(form);
+		this.channelMessageEventService.message(form);
 
 		// Then
 		then(this.commandInterpreter).should().getCommandTypeInterpreter();
@@ -244,7 +244,7 @@ class DefaultChannelMessageEventServiceTests {
 	}
 
 	@Test
-	void process_shouldInvokeInterpreter_whenParameters() {
+	void message_shouldInvokeInterpreter_whenParameters() {
 		// Given
 		var channelName = "channelName";
 		var channel = Channel.builder().name(channelName).build();
@@ -259,7 +259,7 @@ class DefaultChannelMessageEventServiceTests {
 		given(this.dateService.now()).willReturn(now);
 
 		// When
-		this.channelMessageEventService.process(form);
+		this.channelMessageEventService.message(form);
 
 		// Then
 		then(this.commandInterpreter).should().getCommandTypeInterpreter();

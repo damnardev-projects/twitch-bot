@@ -91,7 +91,7 @@ class ChannelMessageEventConsumerTests {
 		then(event).should().getUser();
 		then(user).should().getName();
 		then(event).should().getMessage();
-		then(this.handler).should().process(model);
+		then(this.handler).should().message(model);
 		verifyNoMoreInteractions(this.executor, this.twitchClient, this.handler, event, channel);
 	}
 

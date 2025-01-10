@@ -24,7 +24,7 @@ public class DefaultDeleteRaidConfigurationMessageService extends AbstractRaidCo
 	}
 
 	@Override
-	public void process(DeleteRaidConfigurationMessageForm form) {
+	public void delete(DeleteRaidConfigurationMessageForm form) {
 		this.tryService.doTry(this::doInternal, form);
 	}
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class RaidEventConsumer extends AbstractChannelEventConsumer<RaidEvent, ChannelRaidEventForm> {
 
 	public RaidEventConsumer(TwitchClient twitchClient, ThreadPoolTaskExecutor executor, ChannelRaidEventService handler) {
-		super(executor, twitchClient, handler::process, RaidEvent.class);
+		super(executor, twitchClient, handler::raid, RaidEvent.class);
 	}
 
 	@Override
