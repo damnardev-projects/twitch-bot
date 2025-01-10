@@ -30,7 +30,7 @@ public class DefaultChannelRaidEventService implements ChannelRaidEventService {
 	private final RandomService randomService;
 
 	@Override
-	public void process(ChannelRaidEventForm form) {
+	public void raid(ChannelRaidEventForm form) {
 		this.tryService.doTry(this::doInternal, form);
 	}
 

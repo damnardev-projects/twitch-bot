@@ -59,7 +59,7 @@ class DefaultDeleteRaidConfigurationMessageServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenChannelNotFound() {
+	void delete_shouldPublishEvent_whenChannelNotFound() {
 		// Given
 		var channelName = "channelName";
 		var form = DeleteRaidConfigurationMessageForm.builder().channelName(channelName).build();
@@ -68,7 +68,7 @@ class DefaultDeleteRaidConfigurationMessageServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.empty());
 
 		// When
-		this.deleteRaidConfigurationMessageService.process(form);
+		this.deleteRaidConfigurationMessageService.delete(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -83,7 +83,7 @@ class DefaultDeleteRaidConfigurationMessageServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenRaidConfigurationNotFound() {
+	void delete_shouldPublishEvent_whenRaidConfigurationNotFound() {
 		// Given
 		var channelName = "channelName";
 		var form = DeleteRaidConfigurationMessageForm.builder().channelName(channelName).build();
@@ -94,7 +94,7 @@ class DefaultDeleteRaidConfigurationMessageServiceTests {
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.empty());
 
 		// When
-		this.deleteRaidConfigurationMessageService.process(form);
+		this.deleteRaidConfigurationMessageService.delete(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -110,7 +110,7 @@ class DefaultDeleteRaidConfigurationMessageServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenRaidConfigurationFound() {
+	void delete_shouldPublishEvent_whenRaidConfigurationFound() {
 		// Given
 		var channelName = "channelName";
 		var message = "my message";
@@ -126,7 +126,7 @@ class DefaultDeleteRaidConfigurationMessageServiceTests {
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.of(raidConfiguration));
 
 		// When
-		this.deleteRaidConfigurationMessageService.process(form);
+		this.deleteRaidConfigurationMessageService.delete(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));

@@ -45,7 +45,7 @@ public class DefaultChannelMessageEventService implements ChannelMessageEventSer
 	}
 
 	@Override
-	public void process(ChannelMessageEventForm form) {
+	public void message(ChannelMessageEventForm form) {
 		this.tryService.doTry(this::doInternal, form);
 	}
 
@@ -69,11 +69,11 @@ public class DefaultChannelMessageEventService implements ChannelMessageEventSer
 			if (command.lastExecution() != null && command.lastExecution().plusSeconds(command.cooldown()).isAfter(now)) {
 				return;
 			}
-			this.process(channel, command, form, now);
+			this.message(channel, command, form, now);
 		}
 	}
 
-	private void process(Channel channel, Command command, ChannelMessageEventForm form, OffsetDateTime now) {
+	private void message(Channel channel, Command command, ChannelMessageEventForm form, OffsetDateTime now) {
 		var commandInterpreter = this.commandInterpreters.get(command.type());
 		if (commandInterpreter != null) {
 			var updatedCommand = command.toBuilder().lastExecution(now).build();

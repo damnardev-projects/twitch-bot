@@ -70,7 +70,7 @@ class DefaultChannelRaidEventServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenChannelNotFound() {
+	void raid_shouldPublishEvent_whenChannelNotFound() {
 		// Given
 		var channelName = "channelName";
 		var form = ChannelRaidEventForm.builder().channelName(channelName).build();
@@ -79,7 +79,7 @@ class DefaultChannelRaidEventServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.empty());
 
 		// When
-		this.channelRaidEventService.process(form);
+		this.channelRaidEventService.raid(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -95,7 +95,7 @@ class DefaultChannelRaidEventServiceTests {
 
 	@ParameterizedTest
 	@CsvSource({ "false,false", "false,true", "true,false" })
-	void process_shouldPublishEvent_whenChannelOffline(boolean enabled, boolean online) {
+	void raid_shouldPublishEvent_whenChannelOffline(boolean enabled, boolean online) {
 		// Given
 		var channelName = "channelName";
 		var form = ChannelRaidEventForm.builder().channelName(channelName).build();
@@ -104,7 +104,7 @@ class DefaultChannelRaidEventServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(Channel.builder().name(channelName).enabled(enabled).online(online).build()));
 
 		// When
-		this.channelRaidEventService.process(form);
+		this.channelRaidEventService.raid(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -113,7 +113,7 @@ class DefaultChannelRaidEventServiceTests {
 	}
 
 	@Test
-	void process_shouldPublishEvent_whenRaidConfigurationNotFound() {
+	void raid_shouldPublishEvent_whenRaidConfigurationNotFound() {
 		// Given
 		var channelName = "channelName";
 		var form = ChannelRaidEventForm.builder().channelName(channelName).build();
@@ -124,7 +124,7 @@ class DefaultChannelRaidEventServiceTests {
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.empty());
 
 		// When
-		this.channelRaidEventService.process(form);
+		this.channelRaidEventService.raid(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
@@ -141,7 +141,7 @@ class DefaultChannelRaidEventServiceTests {
 
 	@ParameterizedTest
 	@CsvSource({ "true,true,true", "true,true,false", "true,false,true", "true,false,false", "false,true,true", "false,true,false", "false,false,true", "false,false,false" })
-	void process_shouldSendMessageAndShoutout_whenNeeded(boolean raidMessageEnabled, boolean wizebotShoutoutEnabled, boolean twitchShoutoutEnabled) {
+	void raid_shouldSendMessageAndShoutout_whenNeeded(boolean raidMessageEnabled, boolean wizebotShoutoutEnabled, boolean twitchShoutoutEnabled) {
 		// Given
 		var channelName = "channelName";
 		var form = ChannelRaidEventForm.builder().channelId(1L).channelName(channelName).raiderId(2L).raiderName("raiderName").build();
@@ -157,7 +157,7 @@ class DefaultChannelRaidEventServiceTests {
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.of(configuration));
 
 		// When
-		this.channelRaidEventService.process(form);
+		this.channelRaidEventService.raid(form);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));

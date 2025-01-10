@@ -19,7 +19,7 @@ public class DefaultFindRaidConfigurationService extends AbstractRaidConfigurati
 	}
 
 	@Override
-	public void process(String name) {
+	public void fetch(String name) {
 		this.tryService.doTry(this::doInternal, name);
 	}
 

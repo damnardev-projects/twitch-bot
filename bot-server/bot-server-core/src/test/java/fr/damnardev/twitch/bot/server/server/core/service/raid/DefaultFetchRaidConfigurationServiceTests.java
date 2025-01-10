@@ -63,7 +63,7 @@ class DefaultFetchRaidConfigurationServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willThrow(exception);
 
 		// When
-		this.findRaidConfigurationService.process(channelName);
+		this.findRaidConfigurationService.fetch(channelName);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(channelName));
@@ -81,7 +81,7 @@ class DefaultFetchRaidConfigurationServiceTests {
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.empty());
 
 		// When
-		this.findRaidConfigurationService.process(channelName);
+		this.findRaidConfigurationService.fetch(channelName);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(channelName));
@@ -106,7 +106,7 @@ class DefaultFetchRaidConfigurationServiceTests {
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.empty());
 
 		// When
-		this.findRaidConfigurationService.process(channelName);
+		this.findRaidConfigurationService.fetch(channelName);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(channelName));
@@ -136,7 +136,7 @@ class DefaultFetchRaidConfigurationServiceTests {
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.of(raidConfiguration));
 
 		// When
-		this.findRaidConfigurationService.process(channelName);
+		this.findRaidConfigurationService.fetch(channelName);
 
 		// Then
 		then(this.tryService).should().doTry(any(), eq(channelName));

@@ -1,6 +1,7 @@
 package fr.damnardev.twitch.bot.server.port.primary.raid;
 
-import fr.damnardev.twitch.bot.server.port.primary.EventService;
+public interface FetchRaidConfigurationService {
 
-public interface FetchRaidConfigurationService extends EventService<String> {
+	void fetch(String name);
+
 }
