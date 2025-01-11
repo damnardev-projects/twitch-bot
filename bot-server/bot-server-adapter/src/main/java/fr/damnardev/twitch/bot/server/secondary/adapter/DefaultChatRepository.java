@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.github.twitch4j.TwitchClientHelper;
 import com.github.twitch4j.chat.TwitchChat;
-import fr.damnardev.twitch.bot.server.model.Channel;
+import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.server.port.secondary.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

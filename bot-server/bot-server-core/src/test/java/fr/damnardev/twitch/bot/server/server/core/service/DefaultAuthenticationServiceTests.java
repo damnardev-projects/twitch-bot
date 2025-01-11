@@ -1,6 +1,6 @@
 package fr.damnardev.twitch.bot.server.server.core.service;
 
-import fr.damnardev.twitch.bot.server.model.event.AuthenticatedStatusEvent;
+import fr.damnardev.twitch.bot.model.event.AuthenticatedStatusEvent;
 import fr.damnardev.twitch.bot.server.port.secondary.AuthenticationRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.ChatRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;

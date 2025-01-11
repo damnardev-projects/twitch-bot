@@ -5,12 +5,12 @@ import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
 import fr.damnardev.twitch.bot.client.StompSessionStorage;
-import fr.damnardev.twitch.bot.client.model.event.AuthenticatedStatusEvent;
-import fr.damnardev.twitch.bot.client.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
 import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
+import fr.damnardev.twitch.bot.model.event.AuthenticatedStatusEvent;
+import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -101,8 +101,8 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 		if (payload instanceof ChannelFetchedAllEvent event) {
 			this.channelService.fetchAll(event);
 		}
-		if (payload instanceof AuthenticatedStatusEvent event) {
-			this.statusService.authenticated(event.value());
+		if (payload instanceof AuthenticatedStatusEvent(Boolean value)) {
+			this.statusService.authenticated(value);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package fr.damnardev.twitch.bot.server.exception;
+package fr.damnardev.twitch.bot.model.exception;
 
 public class FatalException extends RuntimeException {
 

@@ -1,7 +1,7 @@
 package fr.damnardev.twitch.bot.server.secondary.adapter;
 
+import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.server.database.repository.DbSuggestGameRepository;
-import fr.damnardev.twitch.bot.server.model.Channel;
 import fr.damnardev.twitch.bot.server.model.SuggestGame;
 import fr.damnardev.twitch.bot.server.port.secondary.SuggestGameRepository;
 import lombok.RequiredArgsConstructor;

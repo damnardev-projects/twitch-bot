@@ -1,6 +1,5 @@
 package fr.damnardev.twitch.bot.server.server.core.service;
 
-import fr.damnardev.twitch.bot.server.DomainService;
 import fr.damnardev.twitch.bot.server.port.primary.StartupService;
 import fr.damnardev.twitch.bot.server.port.secondary.AuthenticationRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.ChatRepository;
@@ -9,7 +8,6 @@ import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelReposito
 import fr.damnardev.twitch.bot.server.port.secondary.channel.UpdateChannelRepository;
 import lombok.RequiredArgsConstructor;
 
-@DomainService
 @RequiredArgsConstructor
 public class DefaultStartupService implements StartupService {
 

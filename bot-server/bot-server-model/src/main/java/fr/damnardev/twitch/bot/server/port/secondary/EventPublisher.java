@@ -1,9 +1,9 @@
 package fr.damnardev.twitch.bot.server.port.secondary;
 
-import fr.damnardev.twitch.bot.server.model.event.AuthenticatedStatusEvent;
+import fr.damnardev.twitch.bot.model.event.AuthenticatedStatusEvent;
+import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelDeletedEvent;
-import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.Event;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;

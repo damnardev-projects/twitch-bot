@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.twitch4j.helix.TwitchHelix;
-import fr.damnardev.twitch.bot.server.exception.FatalException;
+import fr.damnardev.twitch.bot.model.exception.FatalException;
 import fr.damnardev.twitch.bot.server.model.Shoutout;
 import fr.damnardev.twitch.bot.server.port.secondary.ShoutoutRepository;
 import lombok.RequiredArgsConstructor;

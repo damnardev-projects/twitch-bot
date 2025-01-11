@@ -2,8 +2,8 @@ package fr.damnardev.twitch.bot.server.server.core.service.channel;
 
 import java.util.Optional;
 
-import fr.damnardev.twitch.bot.server.exception.BusinessException;
-import fr.damnardev.twitch.bot.server.model.Channel;
+import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.server.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
 import fr.damnardev.twitch.bot.server.model.form.DeleteChannelForm;

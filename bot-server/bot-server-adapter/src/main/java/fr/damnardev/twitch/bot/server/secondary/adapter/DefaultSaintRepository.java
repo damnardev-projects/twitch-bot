@@ -3,9 +3,9 @@ package fr.damnardev.twitch.bot.server.secondary.adapter;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import fr.damnardev.twitch.bot.model.exception.FatalException;
 import fr.damnardev.twitch.bot.server.database.entity.DbSaint;
 import fr.damnardev.twitch.bot.server.database.repository.DbSaintRepository;
-import fr.damnardev.twitch.bot.server.exception.FatalException;
 import fr.damnardev.twitch.bot.server.port.secondary.SaintRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

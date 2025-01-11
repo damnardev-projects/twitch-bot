@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.server.database.entity.DbChannelCommand;
 import fr.damnardev.twitch.bot.server.database.repository.DbChannelCommandRepository;
-import fr.damnardev.twitch.bot.server.model.Channel;
 import fr.damnardev.twitch.bot.server.model.Command;
 import fr.damnardev.twitch.bot.server.port.secondary.command.FindChannelCommandRepository;
 import lombok.RequiredArgsConstructor;

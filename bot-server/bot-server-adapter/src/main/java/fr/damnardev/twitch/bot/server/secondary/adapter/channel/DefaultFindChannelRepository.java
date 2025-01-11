@@ -3,8 +3,8 @@ package fr.damnardev.twitch.bot.server.secondary.adapter.channel;
 import java.util.List;
 import java.util.Optional;
 
+import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.server.database.repository.DbChannelRepository;
-import fr.damnardev.twitch.bot.server.model.Channel;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;
 import fr.damnardev.twitch.bot.server.secondary.mapper.ChannelMapper;
 import lombok.RequiredArgsConstructor;

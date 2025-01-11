@@ -77,6 +77,12 @@
 
 			<dependency>
 				<groupId>fr.damnardev.twitch</groupId>
+				<artifactId>bot-model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>fr.damnardev.twitch</groupId>
 				<artifactId>bot-server-model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -183,6 +189,7 @@
 		<profile>
 			<id>all</id>
 			<modules>
+				<module>bot-model</module>
 				<module>bot-server</module>
 				<module>bot-client</module>
 				<module>bot-tests</module>
@@ -191,12 +198,14 @@
 		<profile>
 			<id>client</id>
 			<modules>
+				<module>bot-model</module>
 				<module>bot-client</module>
 			</modules>
 		</profile>
 		<profile>
 			<id>server</id>
 			<modules>
+				<module>bot-model</module>
 				<module>bot-server</module>
 			</modules>
 		</profile>

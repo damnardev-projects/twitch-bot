@@ -3,8 +3,8 @@ package fr.damnardev.twitch.bot.server.server.core.service.raid;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import fr.damnardev.twitch.bot.server.exception.BusinessException;
-import fr.damnardev.twitch.bot.server.model.Channel;
+import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.server.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedEvent;

@@ -2,7 +2,7 @@ package fr.damnardev.twitch.bot.server.server.core.service;
 
 import java.util.Collections;
 
-import fr.damnardev.twitch.bot.server.model.Channel;
+import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.server.port.secondary.AuthenticationRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.ChatRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.StreamRepository;

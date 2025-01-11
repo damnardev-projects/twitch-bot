@@ -20,6 +20,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>fr.damnardev.twitch</groupId>
+			<artifactId>bot-model</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>fr.damnardev.twitch</groupId>
 			<artifactId>bot-client-adapter</artifactId>
 		</dependency>
 		<dependency>

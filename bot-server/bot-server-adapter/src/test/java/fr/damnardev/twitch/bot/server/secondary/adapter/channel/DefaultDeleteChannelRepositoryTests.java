@@ -1,7 +1,7 @@
 package fr.damnardev.twitch.bot.server.secondary.adapter.channel;
 
+import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.server.database.repository.DbChannelRepository;
-import fr.damnardev.twitch.bot.server.model.Channel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

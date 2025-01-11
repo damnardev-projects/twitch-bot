@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import com.github.twitch4j.helix.TwitchHelix;
 import com.github.twitch4j.helix.domain.Stream;
 import com.github.twitch4j.helix.domain.StreamList;
-import fr.damnardev.twitch.bot.server.model.Channel;
+import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.server.port.secondary.StreamRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
