@@ -1,4 +1,4 @@
-package fr.damnardev.twitch.bot.server.model.event;
+package fr.damnardev.twitch.bot.model.event;
 
 import lombok.Builder;
 

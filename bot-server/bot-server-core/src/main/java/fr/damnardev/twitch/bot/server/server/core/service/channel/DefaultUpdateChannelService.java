@@ -1,7 +1,6 @@
 package fr.damnardev.twitch.bot.server.server.core.service.channel;
 
-import fr.damnardev.twitch.bot.server.DomainService;
-import fr.damnardev.twitch.bot.server.exception.BusinessException;
+import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.server.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
@@ -13,7 +12,6 @@ import fr.damnardev.twitch.bot.server.port.secondary.channel.UpdateChannelReposi
 import fr.damnardev.twitch.bot.server.server.core.service.DefaultTryService;
 import lombok.RequiredArgsConstructor;
 
-@DomainService
 @RequiredArgsConstructor
 public class DefaultUpdateChannelService implements UpdateChannelService {
 

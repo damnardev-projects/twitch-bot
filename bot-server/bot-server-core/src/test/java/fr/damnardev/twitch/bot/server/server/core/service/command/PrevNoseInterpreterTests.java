@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
-import fr.damnardev.twitch.bot.server.model.Channel;
+import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.server.model.Command;
 import fr.damnardev.twitch.bot.server.model.CommandType;
 import fr.damnardev.twitch.bot.server.model.Message;

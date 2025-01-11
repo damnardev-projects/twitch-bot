@@ -1,8 +1,7 @@
 package fr.damnardev.twitch.bot.server.server.core.service.channel;
 
-import fr.damnardev.twitch.bot.server.DomainService;
-import fr.damnardev.twitch.bot.server.exception.BusinessException;
-import fr.damnardev.twitch.bot.server.model.Channel;
+import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.server.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.server.port.primary.TryService;
@@ -12,7 +11,6 @@ import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelReposito
 import fr.damnardev.twitch.bot.server.port.secondary.channel.SaveChannelRepository;
 import lombok.RequiredArgsConstructor;
 
-@DomainService
 @RequiredArgsConstructor
 public class DefaultCreateChannelService implements CreateChannelService {
 

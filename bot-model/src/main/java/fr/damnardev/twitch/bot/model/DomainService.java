@@ -1,4 +1,4 @@
-package fr.damnardev.twitch.bot.server;
+package fr.damnardev.twitch.bot.model;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;

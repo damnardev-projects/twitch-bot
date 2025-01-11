@@ -3,9 +3,9 @@ package fr.damnardev.twitch.bot.server.secondary.adapter;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import fr.damnardev.twitch.bot.model.exception.FatalException;
 import fr.damnardev.twitch.bot.server.database.entity.DbSaint;
 import fr.damnardev.twitch.bot.server.database.repository.DbSaintRepository;
-import fr.damnardev.twitch.bot.server.exception.FatalException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

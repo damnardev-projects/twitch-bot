@@ -2,8 +2,8 @@ package fr.damnardev.twitch.bot.server.server.core.service.channel;
 
 import java.util.Collections;
 
-import fr.damnardev.twitch.bot.server.model.Channel;
-import fr.damnardev.twitch.bot.server.model.event.ChannelFetchedAllEvent;
+import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;

@@ -3,10 +3,10 @@ package fr.damnardev.twitch.bot.server.secondary.adapter.channel;
 import java.util.Collections;
 
 import com.github.twitch4j.helix.TwitchHelix;
+import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.server.database.entity.DbChannel;
 import fr.damnardev.twitch.bot.server.database.entity.DbRaidConfiguration;
 import fr.damnardev.twitch.bot.server.database.repository.DbChannelRepository;
-import fr.damnardev.twitch.bot.server.model.Channel;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.SaveChannelRepository;
 import fr.damnardev.twitch.bot.server.secondary.mapper.ChannelMapper;
 import lombok.RequiredArgsConstructor;

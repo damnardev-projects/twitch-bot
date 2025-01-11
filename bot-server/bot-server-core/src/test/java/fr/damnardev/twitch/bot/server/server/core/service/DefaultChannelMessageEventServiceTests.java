@@ -5,8 +5,8 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Optional;
 
-import fr.damnardev.twitch.bot.server.exception.BusinessException;
-import fr.damnardev.twitch.bot.server.model.Channel;
+import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.server.model.Command;
 import fr.damnardev.twitch.bot.server.model.CommandType;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;

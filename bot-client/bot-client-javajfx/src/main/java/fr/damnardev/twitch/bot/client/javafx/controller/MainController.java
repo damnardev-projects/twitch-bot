@@ -1,11 +1,10 @@
 package fr.damnardev.twitch.bot.client.javafx.controller;
 
-import fr.damnardev.twitch.bot.client.DomainService;
-import fr.damnardev.twitch.bot.client.model.Channel;
-import fr.damnardev.twitch.bot.client.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
+import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -13,7 +12,6 @@ import javafx.scene.control.Label;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@DomainService
 @RequiredArgsConstructor
 @Slf4j
 public class MainController implements StatusService, ChannelService {

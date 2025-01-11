@@ -3,11 +3,9 @@ package fr.damnardev.twitch.bot.server.server.core.service;
 import java.util.List;
 import java.util.Random;
 
-import fr.damnardev.twitch.bot.server.DomainService;
 import fr.damnardev.twitch.bot.server.port.primary.RandomService;
 import lombok.RequiredArgsConstructor;
 
-@DomainService
 @RequiredArgsConstructor
 public class DefaultRandomService implements RandomService {
 
