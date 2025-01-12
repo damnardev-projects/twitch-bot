@@ -1,12 +1,15 @@
-package fr.damnardev.twitch.bot.server.primary.adapter;
+package fr.damnardev.twitch.bot.server.primary.adapter.ws;
 
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
+import com.github.twitch4j.chat.events.channel.RaidEvent;
 import com.github.twitch4j.common.events.domain.EventChannel;
-import com.github.twitch4j.events.ChannelGoOfflineEvent;
-import fr.damnardev.twitch.bot.server.model.form.UpdateChannelForm;
-import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
+import com.github.twitch4j.common.events.domain.EventUser;
+import com.github.twitch4j.eventsub.events.ChannelRaidEvent;
+import fr.damnardev.twitch.bot.server.model.form.ChannelRaidEventForm;
+import fr.damnardev.twitch.bot.server.port.primary.ChannelRaidEventService;
+import fr.damnardev.twitch.bot.server.primary.adapter.twitch.RaidEventConsumer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -24,13 +27,14 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.mock;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-class ChannelGoOfflineEventConsumerTests {
+class RaidEventConsumerTests {
 
 	@InjectMocks
-	private ChannelGoOfflineEventConsumer consumer;
+	private RaidEventConsumer consumer;
 
 	@Mock
 	private ThreadPoolTaskExecutor executor;
@@ -39,7 +43,7 @@ class ChannelGoOfflineEventConsumerTests {
 	private TwitchClient twitchClient;
 
 	@Mock
-	private UpdateChannelService handler;
+	private ChannelRaidEventService handler;
 
 	@Test
 	void init_shouldRegisterHandler_whenCalled() {
@@ -49,7 +53,7 @@ class ChannelGoOfflineEventConsumerTests {
 
 		given(this.twitchClient.getEventManager()).willReturn(eventManager);
 		given(eventManager.getEventHandler(SimpleEventHandler.class)).willReturn(eventHandler);
-		given(eventHandler.onEvent(eq(ChannelGoOfflineEvent.class), any())).willReturn(null);
+		given(eventHandler.onEvent(eq(ChannelRaidEvent.class), any())).willReturn(null);
 
 		// When
 		this.consumer.init();
@@ -57,7 +61,7 @@ class ChannelGoOfflineEventConsumerTests {
 		// Then
 		then(this.twitchClient).should().getEventManager();
 		then(eventManager).should().getEventHandler(SimpleEventHandler.class);
-		then(eventHandler).should().onEvent(eq(ChannelGoOfflineEvent.class), any());
+		then(eventHandler).should().onEvent(eq(RaidEvent.class), any());
 		verifyNoMoreInteractions(this.executor, this.twitchClient, this.handler, eventManager, eventHandler);
 	}
 
@@ -65,13 +69,12 @@ class ChannelGoOfflineEventConsumerTests {
 	void process_shouldExecuteHandler_whenCalled() {
 		// Given
 		var captor = ArgumentCaptor.forClass(Runnable.class);
-		var event = mock(ChannelGoOfflineEvent.class);
+		var event = mock(RaidEvent.class);
 		var channel = mock(EventChannel.class);
-		var model = UpdateChannelForm.builder().id(1L).name("channelName").online(false).build();
+		var model = ChannelRaidEventForm.builder().channelId(2L).channelName("channel").raiderId(1L).raiderName("raider").build();
 
-		given(event.getChannel()).willReturn(channel);
-		given(channel.getId()).willReturn("1");
-		given(channel.getName()).willReturn("channelName");
+		given(event.getChannel()).willReturn(new EventChannel("2", "channel"));
+		given(event.getRaider()).willReturn(new EventUser("1", "raider"));
 
 		// When
 		this.consumer.process(event);
@@ -79,10 +82,9 @@ class ChannelGoOfflineEventConsumerTests {
 		// Then
 		then(this.executor).should().execute(captor.capture());
 		captor.getValue().run();
-		then(event).should().getChannel();
-		then(channel).should().getId();
-		then(channel).should().getName();
-		then(this.handler).should().update(model);
+		then(event).should(times(2)).getChannel();
+		then(event).should(times(2)).getRaider();
+		then(this.handler).should().raid(model);
 		verifyNoMoreInteractions(this.executor, this.twitchClient, this.handler, event, channel);
 	}
 

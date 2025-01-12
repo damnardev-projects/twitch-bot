@@ -1,4 +1,4 @@
-package fr.damnardev.twitch.bot.server.primary.adapter;
+package fr.damnardev.twitch.bot.server.primary.adapter.twitch;
 
 import java.util.function.Consumer;
 
