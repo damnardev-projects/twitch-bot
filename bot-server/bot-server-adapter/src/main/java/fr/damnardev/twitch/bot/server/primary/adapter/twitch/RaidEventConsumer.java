@@ -1,4 +1,4 @@
-package fr.damnardev.twitch.bot.server.primary.adapter;
+package fr.damnardev.twitch.bot.server.primary.adapter.twitch;
 
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.chat.events.channel.RaidEvent;

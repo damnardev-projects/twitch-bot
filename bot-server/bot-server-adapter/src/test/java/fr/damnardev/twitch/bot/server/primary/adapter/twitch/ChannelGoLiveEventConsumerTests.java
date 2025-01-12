@@ -1,9 +1,10 @@
-package fr.damnardev.twitch.bot.server.primary.adapter;
+package fr.damnardev.twitch.bot.server.primary.adapter.twitch;
 
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.common.events.domain.EventChannel;
+import com.github.twitch4j.events.ChannelGoLiveEvent;
 import com.github.twitch4j.events.ChannelGoOfflineEvent;
 import fr.damnardev.twitch.bot.server.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
@@ -27,10 +28,10 @@ import static org.mockito.BDDMockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-class ChannelGoOfflineEventConsumerTests {
+class ChannelGoLiveEventConsumerTests {
 
 	@InjectMocks
-	private ChannelGoOfflineEventConsumer consumer;
+	private ChannelGoLiveEventConsumer consumer;
 
 	@Mock
 	private ThreadPoolTaskExecutor executor;
@@ -57,7 +58,7 @@ class ChannelGoOfflineEventConsumerTests {
 		// Then
 		then(this.twitchClient).should().getEventManager();
 		then(eventManager).should().getEventHandler(SimpleEventHandler.class);
-		then(eventHandler).should().onEvent(eq(ChannelGoOfflineEvent.class), any());
+		then(eventHandler).should().onEvent(eq(ChannelGoLiveEvent.class), any());
 		verifyNoMoreInteractions(this.executor, this.twitchClient, this.handler, eventManager, eventHandler);
 	}
 
@@ -65,9 +66,9 @@ class ChannelGoOfflineEventConsumerTests {
 	void process_shouldExecuteHandler_whenCalled() {
 		// Given
 		var captor = ArgumentCaptor.forClass(Runnable.class);
-		var event = mock(ChannelGoOfflineEvent.class);
+		var event = mock(ChannelGoLiveEvent.class);
 		var channel = mock(EventChannel.class);
-		var model = UpdateChannelForm.builder().id(1L).name("channelName").online(false).build();
+		var model = UpdateChannelForm.builder().id(1L).name("channelName").online(true).build();
 
 		given(event.getChannel()).willReturn(channel);
 		given(channel.getId()).willReturn("1");

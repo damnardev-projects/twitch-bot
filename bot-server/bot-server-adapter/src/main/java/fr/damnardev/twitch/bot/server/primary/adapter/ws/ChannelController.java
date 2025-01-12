@@ -1,4 +1,4 @@
-package fr.damnardev.twitch.bot.server.primary.adapter;
+package fr.damnardev.twitch.bot.server.primary.adapter.ws;
 
 import fr.damnardev.twitch.bot.server.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.server.model.form.DeleteChannelForm;
