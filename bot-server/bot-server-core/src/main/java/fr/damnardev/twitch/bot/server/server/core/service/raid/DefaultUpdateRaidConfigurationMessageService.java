@@ -1,5 +1,6 @@
 package fr.damnardev.twitch.bot.server.server.core.service.raid;
 
+import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.form.UpdateRaidConfigurationForm;
 import fr.damnardev.twitch.bot.server.port.primary.raid.UpdateRaidConfigurationService;
@@ -9,6 +10,7 @@ import fr.damnardev.twitch.bot.server.port.secondary.raid.FindRaidConfigurationR
 import fr.damnardev.twitch.bot.server.port.secondary.raid.UpdateRaidConfigurationRepository;
 import fr.damnardev.twitch.bot.server.server.core.service.DefaultTryService;
 
+@DomainService
 public class DefaultUpdateRaidConfigurationMessageService extends AbstractRaidConfigurationMessageService implements UpdateRaidConfigurationService {
 
 	private final DefaultTryService tryService;
