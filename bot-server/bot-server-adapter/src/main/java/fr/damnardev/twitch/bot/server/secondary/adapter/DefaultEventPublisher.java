@@ -65,6 +65,7 @@ public class DefaultEventPublisher implements EventPublisher {
 	}
 
 	private <T> void internalPublish(String destination, String type, T event) {
+		log.info("Publishing event {} to destination {}", event, destination);
 		Map<String, Object> headers = Map.of("type", type);
 		this.messagingTemplate.convertAndSend(destination, event, headers);
 	}
