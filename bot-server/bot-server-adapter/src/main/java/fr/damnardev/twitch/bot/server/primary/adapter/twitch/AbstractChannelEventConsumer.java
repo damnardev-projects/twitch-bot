@@ -27,10 +27,10 @@ public abstract class AbstractChannelEventConsumer<E, M> {
 	@PostConstruct
 	public void init() {
 		var eventHandler = this.twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class);
-		eventHandler.onEvent(this.clazz, this::process);
+		eventHandler.onEvent(this.clazz, this::handleEvent);
 	}
 
-	protected void process(E event) {
+	protected void handleEvent(E event) {
 		this.executor.execute(() -> doInternal(event));
 	}
 

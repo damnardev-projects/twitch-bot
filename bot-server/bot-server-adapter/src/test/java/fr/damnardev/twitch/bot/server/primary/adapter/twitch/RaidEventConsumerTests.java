@@ -76,7 +76,7 @@ class RaidEventConsumerTests {
 		given(event.getRaider()).willReturn(new EventUser("1", "raider"));
 
 		// When
-		this.consumer.process(event);
+		this.consumer.handleEvent(event);
 
 		// Then
 		then(this.executor).should().execute(captor.capture());

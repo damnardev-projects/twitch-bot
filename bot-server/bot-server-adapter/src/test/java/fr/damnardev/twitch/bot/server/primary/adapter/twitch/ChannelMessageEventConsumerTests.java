@@ -80,7 +80,7 @@ class ChannelMessageEventConsumerTests {
 		given(event.getMessage()).willReturn("message");
 
 		// When
-		this.consumer.process(event);
+		this.consumer.handleEvent(event);
 
 		// Then
 		then(this.executor).should().execute(captor.capture());

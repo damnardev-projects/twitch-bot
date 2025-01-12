@@ -10,6 +10,7 @@ import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 
 @RequiredArgsConstructor
@@ -24,24 +25,26 @@ public class ChannelController {
 
 	private final DeleteChannelService deleteChannelService;
 
+	private final ThreadPoolTaskExecutor executor;
+
 	@MessageMapping("/channels/fetchAll")
 	public void fetchAll() {
-		this.fetchAllChannelService.fetchAll();
+		this.executor.execute(this.fetchAllChannelService::fetchAll);
 	}
 
 	@MessageMapping("/channels/create")
 	public void create(CreateChannelForm form) {
-		this.createChannelService.create(form);
+		this.executor.execute(() -> this.createChannelService.create(form));
 	}
 
 	@MessageMapping("/channels/update")
 	public void update(UpdateChannelForm form) {
-		this.updateChannelService.update(form);
+		this.executor.execute(() -> this.updateChannelService.update(form));
 	}
 
 	@MessageMapping("/channels/delete")
 	public void delete(DeleteChannelForm form) {
-		this.deleteChannelService.delete(form);
+		this.executor.execute(() -> this.deleteChannelService.delete(form));
 	}
 
 }

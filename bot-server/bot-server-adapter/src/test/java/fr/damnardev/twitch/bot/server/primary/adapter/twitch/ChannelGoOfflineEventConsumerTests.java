@@ -74,7 +74,7 @@ class ChannelGoOfflineEventConsumerTests {
 		given(channel.getName()).willReturn("channelName");
 
 		// When
-		this.consumer.process(event);
+		this.consumer.handleEvent(event);
 
 		// Then
 		then(this.executor).should().execute(captor.capture());
