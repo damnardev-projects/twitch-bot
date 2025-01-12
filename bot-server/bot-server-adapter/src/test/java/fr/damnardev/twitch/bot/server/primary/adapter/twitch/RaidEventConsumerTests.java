@@ -1,4 +1,4 @@
-package fr.damnardev.twitch.bot.server.primary.adapter.ws;
+package fr.damnardev.twitch.bot.server.primary.adapter.twitch;
 
 import com.github.philippheuer.events4j.core.EventManager;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
@@ -9,7 +9,6 @@ import com.github.twitch4j.common.events.domain.EventUser;
 import com.github.twitch4j.eventsub.events.ChannelRaidEvent;
 import fr.damnardev.twitch.bot.server.model.form.ChannelRaidEventForm;
 import fr.damnardev.twitch.bot.server.port.primary.ChannelRaidEventService;
-import fr.damnardev.twitch.bot.server.primary.adapter.twitch.RaidEventConsumer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
