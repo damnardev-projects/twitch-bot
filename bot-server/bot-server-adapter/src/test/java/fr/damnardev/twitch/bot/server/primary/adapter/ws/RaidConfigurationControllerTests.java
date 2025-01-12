@@ -5,11 +5,14 @@ import fr.damnardev.twitch.bot.server.port.primary.raid.FetchAllRaidConfiguratio
 import fr.damnardev.twitch.bot.server.port.primary.raid.UpdateRaidConfigurationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.verifyNoMoreInteractions;
@@ -27,29 +30,38 @@ class RaidConfigurationControllerTests {
 	@Mock
 	private UpdateRaidConfigurationService updateRaidConfigurationService;
 
+	@Mock
+	private ThreadPoolTaskExecutor executor;
+
 	@Test
 	void fetchAll_shouldInvokeFetchAllRaidConfigurationServiceFetchAll_whenCalled() {
 		// Given
+		var captor = ArgumentCaptor.forClass(Runnable.class);
 
 		// When
 		this.raidConfigurationController.fetchAll();
 
 		// Then
+		then(this.executor).should().execute(captor.capture());
+		captor.getValue().run();
 		then(this.fetchAllRaidConfigurationService).should().fetchAll();
-		verifyNoMoreInteractions(this.fetchAllRaidConfigurationService);
+		verifyNoMoreInteractions(this.executor, this.fetchAllRaidConfigurationService);
 	}
 
 	@Test
 	void update_shouldInvokeUpdateRaidConfigurationServiceUpdate_whenCalled() {
 		// Given
+		var captor = ArgumentCaptor.forClass(Runnable.class);
 		var form = UpdateRaidConfigurationForm.builder().build();
 
 		// When
-		this.updateRaidConfigurationService.update(form);
+		this.raidConfigurationController.update(form);
 
 		// Then
+		then(this.executor).should().execute(captor.capture());
+		captor.getValue().run();
 		then(this.updateRaidConfigurationService).should().update(form);
-		verifyNoMoreInteractions(this.updateRaidConfigurationService);
+		verifyNoMoreInteractions(this.executor, this.updateRaidConfigurationService);
 	}
 
 }

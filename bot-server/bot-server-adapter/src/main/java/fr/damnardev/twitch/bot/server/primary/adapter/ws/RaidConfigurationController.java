@@ -6,6 +6,7 @@ import fr.damnardev.twitch.bot.server.port.primary.raid.UpdateRaidConfigurationS
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 
 @RequiredArgsConstructor
@@ -16,14 +17,16 @@ public class RaidConfigurationController {
 
 	private final UpdateRaidConfigurationService updateRaidConfigurationService;
 
+	private final ThreadPoolTaskExecutor executor;
+
 	@MessageMapping("/raids/fetchAll")
 	public void fetchAll() {
-		this.fetchAllRaidConfigurationService.fetchAll();
+		this.executor.execute(this.fetchAllRaidConfigurationService::fetchAll);
 	}
 
 	@MessageMapping("/raids/update")
 	public void update(UpdateRaidConfigurationForm form) {
-		this.updateRaidConfigurationService.update(form);
+		this.executor.execute(() -> this.updateRaidConfigurationService.update(form));
 	}
 
 }

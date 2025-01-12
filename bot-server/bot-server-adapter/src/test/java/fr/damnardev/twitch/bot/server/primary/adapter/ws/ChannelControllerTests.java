@@ -9,11 +9,14 @@ import fr.damnardev.twitch.bot.server.port.primary.channel.FetchAllChannelServic
 import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import static org.mockito.BDDMockito.then;
 import static org.mockito.BDDMockito.verifyNoMoreInteractions;
@@ -37,55 +40,70 @@ class ChannelControllerTests {
 	@Mock
 	private DeleteChannelService deleteChannelService;
 
+	@Mock
+	private ThreadPoolTaskExecutor executor;
+
 	@Test
 	void fetchAll_shouldInvokeFetchAllChannelServiceFetchAll_whenCalled() {
 		// Given
+		var captor = ArgumentCaptor.forClass(Runnable.class);
 
 		// When
 		this.channelController.fetchAll();
 
 		// Then
+		then(this.executor).should().execute(captor.capture());
+		captor.getValue().run();
 		then(this.fetchAllChannelService).should().fetchAll();
-		verifyNoMoreInteractions(this.fetchAllChannelService);
+		verifyNoMoreInteractions(this.executor, this.fetchAllChannelService);
 	}
 
 	@Test
 	void create_shouldInvokeCreateChannelServiceCreate_whenCalled() {
 		// Given
+		var captor = ArgumentCaptor.forClass(Runnable.class);
 		var form = CreateChannelForm.builder().build();
 
 		// When
 		this.channelController.create(form);
 
 		// Then
+		then(this.executor).should().execute(captor.capture());
+		captor.getValue().run();
 		then(this.createChannelService).should().create(form);
-		verifyNoMoreInteractions(this.createChannelService);
+		verifyNoMoreInteractions(this.executor, this.createChannelService);
 	}
 
 	@Test
 	void update_shouldInvokeUpdateChannelServiceUpdate_whenCalled() {
 		// Given
+		var captor = ArgumentCaptor.forClass(Runnable.class);
 		var form = UpdateChannelForm.builder().build();
 
 		// When
 		this.channelController.update(form);
 
 		// Then
+		then(this.executor).should().execute(captor.capture());
+		captor.getValue().run();
 		then(this.updateChannelService).should().update(form);
-		verifyNoMoreInteractions(this.updateChannelService);
+		verifyNoMoreInteractions(this.executor, this.updateChannelService);
 	}
 
 	@Test
 	void delete_shouldInvokeDeleteChannelServiceDelete_whenCalled() {
 		// Given
+		var captor = ArgumentCaptor.forClass(Runnable.class);
 		var form = DeleteChannelForm.builder().build();
 
 		// When
 		this.channelController.delete(form);
 
 		// Then
+		then(this.executor).should().execute(captor.capture());
+		captor.getValue().run();
 		then(this.deleteChannelService).should().delete(form);
-		verifyNoMoreInteractions(this.deleteChannelService);
+		verifyNoMoreInteractions(this.executor, this.deleteChannelService);
 	}
 
 }
