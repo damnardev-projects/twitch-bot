@@ -2,12 +2,14 @@ package fr.damnardev.twitch.bot.server.server.core.service;
 
 import java.util.function.Consumer;
 
+import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
 import fr.damnardev.twitch.bot.server.port.primary.TryService;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@DomainService
 public class DefaultTryService implements TryService {
 
 	private final EventPublisher eventPublisher;

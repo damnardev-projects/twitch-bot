@@ -1,5 +1,6 @@
 package fr.damnardev.twitch.bot.server.server.core.service.channel;
 
+import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.server.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.server.model.form.DeleteChannelForm;
@@ -12,6 +13,7 @@ import fr.damnardev.twitch.bot.server.server.core.service.DefaultTryService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@DomainService
 public class DefaultDeleteChannelService implements DeleteChannelService {
 
 	private final DefaultTryService tryService;

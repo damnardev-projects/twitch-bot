@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.server.model.Command;
 import fr.damnardev.twitch.bot.server.model.CommandType;
@@ -19,6 +20,7 @@ import fr.damnardev.twitch.bot.server.port.secondary.command.FindChannelCommandR
 import fr.damnardev.twitch.bot.server.port.secondary.command.UpdateChannelCommandRepository;
 import fr.damnardev.twitch.bot.server.server.core.service.command.CommandInterpreter;
 
+@DomainService
 public class DefaultChannelMessageEventService implements ChannelMessageEventService {
 
 	private final DefaultTryService tryService;

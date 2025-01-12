@@ -1,5 +1,6 @@
 package fr.damnardev.twitch.bot.server.server.core.service;
 
+import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.model.event.AuthenticatedStatusEvent;
 import fr.damnardev.twitch.bot.server.port.primary.AuthenticationService;
 import fr.damnardev.twitch.bot.server.port.secondary.AuthenticationRepository;
@@ -8,6 +9,7 @@ import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@DomainService
 public class DefaultAuthenticationService implements AuthenticationService {
 
 	private final AuthenticationRepository authenticationRepository;

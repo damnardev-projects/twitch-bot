@@ -1,5 +1,6 @@
 package fr.damnardev.twitch.bot.server.server.core.service;
 
+import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.server.model.Message;
 import fr.damnardev.twitch.bot.server.model.Shoutout;
@@ -13,6 +14,7 @@ import fr.damnardev.twitch.bot.server.port.secondary.raid.FindRaidConfigurationR
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@DomainService
 public class DefaultChannelRaidEventService implements ChannelRaidEventService {
 
 	private final DefaultTryService tryService;

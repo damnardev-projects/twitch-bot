@@ -1,5 +1,6 @@
 package fr.damnardev.twitch.bot.server.server.core.service.raid;
 
+import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedEvent;
 import fr.damnardev.twitch.bot.server.port.primary.raid.FetchRaidConfigurationService;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
@@ -7,6 +8,7 @@ import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelReposito
 import fr.damnardev.twitch.bot.server.port.secondary.raid.FindRaidConfigurationRepository;
 import fr.damnardev.twitch.bot.server.server.core.service.DefaultTryService;
 
+@DomainService
 public class DefaultFindRaidConfigurationService extends AbstractRaidConfigurationMessageService implements FetchRaidConfigurationService {
 
 	private final DefaultTryService tryService;

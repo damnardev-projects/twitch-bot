@@ -1,5 +1,6 @@
 package fr.damnardev.twitch.bot.server.server.core.service.raid;
 
+import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.port.primary.raid.FetchAllRaidConfigurationService;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
@@ -8,6 +9,7 @@ import fr.damnardev.twitch.bot.server.server.core.service.DefaultTryService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@DomainService
 public class DefaultFetchAllRaidConfigurationService implements FetchAllRaidConfigurationService {
 
 	private final DefaultTryService tryService;

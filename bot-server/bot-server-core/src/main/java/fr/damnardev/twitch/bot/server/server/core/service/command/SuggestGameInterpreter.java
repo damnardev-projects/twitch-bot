@@ -1,6 +1,7 @@
 package fr.damnardev.twitch.bot.server.server.core.service.command;
 
 import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.model.exception.FatalException;
 import fr.damnardev.twitch.bot.server.model.Command;
 import fr.damnardev.twitch.bot.server.model.CommandType;
@@ -13,6 +14,7 @@ import fr.damnardev.twitch.bot.server.port.secondary.SuggestGameRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@DomainService
 public class SuggestGameInterpreter implements CommandInterpreter {
 
 	private final SuggestGameRepository suggestGameRepository;

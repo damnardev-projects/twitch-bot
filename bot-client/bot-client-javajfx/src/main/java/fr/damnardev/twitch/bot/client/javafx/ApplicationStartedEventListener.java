@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import fr.damnardev.twitch.bot.client.port.primary.StartupService;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
+import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.model.exception.FatalException;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
+@DomainService
 public class ApplicationStartedEventListener implements StartupService {
 
 	private final ClientRepository clientRepository;
