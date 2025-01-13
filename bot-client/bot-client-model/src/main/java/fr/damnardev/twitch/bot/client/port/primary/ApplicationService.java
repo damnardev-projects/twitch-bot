@@ -9,7 +9,7 @@ public interface ApplicationService {
 
 	void handleChannelFetchedAllEvent(ChannelFetchedAllEvent event);
 
-	void handlerChannelCreatedEvent(ChannelCreatedEvent event);
+	void handleChannelCreatedEvent(ChannelCreatedEvent event);
 
 	void handleChannelUpdatedEvent(ChannelUpdatedEvent event);
 

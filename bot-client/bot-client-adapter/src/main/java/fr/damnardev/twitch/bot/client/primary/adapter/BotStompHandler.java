@@ -2,19 +2,18 @@ package fr.damnardev.twitch.bot.client.primary.adapter;
 
 import java.lang.reflect.Type;
 import java.util.Base64;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import fr.damnardev.twitch.bot.client.StompSessionStorage;
+import fr.damnardev.twitch.bot.client.StompSessionWriter;
 import fr.damnardev.twitch.bot.client.port.primary.ApplicationService;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
 import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
 import fr.damnardev.twitch.bot.client.property.BotProperties;
-import fr.damnardev.twitch.bot.model.event.AuthenticatedStatusEvent;
-import fr.damnardev.twitch.bot.model.event.ChannelCreatedEvent;
-import fr.damnardev.twitch.bot.model.event.ChannelDeletedEvent;
-import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
-import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -26,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+
 @Service
 @Slf4j
 public class BotStompHandler extends StompSessionHandlerAdapter {
@@ -36,22 +36,25 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 
 	private final ThreadPoolTaskExecutor taskExecutor;
 
-	private final StompSessionStorage stompSessionStorage;
-
-	private final ApplicationService applicationService;
+	private final StompSessionWriter stompSessionWriter;
 
 	private final StatusService statusService;
 
 	private final ChannelRepository channelRepository;
 
-	public BotStompHandler(WebSocketStompClient stompClient, BotProperties botProperties, ThreadPoolTaskExecutor taskExecutor, StompSessionStorage stompSessionStorage, ClientRepository clientRepository, ApplicationService applicationService, StatusService statusService, ChannelRepository channelRepository) {
+	private final Map<String, Subscriber<?>> subscriberByDestination;
+
+	private final Map<Type, Subscriber<?>> subscriberByType;
+
+	public BotStompHandler(WebSocketStompClient stompClient, BotProperties botProperties, ThreadPoolTaskExecutor taskExecutor, StompSessionWriter stompSessionWriter, ClientRepository clientRepository, ApplicationService applicationService, StatusService statusService, ChannelRepository channelRepository, Set<Subscriber<?>> subscribers) {
 		this.stompClient = stompClient;
 		this.botProperties = botProperties;
 		this.taskExecutor = taskExecutor;
-		this.stompSessionStorage = stompSessionStorage;
-		this.applicationService = applicationService;
+		this.stompSessionWriter = stompSessionWriter;
 		this.statusService = statusService;
 		this.channelRepository = channelRepository;
+		this.subscriberByDestination = subscribers.stream().collect(Collectors.toMap(Subscriber::getDestination, Function.identity()));
+		this.subscriberByType = subscribers.stream().collect(Collectors.toMap(Subscriber::getPayloadType, Function.identity()));
 		clientRepository.setCallback(this::connect);
 	}
 
@@ -77,12 +80,8 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 	@Override
 	public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
 		log.info("New WebSocket connection established with session id: {}", session.getSessionId());
-		session.subscribe("/response/channels/fetchedAll", this);
-		session.subscribe("/response/channels/created", this);
-		session.subscribe("/response/channels/updated", this);
-		session.subscribe("/response/channels/deleted", this);
-		session.subscribe("/response/authenticated/status", this);
-		this.stompSessionStorage.setSession(session);
+		this.subscriberByType.values().forEach((subscriber) -> session.subscribe(subscriber.getDestination(), this));
+		this.stompSessionWriter.setSession(session);
 		this.statusService.handleConnectionStatus(true);
 		this.channelRepository.fetchAll();
 	}
@@ -90,20 +89,9 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 	@Override
 	public Type getPayloadType(StompHeaders headers) {
 		var destination = headers.getDestination();
-		if ("/response/channels/fetchedAll".equals(destination)) {
-			return ChannelFetchedAllEvent.class;
-		}
-		if ("/response/channels/created".equals(destination)) {
-			return ChannelCreatedEvent.class;
-		}
-		if ("/response/channels/updated".equals(destination)) {
-			return ChannelUpdatedEvent.class;
-		}
-		if ("/response/channels/deleted".equals(destination)) {
-			return ChannelDeletedEvent.class;
-		}
-		if ("/response/authenticated/status".equals(destination)) {
-			return AuthenticatedStatusEvent.class;
+		var subscriber = this.subscriberByDestination.get(destination);
+		if (subscriber != null) {
+			return subscriber.getPayloadType();
 		}
 		return String.class;
 	}
@@ -111,20 +99,10 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 	@Override
 	public void handleFrame(StompHeaders headers, Object payload) {
 		log.info("Received message: {}", payload);
-		if (payload instanceof ChannelFetchedAllEvent event) {
-			this.applicationService.handleChannelFetchedAllEvent(event);
-		}
-		if (payload instanceof ChannelCreatedEvent event) {
-			this.applicationService.handlerChannelCreatedEvent(event);
-		}
-		if (payload instanceof ChannelUpdatedEvent event) {
-			this.applicationService.handleChannelUpdatedEvent(event);
-		}
-		if (payload instanceof ChannelDeletedEvent event) {
-			this.applicationService.handleChannelDeletedEvent(event);
-		}
-		if (payload instanceof AuthenticatedStatusEvent event) {
-			this.statusService.handleAuthenticationStatus(event.value());
+		@SuppressWarnings("unchecked")
+		var subscriber = (Subscriber<Object>) this.subscriberByType.get(payload.getClass());
+		if (subscriber != null) {
+			subscriber.handleEvent(headers, payload);
 		}
 	}
 
@@ -148,7 +126,7 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 		}
 		finally {
 			this.statusService.handleConnectionStatus(false);
-			this.stompSessionStorage.setSession(null);
+			this.stompSessionWriter.setSession(null);
 		}
 	}
 
