@@ -6,7 +6,7 @@ import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.common.events.domain.EventChannel;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
 import com.github.twitch4j.events.ChannelGoOfflineEvent;
-import fr.damnardev.twitch.bot.server.model.form.UpdateChannelForm;
+import fr.damnardev.twitch.bot.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

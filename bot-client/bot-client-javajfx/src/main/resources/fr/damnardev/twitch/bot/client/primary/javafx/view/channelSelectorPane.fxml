@@ -5,12 +5,12 @@
 <?import javafx.scene.layout.HBox?>
 <HBox alignment="CENTER_RIGHT"
 	  fx:controller="fr.damnardev.twitch.bot.client.javafx.controller.MainController"
-	  prefHeight="30" prefWidth="600" xmlns="http://javafx.com/javafx/17.0.12"
+	  prefHeight="30" prefWidth="600" styleClass="app-padding, app-spacing" xmlns="http://javafx.com/javafx/17.0.12"
 	  xmlns:fx="http://javafx.com/fxml/1">
 
 	<Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxWidth="Infinity"
-		   minWidth="200" styleClass="app-padding" text="Channel"/>
+		   minWidth="200" styleClass="app-padding, default-height" text="Channel"/>
 
-	<ComboBox fx:id="channelComboBox" prefWidth="200" />
+	<ComboBox fx:id="channelComboBox" prefWidth="200" styleClass="default-height" />
 
 </HBox>

@@ -28,7 +28,7 @@ public class ApplicationStartupListener implements ApplicationRunner {
 
 	private void doInternal() {
 		log.info("Starting client bot");
-		this.startupService.run(this.springContext, ConfigurableApplicationContext::close, (t) -> t::getBean);
+		this.startupService.run(this.springContext::close, this.springContext::getBean);
 		log.info("Client bot started");
 	}
 

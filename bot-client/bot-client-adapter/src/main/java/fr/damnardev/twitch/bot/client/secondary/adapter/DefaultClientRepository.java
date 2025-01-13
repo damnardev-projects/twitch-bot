@@ -29,7 +29,7 @@ public class DefaultClientRepository implements ClientRepository {
 	}
 
 	@Override
-	public void fetchTwitchStatus() {
+	public void fetchAuthenticationStatus() {
 		if (this.stompSessionStorage.getSession() != null) {
 			this.stompSessionStorage.getSession().send("/request/status/fetch", null);
 		}

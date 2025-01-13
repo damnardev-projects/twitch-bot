@@ -1,6 +1,6 @@
 package fr.damnardev.twitch.bot.server.port.primary.channel;
 
-import fr.damnardev.twitch.bot.server.model.form.UpdateChannelForm;
+import fr.damnardev.twitch.bot.model.form.UpdateChannelForm;
 
 public interface UpdateChannelService {
 

@@ -3,10 +3,10 @@ package fr.damnardev.twitch.bot.server.server.core.service.channel;
 import java.util.Optional;
 
 import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
-import fr.damnardev.twitch.bot.server.model.event.ChannelCreatedEvent;
+import fr.damnardev.twitch.bot.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
-import fr.damnardev.twitch.bot.server.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.SaveChannelRepository;

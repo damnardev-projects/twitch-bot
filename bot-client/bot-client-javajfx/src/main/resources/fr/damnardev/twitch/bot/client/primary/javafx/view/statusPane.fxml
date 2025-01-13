@@ -3,14 +3,21 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
-<HBox alignment="CENTER_RIGHT" fx:controller="fr.damnardev.twitch.bot.client.javafx.controller.MainController" prefHeight="30" prefWidth="600" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="CENTER_RIGHT"
+	  fx:controller="fr.damnardev.twitch.bot.client.javafx.controller.MainController"
+	  prefHeight="30" prefWidth="600" styleClass="app-padding, app-spacing"
+	  xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
 	<Separator orientation="VERTICAL" prefHeight="200.0"/>
-	<Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="app-padding" text="Server Status:" />
-	<Label contentDisplay="RIGHT" fx:id="serverStatusLabel" maxHeight="Infinity" maxWidth="Infinity" minWidth="180" styleClass="app-padding" />
+	<Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="default-height"
+		   text="Server Status:"/>
+	<Label contentDisplay="RIGHT" fx:id="serverStatusLabel" maxHeight="Infinity"
+		   maxWidth="Infinity" minWidth="180" styleClass="default-height"/>
 
 	<Separator orientation="VERTICAL" prefHeight="200.0"/>
-	<Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="app-padding" text="Twitch Status:" />
-	<Label contentDisplay="RIGHT" fx:id="twitchStatusLabel" maxHeight="Infinity" maxWidth="Infinity" minWidth="180" styleClass="app-padding" />
+	<Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="default-height"
+		   text="Twitch Status:"/>
+	<Label contentDisplay="RIGHT" fx:id="twitchStatusLabel" maxHeight="Infinity"
+		   maxWidth="Infinity" minWidth="180" styleClass="default-height"/>
 
 </HBox>
