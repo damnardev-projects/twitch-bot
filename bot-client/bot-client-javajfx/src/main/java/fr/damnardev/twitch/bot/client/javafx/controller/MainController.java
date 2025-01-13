@@ -1,61 +1,103 @@
 package fr.damnardev.twitch.bot.client.javafx.controller;
 
-import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
+import fr.damnardev.twitch.bot.client.javafx.ApplicationStartedEventListener;
+import fr.damnardev.twitch.bot.client.port.primary.ApplicationService;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
 import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.model.DomainService;
+import fr.damnardev.twitch.bot.model.event.ChannelCreatedEvent;
+import fr.damnardev.twitch.bot.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
+import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@DomainService
 @RequiredArgsConstructor
 @Slf4j
-@DomainService
-public class MainController implements StatusService, ChannelService {
+public class MainController implements ApplicationService, StatusService {
 
 	private final ClientRepository clientRepository;
 
-	@FXML
-	public ComboBox<String> channelComboBox;
+	private final ChannelManagementController channelManagementController;
+
+	private final ApplicationStartedEventListener applicationStartedEventListener;
 
 	@FXML
-	public Label twitchStatusLabel;
+	private ComboBox<String> channelComboBox;
 
 	@FXML
-	public Label serverStatusLabel;
+	private Label twitchStatusLabel;
+
+	@FXML
+	private Label serverStatusLabel;
+
+	@FXML
+	private BorderPane borderPane;
 
 	@Override
-	public void connected(Boolean status) {
+	public void handleConnectionStatus(Boolean status) {
 		Platform.runLater(() -> {
-			if (this.serverStatusLabel != null) {
-				this.serverStatusLabel.setText(status ? "Connected" : "Disconnected");
-				this.clientRepository.fetchTwitchStatus();
-			}
+			this.serverStatusLabel.setText(Boolean.TRUE.equals(status) ? "Connected" : "Disconnected");
+			this.clientRepository.fetchAuthenticationStatus();
 		});
 	}
 
 	@Override
-	public void authenticated(Boolean status) {
+	public void handleAuthenticationStatus(Boolean status) {
 		Platform.runLater(() -> {
-			if (this.twitchStatusLabel != null) {
-				this.twitchStatusLabel.setText(status ? "Connected" : "Disconnected");
-			}
+			this.twitchStatusLabel.setText(Boolean.TRUE.equals(status) ? "Connected" : "Disconnected");
 		});
 	}
 
 	@Override
-	public void fetchAll(ChannelFetchedAllEvent event) {
+	public void handleChannelFetchedAllEvent(ChannelFetchedAllEvent event) {
 		Platform.runLater(() -> {
-			if (this.channelComboBox != null) {
-				this.channelComboBox.getItems().clear();
-				this.channelComboBox.getItems().addAll(event.value().stream().map(Channel::name).sorted(String::compareToIgnoreCase).toList());
-			}
+			this.channelComboBox.getItems().clear();
+			this.channelComboBox.getItems().add("");
+			this.channelComboBox.getItems().addAll(event.value().stream().map(Channel::name).sorted(String::compareToIgnoreCase).toList());
 		});
+		Platform.runLater(() -> {
+			this.channelManagementController.handleChannelFetchedAllEvent(event);
+		});
+	}
+
+	@Override
+	public void handlerChannelCreatedEvent(ChannelCreatedEvent event) {
+		Platform.runLater(() -> {
+			this.channelComboBox.getItems().add(event.value().name());
+			this.channelComboBox.getItems().sorted(String::compareToIgnoreCase);
+		});
+		Platform.runLater(() -> {
+			this.channelManagementController.handlerChannelCreatedEvent(event);
+		});
+	}
+
+	@Override
+	public void handleChannelUpdatedEvent(ChannelUpdatedEvent event) {
+		Platform.runLater(() -> {
+			this.channelManagementController.handleChannelUpdatedEvent(event);
+		});
+	}
+
+	@Override
+	public void handleChannelDeletedEvent(ChannelDeletedEvent event) {
+		Platform.runLater(() -> {
+			this.channelComboBox.getItems().remove(event.value().name());
+		});
+		Platform.runLater(() -> {
+			this.channelManagementController.handleChannelDeletedEvent(event);
+		});
+	}
+
+	public void openDashboard() {
+		this.borderPane.setCenter(applicationStartedEventListener.get("dashboard"));
 	}
 
 }

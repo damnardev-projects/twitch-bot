@@ -2,15 +2,18 @@
 
 
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane maxHeight="Infinity" maxWidth="Infinity" prefHeight="600" prefWidth="600"
-			xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="fr.damnardev.twitch.bot.client.javafx.controller.MainController"
+			fx:id="borderPane" maxHeight="Infinity" maxWidth="Infinity"
+			prefHeight="600" prefWidth="600"
+			xmlns="http://javafx.com/javafx/17.0.12"
+			xmlns:fx="http://javafx.com/fxml/1">
 
 	<top>
 		<fx:include source="channelSelectorPane.fxml"/>
 	</top>
 
 	<left>
-		<fx:include source="menuPane.fxml" />
+		<fx:include source="menuPane.fxml"/>
 	</left>
 
 	<bottom>

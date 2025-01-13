@@ -1,8 +1,11 @@
 package fr.damnardev.twitch.bot.server.server.core.service.channel;
 
 import fr.damnardev.twitch.bot.model.Channel;
+<<<<<<< HEAD
 import fr.damnardev.twitch.bot.model.DomainService;
+=======
 import fr.damnardev.twitch.bot.model.event.ChannelCreatedEvent;
+>>>>>>> 48feae9 (aaa)
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.server.port.primary.TryService;

@@ -2,7 +2,7 @@ package fr.damnardev.twitch.bot.server.primary.adapter.twitch;
 
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.events.ChannelGoOfflineEvent;
-import fr.damnardev.twitch.bot.server.model.form.UpdateChannelForm;
+import fr.damnardev.twitch.bot.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
 
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;

@@ -40,7 +40,7 @@ class ApplicationStartupListenerTests {
 		// Then
 		then(this.executor).should().execute(captor.capture());
 		captor.getValue().run();
-		then(this.startupService).should().run(any(), any(), any());
+		then(this.startupService).should().run(any(), any());
 		verifyNoMoreInteractions(this.executor, this.startupService);
 	}
 

@@ -1,8 +1,8 @@
 package fr.damnardev.twitch.bot.server.primary.adapter.ws;
 
-import fr.damnardev.twitch.bot.server.model.form.CreateChannelForm;
-import fr.damnardev.twitch.bot.server.model.form.DeleteChannelForm;
-import fr.damnardev.twitch.bot.server.model.form.UpdateChannelForm;
+import fr.damnardev.twitch.bot.model.form.CreateChannelForm;
+import fr.damnardev.twitch.bot.model.form.DeleteChannelForm;
+import fr.damnardev.twitch.bot.model.form.UpdateChannelForm;
 import fr.damnardev.twitch.bot.server.port.primary.channel.CreateChannelService;
 import fr.damnardev.twitch.bot.server.port.primary.channel.DeleteChannelService;
 import fr.damnardev.twitch.bot.server.port.primary.channel.FetchAllChannelService;

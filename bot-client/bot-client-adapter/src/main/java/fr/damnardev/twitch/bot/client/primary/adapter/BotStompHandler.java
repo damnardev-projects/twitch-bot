@@ -5,15 +5,18 @@ import java.util.Base64;
 import java.util.concurrent.TimeUnit;
 
 import fr.damnardev.twitch.bot.client.StompSessionStorage;
-import fr.damnardev.twitch.bot.client.port.primary.ChannelService;
+import fr.damnardev.twitch.bot.client.port.primary.ApplicationService;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
 import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
+import fr.damnardev.twitch.bot.client.property.BotProperties;
 import fr.damnardev.twitch.bot.model.event.AuthenticatedStatusEvent;
+import fr.damnardev.twitch.bot.model.event.ChannelCreatedEvent;
+import fr.damnardev.twitch.bot.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
+import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
@@ -29,43 +32,41 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 
 	private final WebSocketStompClient stompClient;
 
-	private final String username;
-
-	private final String password;
-
-	private final String url;
+	private final BotProperties botProperties;
 
 	private final ThreadPoolTaskExecutor taskExecutor;
 
 	private final StompSessionStorage stompSessionStorage;
 
+	private final ApplicationService applicationService;
+
 	private final StatusService statusService;
 
 	private final ChannelRepository channelRepository;
 
-	private final ChannelService channelService;
-
-	public BotStompHandler(WebSocketStompClient stompClient, @Value("${spring.security.user.name}") String username, @Value("${spring.security.user.password}") String password, @Value("${spring.server.url}") String url, ThreadPoolTaskExecutor taskExecutor, StompSessionStorage stompSessionStorage, ClientRepository clientRepository, StatusService statusService, ChannelRepository channelRepository, ChannelService channelService) {
+	public BotStompHandler(WebSocketStompClient stompClient, BotProperties botProperties, ThreadPoolTaskExecutor taskExecutor, StompSessionStorage stompSessionStorage, ClientRepository clientRepository, ApplicationService applicationService, StatusService statusService, ChannelRepository channelRepository) {
 		this.stompClient = stompClient;
-		this.username = username;
-		this.password = password;
-		this.url = url;
+		this.botProperties = botProperties;
 		this.taskExecutor = taskExecutor;
 		this.stompSessionStorage = stompSessionStorage;
+		this.applicationService = applicationService;
 		this.statusService = statusService;
 		this.channelRepository = channelRepository;
-		this.channelService = channelService;
 		clientRepository.setCallback(this::connect);
 	}
 
 	public void connect() {
 		this.taskExecutor.execute(() -> {
 			var headers = new WebSocketHttpHeaders();
-			var authString = "%s:%s".formatted(this.username, this.password);
+			var authString = "%s:%s".formatted(this.botProperties.getUsername(), this.botProperties.getPassword());
 			var basicAuthValue = "Basic " + Base64.getEncoder().encodeToString(authString.getBytes());
 			headers.add("Authorization", basicAuthValue);
 			try {
-				this.stompClient.connectAsync(this.url, headers, this).get();
+				this.stompClient.connectAsync(this.botProperties.getUrl(), headers, this).get();
+			}
+			catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+				log.error("An error occurred while connecting to the WebSocket server: {}", ex.getMessage());
 			}
 			catch (Exception ex) {
 				log.error("An error occurred while connecting to the WebSocket server: {}", ex.getMessage());
@@ -77,9 +78,12 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 	public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
 		log.info("New WebSocket connection established with session id: {}", session.getSessionId());
 		session.subscribe("/response/channels/fetchedAll", this);
+		session.subscribe("/response/channels/created", this);
+		session.subscribe("/response/channels/updated", this);
+		session.subscribe("/response/channels/deleted", this);
 		session.subscribe("/response/authenticated/status", this);
 		this.stompSessionStorage.setSession(session);
-		this.statusService.connected(true);
+		this.statusService.handleConnectionStatus(true);
 		this.channelRepository.fetchAll();
 	}
 
@@ -88,6 +92,15 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 		var destination = headers.getDestination();
 		if ("/response/channels/fetchedAll".equals(destination)) {
 			return ChannelFetchedAllEvent.class;
+		}
+		if ("/response/channels/created".equals(destination)) {
+			return ChannelCreatedEvent.class;
+		}
+		if ("/response/channels/updated".equals(destination)) {
+			return ChannelUpdatedEvent.class;
+		}
+		if ("/response/channels/deleted".equals(destination)) {
+			return ChannelDeletedEvent.class;
 		}
 		if ("/response/authenticated/status".equals(destination)) {
 			return AuthenticatedStatusEvent.class;
@@ -99,10 +112,19 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 	public void handleFrame(StompHeaders headers, Object payload) {
 		log.info("Received message: {}", payload);
 		if (payload instanceof ChannelFetchedAllEvent event) {
-			this.channelService.fetchAll(event);
+			this.applicationService.handleChannelFetchedAllEvent(event);
 		}
-		if (payload instanceof AuthenticatedStatusEvent(Boolean value)) {
-			this.statusService.authenticated(value);
+		if (payload instanceof ChannelCreatedEvent event) {
+			this.applicationService.handlerChannelCreatedEvent(event);
+		}
+		if (payload instanceof ChannelUpdatedEvent event) {
+			this.applicationService.handleChannelUpdatedEvent(event);
+		}
+		if (payload instanceof ChannelDeletedEvent event) {
+			this.applicationService.handleChannelDeletedEvent(event);
+		}
+		if (payload instanceof AuthenticatedStatusEvent event) {
+			this.statusService.handleAuthenticationStatus(event.value());
 		}
 	}
 
@@ -125,7 +147,7 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 			Thread.currentThread().interrupt();
 		}
 		finally {
-			this.statusService.connected(false);
+			this.statusService.handleConnectionStatus(false);
 			this.stompSessionStorage.setSession(null);
 		}
 	}

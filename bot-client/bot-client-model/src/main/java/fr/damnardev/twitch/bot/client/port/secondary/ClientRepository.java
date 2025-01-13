@@ -6,6 +6,6 @@ public interface ClientRepository {
 
 	void connect();
 
-	void fetchTwitchStatus();
+	void fetchAuthenticationStatus();
 
 }

@@ -3,7 +3,9 @@ spring:
     web-application-type: none
   server:
     url: ${SERVER_URL:ws://localhost:8080/ws}
-  security:
-    user:
-      name: ${SECURITY_USER_NAME:admin}
-      password: ${SECURITY_USER_PASSWORD:admin}
+
+bot:
+  server:
+    url: ${SERVER_URL:ws://localhost:8080/ws}
+    username: ${SECURITY_USER_NAME:admin}
+    password: ${SECURITY_USER_PASSWORD:admin}
