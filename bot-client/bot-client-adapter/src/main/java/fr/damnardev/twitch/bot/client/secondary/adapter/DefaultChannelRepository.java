@@ -1,6 +1,6 @@
 package fr.damnardev.twitch.bot.client.secondary.adapter;
 
-import fr.damnardev.twitch.bot.client.StompSessionStorage;
+import fr.damnardev.twitch.bot.client.StompSessionWriter;
 import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
 import fr.damnardev.twitch.bot.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.model.form.DeleteChannelForm;
@@ -15,34 +15,26 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class DefaultChannelRepository implements ChannelRepository {
 
-	private final StompSessionStorage stompSessionStorage;
+	private final StompSessionWriter stompSessionWriter;
 
 	@Override
 	public void fetchAll() {
-		if (this.stompSessionStorage.getSession() != null) {
-			this.stompSessionStorage.getSession().send("/request/channels/fetchAll", null);
-		}
+		this.stompSessionWriter.send("/request/channels/fetchAll");
 	}
 
 	@Override
 	public void create(CreateChannelForm form) {
-		if (this.stompSessionStorage.getSession() != null) {
-			this.stompSessionStorage.getSession().send("/request/channels/create", form);
-		}
+		this.stompSessionWriter.send("/request/channels/create", form);
 	}
 
 	@Override
 	public void update(UpdateChannelForm form) {
-		if (this.stompSessionStorage.getSession() != null) {
-			this.stompSessionStorage.getSession().send("/request/channels/update", form);
-		}
+		this.stompSessionWriter.send("/request/channels/update", form);
 	}
 
 	@Override
 	public void delete(DeleteChannelForm form) {
-		if (this.stompSessionStorage.getSession() != null) {
-			this.stompSessionStorage.getSession().send("/request/channels/delete", form);
-		}
+		this.stompSessionWriter.send("/request/channels/delete", form);
 	}
 
 }

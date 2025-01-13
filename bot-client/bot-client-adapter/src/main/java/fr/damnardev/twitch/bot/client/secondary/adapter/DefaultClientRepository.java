@@ -1,6 +1,6 @@
 package fr.damnardev.twitch.bot.client.secondary.adapter;
 
-import fr.damnardev.twitch.bot.client.StompSessionStorage;
+import fr.damnardev.twitch.bot.client.StompSessionWriter;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class DefaultClientRepository implements ClientRepository {
 
-	private final StompSessionStorage stompSessionStorage;
+	private final StompSessionWriter stompSessionWriter;
 
 	private Runnable callback;
 
@@ -30,9 +30,7 @@ public class DefaultClientRepository implements ClientRepository {
 
 	@Override
 	public void fetchAuthenticationStatus() {
-		if (this.stompSessionStorage.getSession() != null) {
-			this.stompSessionStorage.getSession().send("/request/status/fetch", null);
-		}
+		this.stompSessionWriter.send("/request/status/fetch");
 	}
 
 }

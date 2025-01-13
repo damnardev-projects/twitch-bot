@@ -6,6 +6,7 @@ import fr.damnardev.twitch.bot.client.port.primary.StatusService;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
 import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.model.DomainService;
+import fr.damnardev.twitch.bot.model.event.AuthenticatedStatusEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
@@ -50,8 +51,8 @@ public class MainController implements ApplicationService, StatusService {
 	}
 
 	@Override
-	public void handleAuthenticationStatus(Boolean status) {
-		Platform.runLater(() -> this.twitchStatusLabel.setText(Boolean.TRUE.equals(status) ? "Connected" : "Disconnected"));
+	public void handleAuthenticationStatus(AuthenticatedStatusEvent status) {
+		Platform.runLater(() -> this.twitchStatusLabel.setText(Boolean.TRUE.equals(status.value()) ? "Connected" : "Disconnected"));
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class MainController implements ApplicationService, StatusService {
 	}
 
 	@Override
-	public void handlerChannelCreatedEvent(ChannelCreatedEvent event) {
+	public void handleChannelCreatedEvent(ChannelCreatedEvent event) {
 		Platform.runLater(() -> {
 			this.channelComboBox.getItems().add(event.value().name());
 			this.channelComboBox.getItems().sorted(String::compareToIgnoreCase);
