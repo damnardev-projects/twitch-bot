@@ -14,5 +14,5 @@ public interface ApplicationService {
 	void handleChannelUpdatedEvent(ChannelUpdatedEvent event);
 
 	void handleChannelDeletedEvent(ChannelDeletedEvent event);
-	
+
 }

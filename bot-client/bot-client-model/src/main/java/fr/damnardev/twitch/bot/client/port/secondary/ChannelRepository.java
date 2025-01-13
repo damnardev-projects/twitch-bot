@@ -13,5 +13,5 @@ public interface ChannelRepository {
 	void update(UpdateChannelForm form);
 
 	void delete(DeleteChannelForm form);
-	
+
 }

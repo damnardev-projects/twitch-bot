@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -28,6 +29,9 @@ class ApplicationStartupListenerTests {
 
 	@Mock
 	private StartupService startupService;
+
+	@Mock
+	private ConfigurableApplicationContext context;
 
 	@Test
 	void run_shouldInvokeStartupServiceRun_whenCalled() {

@@ -51,9 +51,7 @@ public class MainController implements ApplicationService, StatusService {
 
 	@Override
 	public void handleAuthenticationStatus(Boolean status) {
-		Platform.runLater(() -> {
-			this.twitchStatusLabel.setText(Boolean.TRUE.equals(status) ? "Connected" : "Disconnected");
-		});
+		Platform.runLater(() -> this.twitchStatusLabel.setText(Boolean.TRUE.equals(status) ? "Connected" : "Disconnected"));
 	}
 
 	@Override
@@ -63,9 +61,7 @@ public class MainController implements ApplicationService, StatusService {
 			this.channelComboBox.getItems().add("");
 			this.channelComboBox.getItems().addAll(event.value().stream().map(Channel::name).sorted(String::compareToIgnoreCase).toList());
 		});
-		Platform.runLater(() -> {
-			this.channelManagementController.handleChannelFetchedAllEvent(event);
-		});
+		Platform.runLater(() -> this.channelManagementController.handleChannelFetchedAllEvent(event));
 	}
 
 	@Override
@@ -74,30 +70,22 @@ public class MainController implements ApplicationService, StatusService {
 			this.channelComboBox.getItems().add(event.value().name());
 			this.channelComboBox.getItems().sorted(String::compareToIgnoreCase);
 		});
-		Platform.runLater(() -> {
-			this.channelManagementController.handlerChannelCreatedEvent(event);
-		});
+		Platform.runLater(() -> this.channelManagementController.handlerChannelCreatedEvent(event));
 	}
 
 	@Override
 	public void handleChannelUpdatedEvent(ChannelUpdatedEvent event) {
-		Platform.runLater(() -> {
-			this.channelManagementController.handleChannelUpdatedEvent(event);
-		});
+		Platform.runLater(() -> this.channelManagementController.handleChannelUpdatedEvent(event));
 	}
 
 	@Override
 	public void handleChannelDeletedEvent(ChannelDeletedEvent event) {
-		Platform.runLater(() -> {
-			this.channelComboBox.getItems().remove(event.value().name());
-		});
-		Platform.runLater(() -> {
-			this.channelManagementController.handleChannelDeletedEvent(event);
-		});
+		Platform.runLater(() -> this.channelComboBox.getItems().remove(event.value().name()));
+		Platform.runLater(() -> this.channelManagementController.handleChannelDeletedEvent(event));
 	}
 
 	public void openDashboard() {
-		this.borderPane.setCenter(applicationStartedEventListener.get("dashboard"));
+		this.borderPane.setCenter(this.applicationStartedEventListener.get("dashboard"));
 	}
 
 }
