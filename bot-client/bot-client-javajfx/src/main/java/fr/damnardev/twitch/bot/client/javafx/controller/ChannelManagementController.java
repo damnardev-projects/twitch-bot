@@ -5,15 +5,10 @@ import fr.damnardev.twitch.bot.client.javafx.control.UnfocusableButtonTableCell;
 import fr.damnardev.twitch.bot.client.javafx.control.UnfocusableCheckBoxTableCell;
 import fr.damnardev.twitch.bot.client.javafx.wrapper.ChannelWrapper;
 import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
-import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.model.DomainService;
-import fr.damnardev.twitch.bot.model.event.ChannelCreatedEvent;
-import fr.damnardev.twitch.bot.model.event.ChannelDeletedEvent;
-import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
-import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.model.form.CreateChannelForm;
 import fr.damnardev.twitch.bot.model.form.DeleteChannelForm;
-import fr.damnardev.twitch.bot.model.form.UpdateChannelForm;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 public class ChannelManagementController {
 
 	private final ChannelRepository channelRepository;
+
+	private final ApplicationContext applicationContext;
 
 	@FXML
 	private TableColumn<ChannelWrapper, String> columnName;
@@ -56,8 +53,19 @@ public class ChannelManagementController {
 	}
 
 	private void setupTableView() {
+		this.tableView.setItems(applicationContext.getChannels());
 		this.tableView.getSortOrder().add(this.columnId);
 		this.tableView.setRowFactory((x) -> new ChannelWrapperTableRow());
+		this.tableView.getItems().addListener(new ListChangeListener<>() {
+
+			@Override
+			public void onChanged(Change<? extends ChannelWrapper> change) {
+				if (change.next() && change.wasAdded()) {
+					sort();
+				}
+			}
+
+		});
 	}
 
 	private void setupColumn() {
@@ -105,48 +113,9 @@ public class ChannelManagementController {
 		}
 	}
 
-	public void handleChannelFetchedAllEvent(ChannelFetchedAllEvent event) {
-		if (this.tableView == null) {
-			return;
-		}
-		var wrappers = event.value().stream().map(this::buildWrapper).toList();
-		this.tableView.getItems().clear();
-		this.tableView.getItems().addAll(wrappers);
-		sort();
-	}
-
-	private ChannelWrapper buildWrapper(Channel channel) {
-		var channelWrapper = new ChannelWrapper(channel);
-		channelWrapper.enabledProperty().addListener((observable, oldValue, newValue) -> {
-			var form = UpdateChannelForm.builder().id(channel.id()).name(channel.name()).enabled(newValue).build();
-			this.channelRepository.update(form);
-		});
-		return channelWrapper;
-	}
-
 	private void sort() {
 		this.tableView.sort();
 		this.tableView.refresh();
-	}
-
-	public void handlerChannelCreatedEvent(ChannelCreatedEvent event) {
-		var wrapper = buildWrapper(event.value());
-		this.tableView.getItems().add(wrapper);
-		sort();
-	}
-
-	public void handleChannelUpdatedEvent(ChannelUpdatedEvent event) {
-		var channel = event.value();
-		var wrapper = this.tableView.getItems().stream().filter((item) -> item.idProperty().getValue().equals(channel.id())).findFirst().orElseThrow();
-		wrapper.enabledProperty().set(channel.enabled());
-		wrapper.onlineProperty().set(channel.online());
-	}
-
-	public void handleChannelDeletedEvent(ChannelDeletedEvent event) {
-		var channel = event.value();
-		var wrapper = this.tableView.getItems().stream().filter((item) -> item.idProperty().getValue().equals(channel.id())).findFirst().orElseThrow();
-		this.tableView.getItems().remove(wrapper);
-		sort();
 	}
 
 }
