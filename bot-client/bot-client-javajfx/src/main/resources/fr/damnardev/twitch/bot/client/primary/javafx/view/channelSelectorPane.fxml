@@ -11,6 +11,6 @@
 	<Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxWidth="Infinity"
 		   minWidth="200" styleClass="app-padding, default-height" text="Channel"/>
 
-	<ComboBox fx:id="channelComboBox" prefWidth="200" styleClass="default-height" />
+	<ComboBox fx:id="channelComboBox" onAction="#onItemSelected" prefWidth="200" styleClass="default-height" />
 
 </HBox>
