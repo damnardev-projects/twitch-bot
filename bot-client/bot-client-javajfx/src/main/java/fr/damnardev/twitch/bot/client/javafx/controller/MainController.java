@@ -43,14 +43,14 @@ public class MainController implements StatusService {
 
 	@FXML
 	public void initialize() {
-		var sortedList = new SortedList<>(applicationContext.getChannels());
+		var sortedList = new SortedList<>(this.applicationContext.getChannels());
 		sortedList.setComparator(Comparator.comparing((a) -> a.nameProperty().getValue(), String.CASE_INSENSITIVE_ORDER));
 		this.channelComboBox.setItems(sortedList);
 		this.channelComboBox.setConverter(new javafx.util.StringConverter<>() {
 
 			@Override
 			public String toString(ChannelWrapper channelWrapper) {
-				return channelWrapper != null ? channelWrapper.nameProperty().getValue() : "";
+				return (channelWrapper != null) ? channelWrapper.nameProperty().getValue() : "";
 			}
 
 			@Override
@@ -79,7 +79,7 @@ public class MainController implements StatusService {
 	}
 
 	public void onItemSelected(ActionEvent actionEvent) {
-		applicationContext.setSelectedChannel(this.channelComboBox.getSelectionModel().getSelectedItem());
+		this.applicationContext.setSelectedChannel(this.channelComboBox.getSelectionModel().getSelectedItem());
 	}
 
 }

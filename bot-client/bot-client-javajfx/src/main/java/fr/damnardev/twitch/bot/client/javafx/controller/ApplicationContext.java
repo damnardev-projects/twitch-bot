@@ -42,9 +42,7 @@ public class ApplicationContext implements ApplicationService {
 
 	@Override
 	public void handleChannelCreatedEvent(ChannelCreatedEvent event) {
-		Platform.runLater(() -> {
-			this.channels.add(buildWrapper(event.value()));
-		});
+		Platform.runLater(() -> this.channels.add(buildWrapper(event.value())));
 	}
 
 	@Override

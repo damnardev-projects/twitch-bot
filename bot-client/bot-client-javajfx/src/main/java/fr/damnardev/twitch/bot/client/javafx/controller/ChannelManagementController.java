@@ -53,18 +53,13 @@ public class ChannelManagementController {
 	}
 
 	private void setupTableView() {
-		this.tableView.setItems(applicationContext.getChannels());
+		this.tableView.setItems(this.applicationContext.getChannels());
 		this.tableView.getSortOrder().add(this.columnId);
 		this.tableView.setRowFactory((x) -> new ChannelWrapperTableRow());
-		this.tableView.getItems().addListener(new ListChangeListener<>() {
-
-			@Override
-			public void onChanged(Change<? extends ChannelWrapper> change) {
-				if (change.next() && change.wasAdded()) {
-					sort();
-				}
+		this.tableView.getItems().addListener((ListChangeListener<ChannelWrapper>) (change) -> {
+			if (change.next() && change.wasAdded()) {
+				sort();
 			}
-
 		});
 	}
 
