@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.Optional;
 
 import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
-import fr.damnardev.twitch.bot.server.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.form.CreateRaidConfigurationMessageForm;

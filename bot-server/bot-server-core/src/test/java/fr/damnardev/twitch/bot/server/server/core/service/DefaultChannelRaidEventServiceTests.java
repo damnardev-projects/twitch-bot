@@ -5,9 +5,9 @@ import java.util.Optional;
 import java.util.Random;
 
 import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.server.model.Message;
-import fr.damnardev.twitch.bot.server.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.server.model.Shoutout;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
 import fr.damnardev.twitch.bot.server.model.form.ChannelRaidEventForm;

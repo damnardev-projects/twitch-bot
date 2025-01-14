@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import fr.damnardev.twitch.bot.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.server.database.entity.DbRaidConfiguration;
 import fr.damnardev.twitch.bot.server.database.repository.DbRaidConfigurationRepository;
-import fr.damnardev.twitch.bot.server.model.RaidConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

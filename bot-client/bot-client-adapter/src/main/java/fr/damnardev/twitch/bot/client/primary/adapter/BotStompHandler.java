@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import fr.damnardev.twitch.bot.client.StompSessionWriter;
 import fr.damnardev.twitch.bot.client.port.primary.ApplicationService;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
-import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
 import fr.damnardev.twitch.bot.client.property.BotProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -40,19 +39,19 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 
 	private final StatusService statusService;
 
-	private final ChannelRepository channelRepository;
+	private final ApplicationService applicationService;
 
 	private final Map<String, Subscriber<?>> subscriberByDestination;
 
 	private final Map<Type, Subscriber<?>> subscriberByType;
 
-	public BotStompHandler(WebSocketStompClient stompClient, BotProperties botProperties, ThreadPoolTaskExecutor taskExecutor, StompSessionWriter stompSessionWriter, ClientRepository clientRepository, ApplicationService applicationService, StatusService statusService, ChannelRepository channelRepository, Set<Subscriber<?>> subscribers) {
+	public BotStompHandler(WebSocketStompClient stompClient, BotProperties botProperties, ThreadPoolTaskExecutor taskExecutor, StompSessionWriter stompSessionWriter, ClientRepository clientRepository, ApplicationService applicationService, StatusService statusService, Set<Subscriber<?>> subscribers) {
 		this.stompClient = stompClient;
 		this.botProperties = botProperties;
 		this.taskExecutor = taskExecutor;
 		this.stompSessionWriter = stompSessionWriter;
 		this.statusService = statusService;
-		this.channelRepository = channelRepository;
+		this.applicationService = applicationService;
 		this.subscriberByDestination = subscribers.stream().collect(Collectors.toMap(Subscriber::getDestination, Function.identity()));
 		this.subscriberByType = subscribers.stream().collect(Collectors.toMap(Subscriber::getPayloadType, Function.identity()));
 		clientRepository.setCallback(this::connect);
@@ -83,7 +82,7 @@ public class BotStompHandler extends StompSessionHandlerAdapter {
 		this.subscriberByType.values().forEach((subscriber) -> session.subscribe(subscriber.getDestination(), this));
 		this.stompSessionWriter.setSession(session);
 		this.statusService.handleConnectionStatus(true);
-		this.channelRepository.fetchAll();
+		this.applicationService.connected();
 	}
 
 	@Override

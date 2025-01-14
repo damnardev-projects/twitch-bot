@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.RaidConfiguration;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedEvent;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
-import fr.damnardev.twitch.bot.server.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
-import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedEvent;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.raid.FindRaidConfigurationRepository;
@@ -130,7 +130,7 @@ class DefaultFetchRaidConfigurationServiceTests {
 		messages.add("message");
 		messages.add("another message");
 		var raidConfiguration = RaidConfiguration.builder().messages(messages).build();
-		var event = RaidConfigurationFetchedEvent.builder().raidConfiguration(raidConfiguration).build();
+		var event = RaidConfigurationFetchedEvent.builder().value(raidConfiguration).build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
 		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.of(raidConfiguration));
