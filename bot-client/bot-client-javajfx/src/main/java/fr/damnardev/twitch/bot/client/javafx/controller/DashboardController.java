@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
-public class ChannelManagementController {
+public class DashboardController {
 
 	private final ChannelRepository channelRepository;
 
