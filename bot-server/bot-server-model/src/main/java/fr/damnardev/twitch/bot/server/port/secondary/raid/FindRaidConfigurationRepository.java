@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import fr.damnardev.twitch.bot.model.Channel;
-import fr.damnardev.twitch.bot.server.model.RaidConfiguration;
+import fr.damnardev.twitch.bot.model.RaidConfiguration;
 
 public interface FindRaidConfigurationRepository {
 

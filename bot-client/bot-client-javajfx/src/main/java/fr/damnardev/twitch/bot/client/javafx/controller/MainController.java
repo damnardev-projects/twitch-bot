@@ -82,4 +82,8 @@ public class MainController implements StatusService {
 		this.applicationContext.setSelectedChannel(this.channelComboBox.getSelectionModel().getSelectedItem());
 	}
 
+	public void openRaid(ActionEvent actionEvent) {
+		this.borderPane.setCenter(this.applicationStartedEventListener.get("raid"));
+	}
+
 }

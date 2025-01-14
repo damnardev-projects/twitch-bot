@@ -2,6 +2,7 @@ package fr.damnardev.twitch.bot.server.primary.adapter.ws;
 
 import fr.damnardev.twitch.bot.server.model.form.UpdateRaidConfigurationForm;
 import fr.damnardev.twitch.bot.server.port.primary.raid.FetchAllRaidConfigurationService;
+import fr.damnardev.twitch.bot.server.port.primary.raid.FetchRaidConfigurationService;
 import fr.damnardev.twitch.bot.server.port.primary.raid.UpdateRaidConfigurationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +29,9 @@ class RaidConfigurationControllerTests {
 	private FetchAllRaidConfigurationService fetchAllRaidConfigurationService;
 
 	@Mock
+	private FetchRaidConfigurationService fetchRaidConfigurationService;
+
+	@Mock
 	private UpdateRaidConfigurationService updateRaidConfigurationService;
 
 	@Mock
@@ -46,6 +50,22 @@ class RaidConfigurationControllerTests {
 		captor.getValue().run();
 		then(this.fetchAllRaidConfigurationService).should().fetchAll();
 		verifyNoMoreInteractions(this.executor, this.fetchAllRaidConfigurationService);
+	}
+
+	@Test
+	void fetch_shouldInvokeFetchRaidConfigurationServiceFetch_whenCalled() {
+		// Given
+		var captor = ArgumentCaptor.forClass(Runnable.class);
+		var form = "raid";
+
+		// When
+		this.raidConfigurationController.fetch(form);
+
+		// Then
+		then(this.executor).should().execute(captor.capture());
+		captor.getValue().run();
+		then(this.fetchRaidConfigurationService).should().fetch(form);
+		verifyNoMoreInteractions(this.executor, this.updateRaidConfigurationService);
 	}
 
 	@Test

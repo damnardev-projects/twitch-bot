@@ -54,6 +54,10 @@ public class ApplicationStartedEventListener implements StartupService {
 		var fxmlLoader = new FXMLLoader(getClass().getResource("/fr/damnardev/twitch/bot/client/primary/javafx/view/dashboardPane.fxml"));
 		fxmlLoader.setControllerFactory((x) -> this.controllerFactory.apply(x));
 		this.nodeByName.put("dashboard", fxmlLoader.load());
+
+		fxmlLoader = new FXMLLoader(getClass().getResource("/fr/damnardev/twitch/bot/client/primary/javafx/view/raidPane.fxml"));
+		fxmlLoader.setControllerFactory((x) -> this.controllerFactory.apply(x));
+		this.nodeByName.put("raid", fxmlLoader.load());
 	}
 
 	private <T> void createWindow() throws IOException {

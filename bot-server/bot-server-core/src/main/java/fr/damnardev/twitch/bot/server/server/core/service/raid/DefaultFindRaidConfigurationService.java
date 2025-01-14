@@ -1,7 +1,7 @@
 package fr.damnardev.twitch.bot.server.server.core.service.raid;
 
 import fr.damnardev.twitch.bot.model.DomainService;
-import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedEvent;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedEvent;
 import fr.damnardev.twitch.bot.server.port.primary.raid.FetchRaidConfigurationService;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;
@@ -28,7 +28,7 @@ public class DefaultFindRaidConfigurationService extends AbstractRaidConfigurati
 		if (raidConfiguration == null) {
 			return;
 		}
-		var event = RaidConfigurationFetchedEvent.builder().raidConfiguration(raidConfiguration).build();
+		var event = RaidConfigurationFetchedEvent.builder().value(raidConfiguration).build();
 		this.eventPublisher.publish(event);
 	}
 

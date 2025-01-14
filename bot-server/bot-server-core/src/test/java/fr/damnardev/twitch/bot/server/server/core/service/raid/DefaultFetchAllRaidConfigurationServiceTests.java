@@ -2,9 +2,9 @@ package fr.damnardev.twitch.bot.server.server.core.service.raid;
 
 import java.util.Collections;
 
-import fr.damnardev.twitch.bot.server.model.RaidConfiguration;
+import fr.damnardev.twitch.bot.model.RaidConfiguration;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
-import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.raid.FindRaidConfigurationRepository;
 import fr.damnardev.twitch.bot.server.server.core.service.DefaultTryService;

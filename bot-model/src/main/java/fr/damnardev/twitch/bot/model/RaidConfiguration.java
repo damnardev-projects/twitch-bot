@@ -1,4 +1,4 @@
-package fr.damnardev.twitch.bot.server.model;
+package fr.damnardev.twitch.bot.model;
 
 import java.util.List;
 

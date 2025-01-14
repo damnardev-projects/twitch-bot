@@ -4,6 +4,7 @@ import fr.damnardev.twitch.bot.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedEvent;
 
 public interface ApplicationService {
 
@@ -14,5 +15,9 @@ public interface ApplicationService {
 	void handleChannelUpdatedEvent(ChannelUpdatedEvent event);
 
 	void handleChannelDeletedEvent(ChannelDeletedEvent event);
+
+	void handleRaidConfigurationFetchedEvent(RaidConfigurationFetchedEvent payload);
+
+	void connected();
 
 }

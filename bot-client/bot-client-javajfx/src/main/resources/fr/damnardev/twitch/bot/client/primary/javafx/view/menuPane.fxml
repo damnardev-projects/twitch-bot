@@ -14,7 +14,7 @@
 
 	<Label minWidth="200" styleClass="default-height" text="Events"/>
 
-	<Button minWidth="200" mnemonicParsing="false" styleClass="default-height" text="Raid"/>
+	<Button minWidth="200" mnemonicParsing="false" onAction="#openRaid" styleClass="default-height" text="Raid" />
 	<Button disable="true" minWidth="200" mnemonicParsing="false" styleClass="default-height" text="Gift"/>
 
 	<Label minWidth="200" styleClass="app-padding" text="Triggers"/>

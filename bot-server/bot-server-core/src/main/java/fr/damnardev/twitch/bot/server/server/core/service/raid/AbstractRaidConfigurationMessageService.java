@@ -1,7 +1,7 @@
 package fr.damnardev.twitch.bot.server.server.core.service.raid;
 
+import fr.damnardev.twitch.bot.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
-import fr.damnardev.twitch.bot.server.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.raid.FindRaidConfigurationRepository;

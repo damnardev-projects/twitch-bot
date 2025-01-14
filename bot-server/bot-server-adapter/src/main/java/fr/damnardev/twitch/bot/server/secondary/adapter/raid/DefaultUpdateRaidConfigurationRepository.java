@@ -1,7 +1,7 @@
 package fr.damnardev.twitch.bot.server.secondary.adapter.raid;
 
+import fr.damnardev.twitch.bot.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.server.database.repository.DbRaidConfigurationRepository;
-import fr.damnardev.twitch.bot.server.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.server.port.secondary.raid.UpdateRaidConfigurationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

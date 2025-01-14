@@ -1,6 +1,6 @@
 package fr.damnardev.twitch.bot.server.model.event;
 
-import fr.damnardev.twitch.bot.server.model.RaidConfiguration;
+import fr.damnardev.twitch.bot.model.RaidConfiguration;
 import lombok.Builder;
 
 @Builder

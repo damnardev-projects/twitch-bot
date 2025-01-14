@@ -7,7 +7,8 @@ import fr.damnardev.twitch.bot.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
-import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationFetchedAllEvent;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedAllEvent;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedEvent;
 import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -99,6 +100,20 @@ class DefaultEventPublisherTests {
 
 		// Then
 		then(this.publisher).should().convertAndSend("/response/raids/fetchedAll", event, headers);
+		verifyNoMoreInteractions(this.publisher);
+	}
+
+	@Test
+	void publish_shouldInvokePublishRaidFetched_whenCalled() {
+		// Given
+		var event = RaidConfigurationFetchedEvent.builder().build();
+		Map<String, Object> headers = Map.of("type", "raidFetched");
+
+		// When
+		this.eventPublisher.publish(event);
+
+		// Then
+		then(this.publisher).should().convertAndSend("/response/raids/fetched", event, headers);
 		verifyNoMoreInteractions(this.publisher);
 	}
 
