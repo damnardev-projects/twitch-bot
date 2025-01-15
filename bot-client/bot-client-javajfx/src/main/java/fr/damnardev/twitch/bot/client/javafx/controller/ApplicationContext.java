@@ -90,19 +90,22 @@ public class ApplicationContext implements ApplicationService {
 	@Override
 	public void handleRaidConfigurationFetchedEvent(RaidConfigurationFetchedEvent payload) {
 		Platform.runLater(() -> {
-			this.disabledRaidUpdate = false;
-			var raidConfiguration = payload.value();
-			this.raidConfiguration.update(raidConfiguration);
-			this.disabledRaidUpdate = true;
+			if (this.selectedChannel != null && this.selectedChannel.getName().getValue().equals(payload.value().channelName())) {
+				this.disabledRaidUpdate = false;
+				this.raidConfiguration.update(payload.value());
+				this.disabledRaidUpdate = true;
+			}
 		});
 	}
 
 	@Override
 	public void handleRaidConfigurationUpdatedEvent(RaidConfigurationUpdatedEvent payload) {
 		Platform.runLater(() -> {
-			this.disabledRaidUpdate = false;
-			this.raidConfiguration.update(payload.value());
-			this.disabledRaidUpdate = true;
+			if (this.selectedChannel != null && this.selectedChannel.getName().getValue().equals(payload.value().channelName())) {
+				this.disabledRaidUpdate = false;
+				this.raidConfiguration.update(payload.value());
+				this.disabledRaidUpdate = true;
+			}
 		});
 	}
 

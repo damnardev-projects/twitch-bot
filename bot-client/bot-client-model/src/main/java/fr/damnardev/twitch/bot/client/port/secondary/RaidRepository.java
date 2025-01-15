@@ -7,5 +7,5 @@ public interface RaidRepository {
 	void fetch(String name);
 
 	void update(UpdateRaidConfigurationForm form);
-	
+
 }
