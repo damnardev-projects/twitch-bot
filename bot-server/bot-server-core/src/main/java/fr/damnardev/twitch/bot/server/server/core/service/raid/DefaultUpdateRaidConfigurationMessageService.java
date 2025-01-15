@@ -42,6 +42,9 @@ public class DefaultUpdateRaidConfigurationMessageService extends AbstractRaidCo
 		if (form.raidMessageEnabled() != null) {
 			raidConfiguration = raidConfiguration.toBuilder().raidMessageEnabled(form.raidMessageEnabled()).build();
 		}
+		if (form.messages() != null) {
+			raidConfiguration = raidConfiguration.toBuilder().messages(form.messages()).build();
+		}
 		this.updateRaidConfigurationRepository.update(raidConfiguration);
 		var event = RaidConfigurationUpdatedEvent.builder().value(raidConfiguration).build();
 		this.eventPublisher.publish(event);
