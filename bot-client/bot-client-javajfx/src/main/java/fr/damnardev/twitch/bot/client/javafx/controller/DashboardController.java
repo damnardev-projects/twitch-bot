@@ -3,7 +3,7 @@ package fr.damnardev.twitch.bot.client.javafx.controller;
 import fr.damnardev.twitch.bot.client.javafx.control.ChannelWrapperTableRow;
 import fr.damnardev.twitch.bot.client.javafx.control.UnfocusableButtonTableCell;
 import fr.damnardev.twitch.bot.client.javafx.control.UnfocusableCheckBoxTableCell;
-import fr.damnardev.twitch.bot.client.javafx.wrapper.ChannelWrapper;
+import fr.damnardev.twitch.bot.client.javafx.wrapper.ObservableChannel;
 import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
 import fr.damnardev.twitch.bot.model.DomainService;
 import fr.damnardev.twitch.bot.model.form.CreateChannelForm;
@@ -26,22 +26,22 @@ public class DashboardController {
 	private final ApplicationContext applicationContext;
 
 	@FXML
-	private TableColumn<ChannelWrapper, String> columnName;
+	private TableColumn<ObservableChannel, String> columnName;
 
 	@FXML
-	private TableColumn<ChannelWrapper, Number> columnId;
+	private TableColumn<ObservableChannel, Number> columnId;
 
 	@FXML
-	private TableColumn<ChannelWrapper, Boolean> columnEnabled;
+	private TableColumn<ObservableChannel, Boolean> columnEnabled;
 
 	@FXML
-	private TableColumn<ChannelWrapper, Boolean> columnOnline;
+	private TableColumn<ObservableChannel, Boolean> columnOnline;
 
 	@FXML
-	private TableColumn<ChannelWrapper, String> columnDeleted;
+	private TableColumn<ObservableChannel, String> columnDeleted;
 
 	@FXML
-	private TableView<ChannelWrapper> tableView;
+	private TableView<ObservableChannel> tableView;
 
 	@FXML
 	private TextField textFieldChannelName;
@@ -56,7 +56,7 @@ public class DashboardController {
 		this.tableView.setItems(this.applicationContext.getChannels());
 		this.tableView.getSortOrder().add(this.columnId);
 		this.tableView.setRowFactory((x) -> new ChannelWrapperTableRow());
-		this.tableView.getItems().addListener((ListChangeListener<ChannelWrapper>) (change) -> {
+		this.tableView.getItems().addListener((ListChangeListener<ObservableChannel>) (change) -> {
 			if (change.next() && change.wasAdded()) {
 				sort();
 			}
@@ -64,11 +64,11 @@ public class DashboardController {
 	}
 
 	private void setupColumn() {
-		this.columnId.setCellValueFactory((cell) -> cell.getValue().idProperty());
-		this.columnName.setCellValueFactory((cell) -> cell.getValue().nameProperty());
-		this.columnEnabled.setCellValueFactory((cell) -> cell.getValue().enabledProperty());
+		this.columnId.setCellValueFactory((cell) -> cell.getValue().getId());
+		this.columnName.setCellValueFactory((cell) -> cell.getValue().getName());
+		this.columnEnabled.setCellValueFactory((cell) -> cell.getValue().getEnabled());
 		this.columnEnabled.setCellFactory((x) -> new UnfocusableCheckBoxTableCell<>());
-		this.columnOnline.setCellValueFactory((cell) -> cell.getValue().onlineProperty());
+		this.columnOnline.setCellValueFactory((cell) -> cell.getValue().getOnline());
 		this.columnOnline.setCellFactory((x) -> new UnfocusableCheckBoxTableCell<>());
 		this.columnDeleted.setCellFactory((x) -> new UnfocusableButtonTableCell<>(this::onButtonDelete));
 	}
@@ -87,8 +87,8 @@ public class DashboardController {
 		this.channelRepository.create(form);
 	}
 
-	private void onButtonDelete(ChannelWrapper channel) {
-		var form = DeleteChannelForm.builder().id(channel.idProperty().getValue()).name(channel.nameProperty().getValue()).build();
+	private void onButtonDelete(ObservableChannel channel) {
+		var form = DeleteChannelForm.builder().id(channel.getId().getValue()).name(channel.getName().getValue()).build();
 		this.channelRepository.delete(form);
 	}
 
@@ -96,14 +96,14 @@ public class DashboardController {
 		if (keyEvent.getCode().equals(KeyCode.DELETE)) {
 			var selectedItem = this.tableView.getSelectionModel().getSelectedItem();
 			if (selectedItem != null) {
-				var form = DeleteChannelForm.builder().id(selectedItem.idProperty().getValue()).name(selectedItem.nameProperty().getValue()).build();
+				var form = DeleteChannelForm.builder().id(selectedItem.getId().getValue()).name(selectedItem.getName().getValue()).build();
 				this.channelRepository.delete(form);
 			}
 		}
 		if (keyEvent.getCode().equals(KeyCode.E)) {
 			var selectedItem = this.tableView.getSelectionModel().getSelectedItem();
 			if (selectedItem != null) {
-				selectedItem.enabledProperty().set(!selectedItem.enabledProperty().get());
+				selectedItem.getEnabled().set(!selectedItem.getEnabled().get());
 			}
 		}
 	}

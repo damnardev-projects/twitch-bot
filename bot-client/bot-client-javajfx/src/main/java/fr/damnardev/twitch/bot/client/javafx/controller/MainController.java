@@ -3,7 +3,7 @@ package fr.damnardev.twitch.bot.client.javafx.controller;
 import java.util.Comparator;
 
 import fr.damnardev.twitch.bot.client.javafx.ApplicationStartedEventListener;
-import fr.damnardev.twitch.bot.client.javafx.wrapper.ChannelWrapper;
+import fr.damnardev.twitch.bot.client.javafx.wrapper.ObservableChannel;
 import fr.damnardev.twitch.bot.client.port.primary.StatusService;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
 import fr.damnardev.twitch.bot.model.DomainService;
@@ -30,7 +30,7 @@ public class MainController implements StatusService {
 	private final ApplicationContext applicationContext;
 
 	@FXML
-	private ComboBox<ChannelWrapper> channelComboBox;
+	private ComboBox<ObservableChannel> channelComboBox;
 
 	@FXML
 	private Label twitchStatusLabel;
@@ -44,17 +44,17 @@ public class MainController implements StatusService {
 	@FXML
 	public void initialize() {
 		var sortedList = new SortedList<>(this.applicationContext.getChannels());
-		sortedList.setComparator(Comparator.comparing((a) -> a.nameProperty().getValue(), String.CASE_INSENSITIVE_ORDER));
+		sortedList.setComparator(Comparator.comparing((a) -> a.getName().getValue(), String.CASE_INSENSITIVE_ORDER));
 		this.channelComboBox.setItems(sortedList);
 		this.channelComboBox.setConverter(new javafx.util.StringConverter<>() {
 
 			@Override
-			public String toString(ChannelWrapper channelWrapper) {
-				return (channelWrapper != null) ? channelWrapper.nameProperty().getValue() : "";
+			public String toString(ObservableChannel observableChannel) {
+				return (observableChannel != null) ? observableChannel.getName().getValue() : "";
 			}
 
 			@Override
-			public ChannelWrapper fromString(String string) {
+			public ObservableChannel fromString(String string) {
 				return null;
 			}
 
