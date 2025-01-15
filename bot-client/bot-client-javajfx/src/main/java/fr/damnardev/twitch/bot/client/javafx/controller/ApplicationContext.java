@@ -1,6 +1,6 @@
 package fr.damnardev.twitch.bot.client.javafx.controller;
 
-import fr.damnardev.twitch.bot.client.javafx.wrapper.ChannelWrapper;
+import fr.damnardev.twitch.bot.client.javafx.wrapper.ObservableChannel;
 import fr.damnardev.twitch.bot.client.javafx.wrapper.RaidConfigurationWrapper;
 import fr.damnardev.twitch.bot.client.port.primary.ApplicationService;
 import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
@@ -14,6 +14,7 @@ import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedEvent;
 import fr.damnardev.twitch.bot.model.form.UpdateChannelForm;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
@@ -26,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ApplicationContext implements ApplicationService {
 
 	@Getter
-	private final ObservableList<ChannelWrapper> channels = FXCollections.observableArrayList();
+	private final ObservableList<ObservableChannel> channels = FXCollections.observableArrayList();
 
 	@Getter
 	private final RaidConfigurationWrapper raidConfiguration = new RaidConfigurationWrapper();
@@ -36,12 +37,14 @@ public class ApplicationContext implements ApplicationService {
 	private final RaidRepository raidRepository;
 
 	@Getter
-	private ChannelWrapper selectedChannel;
+	private ObservableChannel selectedChannel;
 
-	public void setSelectedChannel(ChannelWrapper selectedChannel) {
+	private boolean disabledChannelUpdate = true;
+
+	public void setSelectedChannel(ObservableChannel selectedChannel) {
 		this.selectedChannel = selectedChannel;
 		if (selectedChannel != null) {
-			this.raidRepository.fetch(selectedChannel.nameProperty().getValue());
+			this.raidRepository.fetch(selectedChannel.getName().getValue());
 		}
 	}
 
@@ -49,22 +52,24 @@ public class ApplicationContext implements ApplicationService {
 	public void handleChannelFetchedAllEvent(ChannelFetchedAllEvent event) {
 		Platform.runLater(() -> {
 			this.channels.clear();
-			this.channels.addAll(event.value().stream().map(this::buildWrapper).toList());
+			this.channels.addAll(event.value().stream().map(this::buildObservableChannel).toList());
 		});
 	}
 
 	@Override
 	public void handleChannelCreatedEvent(ChannelCreatedEvent event) {
-		Platform.runLater(() -> this.channels.add(buildWrapper(event.value())));
+		Platform.runLater(() -> this.channels.add(buildObservableChannel(event.value())));
 	}
 
 	@Override
 	public void handleChannelUpdatedEvent(ChannelUpdatedEvent event) {
 		Platform.runLater(() -> {
 			var channel = event.value();
-			var wrapper = this.channels.stream().filter((item) -> item.idProperty().getValue().equals(channel.id())).findFirst().orElseThrow();
-			wrapper.enabledProperty().set(channel.enabled());
-			wrapper.onlineProperty().set(channel.online());
+			var wrapper = this.channels.stream().filter((item) -> item.getId().getValue().equals(channel.id())).findFirst().orElseThrow();
+			this.disabledChannelUpdate = false;
+			wrapper.getEnabled().set(channel.enabled());
+			wrapper.getOnline().set(channel.online());
+			this.disabledChannelUpdate = true;
 		});
 	}
 
@@ -72,7 +77,7 @@ public class ApplicationContext implements ApplicationService {
 	public void handleChannelDeletedEvent(ChannelDeletedEvent event) {
 		Platform.runLater(() -> {
 			var channel = event.value();
-			var wrapper = this.channels.stream().filter((item) -> item.idProperty().getValue().equals(channel.id())).findFirst().orElseThrow();
+			var wrapper = this.channels.stream().filter((item) -> item.getId().getValue().equals(channel.id())).findFirst().orElseThrow();
 			this.channels.remove(wrapper);
 		});
 	}
@@ -89,17 +94,22 @@ public class ApplicationContext implements ApplicationService {
 	public void connected() {
 		this.channelRepository.fetchAll();
 		if (this.selectedChannel != null) {
-			this.raidRepository.fetch(this.selectedChannel.nameProperty().getValue());
+			this.raidRepository.fetch(this.selectedChannel.getName().getValue());
 		}
 	}
 
-	private ChannelWrapper buildWrapper(Channel channel) {
-		var channelWrapper = new ChannelWrapper(channel);
-		channelWrapper.enabledProperty().addListener((observable, oldValue, newValue) -> {
-			var form = UpdateChannelForm.builder().id(channel.id()).name(channel.name()).enabled(newValue).build();
-			this.channelRepository.update(form);
-		});
-		return channelWrapper;
+	private ObservableChannel buildObservableChannel(Channel channel) {
+		var wrapper = new ObservableChannel(channel);
+		wrapper.addListener(this::update);
+		return wrapper;
+	}
+
+	private void update(ObservableValue<? extends Channel> observableValue, Channel oldValue, Channel newValue) {
+		if (!this.disabledChannelUpdate) {
+			return;
+		}
+		var form = UpdateChannelForm.builder().id(newValue.id()).name(newValue.name()).enabled(newValue.enabled()).build();
+		this.channelRepository.update(form);
 	}
 
 }
