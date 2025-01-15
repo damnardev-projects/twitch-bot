@@ -1,4 +1,4 @@
-package fr.damnardev.twitch.bot.server.model.form;
+package fr.damnardev.twitch.bot.model.form;
 
 import lombok.Builder;
 

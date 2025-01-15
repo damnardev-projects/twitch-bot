@@ -6,9 +6,9 @@ import java.util.Optional;
 
 import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.model.RaidConfiguration;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationUpdatedEvent;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
-import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.form.CreateRaidConfigurationMessageForm;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;

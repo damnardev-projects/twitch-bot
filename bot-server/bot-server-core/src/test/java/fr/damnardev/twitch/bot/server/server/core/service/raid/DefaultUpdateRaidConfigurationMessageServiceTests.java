@@ -5,10 +5,10 @@ import java.util.stream.Stream;
 
 import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.model.RaidConfiguration;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationUpdatedEvent;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
+import fr.damnardev.twitch.bot.model.form.UpdateRaidConfigurationForm;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
-import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
-import fr.damnardev.twitch.bot.server.model.form.UpdateRaidConfigurationForm;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.raid.FindRaidConfigurationRepository;

@@ -3,7 +3,7 @@ package fr.damnardev.twitch.bot.client.javafx.wrapper;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class RaidConfigurationMessageWrapper {
+public class ObservableRaidConfigurationMessage {
 
 	private final SimpleLongProperty id;
 
@@ -11,7 +11,7 @@ public class RaidConfigurationMessageWrapper {
 
 	private final SimpleStringProperty message;
 
-	public RaidConfigurationMessageWrapper(Long id, String channel, String message) {
+	public ObservableRaidConfigurationMessage(Long id, String channel, String message) {
 		this.id = new SimpleLongProperty(id);
 		this.name = new SimpleStringProperty(channel);
 		this.message = new SimpleStringProperty(message);

@@ -7,8 +7,8 @@ import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedEvent;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.event.Event;
-import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
 
 public interface EventPublisher {
 
