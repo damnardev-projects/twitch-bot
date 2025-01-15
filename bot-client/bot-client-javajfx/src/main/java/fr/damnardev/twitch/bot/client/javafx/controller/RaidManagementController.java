@@ -1,13 +1,14 @@
 package fr.damnardev.twitch.bot.client.javafx.controller;
 
 import fr.damnardev.twitch.bot.client.javafx.control.UnfocusableButtonTableCell;
-import fr.damnardev.twitch.bot.client.javafx.wrapper.ObservableRaidConfigurationMessage;
 import fr.damnardev.twitch.bot.model.DomainService;
-import javafx.event.ActionEvent;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import lombok.RequiredArgsConstructor;
 
@@ -18,13 +19,16 @@ public class RaidManagementController {
 	private final ApplicationContext applicationContext;
 
 	@FXML
-	private TableView<ObservableRaidConfigurationMessage> tableViewMessage;
+	private TextField textFieldRaidMessage;
 
 	@FXML
-	private TableColumn<ObservableRaidConfigurationMessage, String> columnDeleted;
+	private TableView<String> tableViewMessage;
 
 	@FXML
-	private TableColumn<ObservableRaidConfigurationMessage, String> columnMessage;
+	private TableColumn<String, String> columnDeleted;
+
+	@FXML
+	private TableColumn<String, String> columnMessage;
 
 	@FXML
 	private CheckBox wizebotShoutoutEnabled;
@@ -53,24 +57,34 @@ public class RaidManagementController {
 	}
 
 	private void setupColumn() {
-		this.columnMessage.setCellValueFactory((cell) -> cell.getValue().messageProperty());
+		this.columnMessage.setCellValueFactory((cell) -> new SimpleStringProperty(cell.getValue()));
 		this.columnDeleted.setCellFactory((x) -> new UnfocusableButtonTableCell<>(this::onButtonDelete));
 	}
 
-	private void onButtonDelete(ObservableRaidConfigurationMessage observableRaidConfigurationMessage) {
-
-	}
-
-	public void onEnterKeyPressed(ActionEvent actionEvent) {
-
-	}
-
-	public void onButtonAdd(ActionEvent actionEvent) {
-
-	}
-
 	public void onKeyPressed(KeyEvent keyEvent) {
+		if (keyEvent.getCode().equals(KeyCode.DELETE) && this.tableViewMessage.isFocused()) {
+			var selectedItem = this.tableViewMessage.getSelectionModel().getSelectedItem();
+			if (selectedItem != null) {
+				onButtonDelete(selectedItem);
+			}
+		}
+	}
 
+	private void onButtonDelete(String value) {
+		this.applicationContext.getRaidConfiguration().getMessages().remove(value);
+
+	}
+
+	public void onEnterKeyPressed() {
+		addMessage();
+	}
+
+	public void onButtonAdd() {
+		addMessage();
+	}
+
+	private void addMessage() {
+		this.applicationContext.getRaidConfiguration().getMessages().add(this.textFieldRaidMessage.getText());
 	}
 
 }

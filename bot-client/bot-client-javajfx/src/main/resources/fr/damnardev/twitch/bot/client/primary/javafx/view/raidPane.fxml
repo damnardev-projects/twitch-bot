@@ -30,7 +30,7 @@
 
 		<VBox maxWidth="300" minWidth="300" styleClass="app-padding, app-spacing">
 			<Label contentDisplay="CENTER" text="Message" />
-			<TextField HBox.hgrow="ALWAYS" fx:id="textFieldChannelName" onAction="#onEnterKeyPressed" styleClass="default-height" />
+			<TextField HBox.hgrow="ALWAYS" fx:id="textFieldRaidMessage" onAction="#onEnterKeyPressed" styleClass="default-height" />
 			<Button alignment="CENTER" maxWidth="150" minWidth="150" onAction="#onButtonAdd" styleClass="default-height" text="Add" />
 		</VBox>
 

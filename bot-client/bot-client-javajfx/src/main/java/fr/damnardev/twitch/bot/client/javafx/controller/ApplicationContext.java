@@ -141,9 +141,7 @@ public class ApplicationContext implements ApplicationService {
 		if (!this.disabledRaidUpdate) {
 			return;
 		}
-		var form = UpdateRaidConfigurationForm.builder().channelId(newValue.channelId()).channelName(newValue.channelName())
-				.wizebotShoutoutEnabled(newValue.wizebotShoutoutEnabled()).twitchShoutoutEnabled(newValue.twitchShoutoutEnabled())
-				.raidMessageEnabled(newValue.raidMessageEnabled()).build();
+		var form = UpdateRaidConfigurationForm.builder().channelId(newValue.channelId()).channelName(newValue.channelName()).wizebotShoutoutEnabled(newValue.wizebotShoutoutEnabled()).twitchShoutoutEnabled(newValue.twitchShoutoutEnabled()).raidMessageEnabled(newValue.raidMessageEnabled()).messages(newValue.messages()).build();
 		this.raidRepository.update(form);
 	}
 
