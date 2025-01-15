@@ -1,18 +1,21 @@
 package fr.damnardev.twitch.bot.client.javafx.controller;
 
 import fr.damnardev.twitch.bot.client.javafx.wrapper.ObservableChannel;
-import fr.damnardev.twitch.bot.client.javafx.wrapper.RaidConfigurationWrapper;
+import fr.damnardev.twitch.bot.client.javafx.wrapper.ObservableRaidConfiguration;
 import fr.damnardev.twitch.bot.client.port.primary.ApplicationService;
 import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
 import fr.damnardev.twitch.bot.client.port.secondary.RaidRepository;
 import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.model.DomainService;
+import fr.damnardev.twitch.bot.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.model.event.ChannelCreatedEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelDeletedEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedEvent;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationUpdatedEvent;
 import fr.damnardev.twitch.bot.model.form.UpdateChannelForm;
+import fr.damnardev.twitch.bot.model.form.UpdateRaidConfigurationForm;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,9 +32,6 @@ public class ApplicationContext implements ApplicationService {
 	@Getter
 	private final ObservableList<ObservableChannel> channels = FXCollections.observableArrayList();
 
-	@Getter
-	private final RaidConfigurationWrapper raidConfiguration = new RaidConfigurationWrapper();
-
 	private final ChannelRepository channelRepository;
 
 	private final RaidRepository raidRepository;
@@ -40,6 +40,11 @@ public class ApplicationContext implements ApplicationService {
 	private ObservableChannel selectedChannel;
 
 	private boolean disabledChannelUpdate = true;
+
+	private boolean disabledRaidUpdate = true;
+
+	@Getter
+	private final ObservableRaidConfiguration raidConfiguration = buildObservableRaidConfiguration();
 
 	public void setSelectedChannel(ObservableChannel selectedChannel) {
 		this.selectedChannel = selectedChannel;
@@ -85,8 +90,22 @@ public class ApplicationContext implements ApplicationService {
 	@Override
 	public void handleRaidConfigurationFetchedEvent(RaidConfigurationFetchedEvent payload) {
 		Platform.runLater(() -> {
-			var raidConfiguration = payload.value();
-			this.raidConfiguration.update(raidConfiguration);
+			if (this.selectedChannel != null && this.selectedChannel.getName().getValue().equals(payload.value().channelName())) {
+				this.disabledRaidUpdate = false;
+				this.raidConfiguration.update(payload.value());
+				this.disabledRaidUpdate = true;
+			}
+		});
+	}
+
+	@Override
+	public void handleRaidConfigurationUpdatedEvent(RaidConfigurationUpdatedEvent payload) {
+		Platform.runLater(() -> {
+			if (this.selectedChannel != null && this.selectedChannel.getName().getValue().equals(payload.value().channelName())) {
+				this.disabledRaidUpdate = false;
+				this.raidConfiguration.update(payload.value());
+				this.disabledRaidUpdate = true;
+			}
 		});
 	}
 
@@ -110,6 +129,22 @@ public class ApplicationContext implements ApplicationService {
 		}
 		var form = UpdateChannelForm.builder().id(newValue.id()).name(newValue.name()).enabled(newValue.enabled()).build();
 		this.channelRepository.update(form);
+	}
+
+	private ObservableRaidConfiguration buildObservableRaidConfiguration() {
+		var wrapper = new ObservableRaidConfiguration();
+		wrapper.addListener(this::update);
+		return wrapper;
+	}
+
+	private void update(ObservableValue<? extends RaidConfiguration> observableValue, RaidConfiguration oldValue, RaidConfiguration newValue) {
+		if (!this.disabledRaidUpdate) {
+			return;
+		}
+		var form = UpdateRaidConfigurationForm.builder().channelId(newValue.channelId()).channelName(newValue.channelName())
+				.wizebotShoutoutEnabled(newValue.wizebotShoutoutEnabled()).twitchShoutoutEnabled(newValue.twitchShoutoutEnabled())
+				.raidMessageEnabled(newValue.raidMessageEnabled()).build();
+		this.raidRepository.update(form);
 	}
 
 }

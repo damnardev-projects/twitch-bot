@@ -1,6 +1,6 @@
 package fr.damnardev.twitch.bot.server.primary.adapter.ws;
 
-import fr.damnardev.twitch.bot.server.model.form.UpdateRaidConfigurationForm;
+import fr.damnardev.twitch.bot.model.form.UpdateRaidConfigurationForm;
 import fr.damnardev.twitch.bot.server.port.primary.raid.FetchAllRaidConfigurationService;
 import fr.damnardev.twitch.bot.server.port.primary.raid.FetchRaidConfigurationService;
 import fr.damnardev.twitch.bot.server.port.primary.raid.UpdateRaidConfigurationService;

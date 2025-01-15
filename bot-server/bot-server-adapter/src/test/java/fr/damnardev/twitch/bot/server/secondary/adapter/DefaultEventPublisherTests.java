@@ -9,7 +9,7 @@ import fr.damnardev.twitch.bot.model.event.ChannelFetchedAllEvent;
 import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedEvent;
-import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationUpdatedEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

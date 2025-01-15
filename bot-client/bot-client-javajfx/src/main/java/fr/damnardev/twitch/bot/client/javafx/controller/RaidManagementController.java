@@ -1,7 +1,7 @@
 package fr.damnardev.twitch.bot.client.javafx.controller;
 
 import fr.damnardev.twitch.bot.client.javafx.control.UnfocusableButtonTableCell;
-import fr.damnardev.twitch.bot.client.javafx.wrapper.RaidConfigurationMessageWrapper;
+import fr.damnardev.twitch.bot.client.javafx.wrapper.ObservableRaidConfigurationMessage;
 import fr.damnardev.twitch.bot.model.DomainService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,13 +18,13 @@ public class RaidManagementController {
 	private final ApplicationContext applicationContext;
 
 	@FXML
-	private TableView<RaidConfigurationMessageWrapper> tableViewMessage;
+	private TableView<ObservableRaidConfigurationMessage> tableViewMessage;
 
 	@FXML
-	private TableColumn<RaidConfigurationMessageWrapper, String> columnDeleted;
+	private TableColumn<ObservableRaidConfigurationMessage, String> columnDeleted;
 
 	@FXML
-	private TableColumn<RaidConfigurationMessageWrapper, String> columnMessage;
+	private TableColumn<ObservableRaidConfigurationMessage, String> columnMessage;
 
 	@FXML
 	private CheckBox wizebotShoutoutEnabled;
@@ -43,13 +43,13 @@ public class RaidManagementController {
 	}
 
 	private void setupCheckBox() {
-		this.wizebotShoutoutEnabled.selectedProperty().bindBidirectional(this.applicationContext.getRaidConfiguration().wizebotShoutoutEnabledProperty());
-		this.twitchShoutoutEnabled.selectedProperty().bindBidirectional(this.applicationContext.getRaidConfiguration().twitchShoutoutEnabledProperty());
-		this.raidMessageEnabled.selectedProperty().bindBidirectional(this.applicationContext.getRaidConfiguration().raidMessageEnabledProperty());
+		this.wizebotShoutoutEnabled.selectedProperty().bindBidirectional(this.applicationContext.getRaidConfiguration().getWizebotShoutoutEnabled());
+		this.twitchShoutoutEnabled.selectedProperty().bindBidirectional(this.applicationContext.getRaidConfiguration().getTwitchShoutoutEnabled());
+		this.raidMessageEnabled.selectedProperty().bindBidirectional(this.applicationContext.getRaidConfiguration().getRaidMessageEnabled());
 	}
 
 	private void setupTableView() {
-		this.tableViewMessage.setItems(this.applicationContext.getRaidConfiguration().messages());
+		this.tableViewMessage.setItems(this.applicationContext.getRaidConfiguration().getMessages());
 	}
 
 	private void setupColumn() {
@@ -57,7 +57,8 @@ public class RaidManagementController {
 		this.columnDeleted.setCellFactory((x) -> new UnfocusableButtonTableCell<>(this::onButtonDelete));
 	}
 
-	private void onButtonDelete(RaidConfigurationMessageWrapper message) {
+	private void onButtonDelete(ObservableRaidConfigurationMessage observableRaidConfigurationMessage) {
+
 	}
 
 	public void onEnterKeyPressed(ActionEvent actionEvent) {

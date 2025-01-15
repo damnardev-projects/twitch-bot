@@ -1,7 +1,7 @@
 package fr.damnardev.twitch.bot.server.server.core.service.raid;
 
 import fr.damnardev.twitch.bot.model.DomainService;
-import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationUpdatedEvent;
 import fr.damnardev.twitch.bot.server.model.form.CreateRaidConfigurationMessageForm;
 import fr.damnardev.twitch.bot.server.port.primary.raid.CreateRaidConfigurationMessageService;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;

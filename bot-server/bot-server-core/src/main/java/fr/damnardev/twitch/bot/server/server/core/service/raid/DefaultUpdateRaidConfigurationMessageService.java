@@ -1,8 +1,8 @@
 package fr.damnardev.twitch.bot.server.server.core.service.raid;
 
 import fr.damnardev.twitch.bot.model.DomainService;
-import fr.damnardev.twitch.bot.server.model.event.RaidConfigurationUpdatedEvent;
-import fr.damnardev.twitch.bot.server.model.form.UpdateRaidConfigurationForm;
+import fr.damnardev.twitch.bot.model.event.RaidConfigurationUpdatedEvent;
+import fr.damnardev.twitch.bot.model.form.UpdateRaidConfigurationForm;
 import fr.damnardev.twitch.bot.server.port.primary.raid.UpdateRaidConfigurationService;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;
