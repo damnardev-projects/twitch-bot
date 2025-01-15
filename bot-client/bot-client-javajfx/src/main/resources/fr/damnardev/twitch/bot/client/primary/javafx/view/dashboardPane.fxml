@@ -32,7 +32,7 @@
 	</TableView>
 
 	<VBox maxWidth="300" minWidth="300" styleClass="app-padding, app-spacing">
-		<Label contentDisplay="CENTER" text="Channel Name"/>
+		<Label contentDisplay="CENTER" text="Channel name"/>
 		<TextField HBox.hgrow="ALWAYS" fx:id="textFieldChannelName"
 				   onAction="#onEnterKeyPressed"
 				   styleClass="default-height"/>
