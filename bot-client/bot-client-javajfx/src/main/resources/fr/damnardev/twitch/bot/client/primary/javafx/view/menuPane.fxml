@@ -12,14 +12,15 @@
 	<Button minWidth="200" mnemonicParsing="false" onAction="#openDashboard"
 			styleClass="default-height" text="Dashboard" />
 
-	<Label minWidth="200" styleClass="default-height" text="Events"/>
+	<Label minWidth="200" styleClass="default-height" text="Notifications"/>
 
 	<Button minWidth="200" mnemonicParsing="false" onAction="#openRaid" styleClass="default-height" text="Raid" />
 	<Button disable="true" minWidth="200" mnemonicParsing="false" styleClass="default-height" text="Gift"/>
 
-	<Label minWidth="200" styleClass="app-padding" text="Triggers"/>
+	<Label minWidth="200" styleClass="app-padding" text="Commands"/>
 
-	<Button disable="true" minWidth="200" mnemonicParsing="false" styleClass="default-height" text="System Command"/>
-	<Button disable="true" minWidth="200" mnemonicParsing="false" styleClass="default-height" text="Command"/>
+	<Button disable="true" minWidth="200" mnemonicParsing="false" styleClass="default-height" text="Global commands"/>
+	<Button disable="true" minWidth="200" mnemonicParsing="false" styleClass="default-height" text="My commands"/>
+	<Button disable="true" minWidth="200" mnemonicParsing="false" styleClass="default-height" text="My announcements"/>
 
 </VBox>
