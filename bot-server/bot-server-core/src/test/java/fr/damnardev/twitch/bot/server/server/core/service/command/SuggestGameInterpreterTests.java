@@ -1,12 +1,11 @@
 package fr.damnardev.twitch.bot.server.server.core.service.command;
 
 import fr.damnardev.twitch.bot.model.Channel;
-import fr.damnardev.twitch.bot.server.model.Command;
-import fr.damnardev.twitch.bot.server.model.CommandType;
+import fr.damnardev.twitch.bot.model.GlobalCommandType;
+import fr.damnardev.twitch.bot.server.model.GlobalCommand;
 import fr.damnardev.twitch.bot.server.model.Message;
 import fr.damnardev.twitch.bot.server.model.SuggestGame;
 import fr.damnardev.twitch.bot.server.model.form.ChannelMessageEventForm;
-import fr.damnardev.twitch.bot.server.port.primary.RandomService;
 import fr.damnardev.twitch.bot.server.port.secondary.MessageRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.SuggestGameRepository;
 import org.junit.jupiter.api.Test;
@@ -36,9 +35,6 @@ class SuggestGameInterpreterTests {
 	private SuggestGameRepository suggestGameRepository;
 
 	@Mock
-	private RandomService randomService;
-
-	@Mock
 	private MessageRepository messageRepository;
 
 	@Test
@@ -48,16 +44,16 @@ class SuggestGameInterpreterTests {
 		var result = this.suggestGameInterpreter.getCommandTypeInterpreter();
 
 		// Then
-		verifyNoMoreInteractions(this.messageRepository, this.randomService, this.suggestGameRepository);
+		verifyNoMoreInteractions(this.messageRepository, this.suggestGameRepository);
 
-		assertThat(result).isEqualTo(CommandType.SUGGEST_GAME);
+		assertThat(result).isEqualTo(GlobalCommandType.SUGGEST_GAME);
 	}
 
 	@Test
 	void interpret_shouldDoNothing_whenIfGameIsNull() {
 		// Given
 		var channel = Channel.builder().id(1L).name("channel_name").build();
-		var command = Command.builder().name("game").build();
+		var command = GlobalCommand.builder().name("game").build();
 		var form = ChannelMessageEventForm.builder().sender("foo").message(null).build();
 		var message = Message.builder().channelId(1L).channelName("channel_name").content("/me usage: !game nom_du_jeu").build();
 
@@ -66,7 +62,7 @@ class SuggestGameInterpreterTests {
 
 		// Then
 		then(this.messageRepository).should().sendMessage(message);
-		verifyNoMoreInteractions(this.messageRepository, this.randomService, this.suggestGameRepository);
+		verifyNoMoreInteractions(this.messageRepository, this.suggestGameRepository);
 
 		response.isInstanceOf(RuntimeException.class).hasMessage("No game suggested");
 	}
@@ -76,7 +72,7 @@ class SuggestGameInterpreterTests {
 	void interpret_shouldDoNothing_whenIfGameIsEmpty(String source) {
 		// Given
 		var channel = Channel.builder().id(1L).name("channel_name").build();
-		var command = Command.builder().name("game").build();
+		var command = GlobalCommand.builder().name("game").build();
 		var form = ChannelMessageEventForm.builder().sender("foo").message(null).build();
 		var message = Message.builder().channelId(1L).channelName("channel_name").content("/me usage: !game nom_du_jeu").build();
 
@@ -85,7 +81,7 @@ class SuggestGameInterpreterTests {
 
 		// Then
 		then(this.messageRepository).should().sendMessage(message);
-		verifyNoMoreInteractions(this.messageRepository, this.randomService, this.suggestGameRepository);
+		verifyNoMoreInteractions(this.messageRepository, this.suggestGameRepository);
 
 		response.isInstanceOf(RuntimeException.class).hasMessage("No game suggested");
 	}
@@ -95,7 +91,7 @@ class SuggestGameInterpreterTests {
 		// Given
 		var channel = Channel.builder().id(1L).name("channel_name").build();
 		var suggestGame = SuggestGame.builder().viewer("foo").game("bar").build();
-		var command = Command.builder().build();
+		var command = GlobalCommand.builder().build();
 		var form = ChannelMessageEventForm.builder().sender("foo").message("bar").build();
 
 		given(this.suggestGameRepository.suggest(channel, suggestGame)).willReturn(false);
@@ -105,7 +101,7 @@ class SuggestGameInterpreterTests {
 
 		// Then
 		then(this.suggestGameRepository).should().suggest(channel, suggestGame);
-		verifyNoMoreInteractions(this.messageRepository, this.randomService, this.suggestGameRepository);
+		verifyNoMoreInteractions(this.messageRepository, this.suggestGameRepository);
 	}
 
 	@Test
@@ -113,21 +109,19 @@ class SuggestGameInterpreterTests {
 		// Given
 		var channel = Channel.builder().id(1L).name("channel_name").build();
 		var suggestGame = SuggestGame.builder().viewer("foo").game("bar").build();
-		var command = Command.builder().build();
+		var command = GlobalCommand.builder().build();
 		var form = ChannelMessageEventForm.builder().sender("foo").message("bar").build();
-		var message = Message.builder().channelId(1L).channelName("channel_name").content("value [⏰ 0 s]").build();
+		var message = Message.builder().channelId(1L).channelName("channel_name").content("Merci pour la suggestion du jeu [⏰ 0 s]").build();
 
 		given(this.suggestGameRepository.suggest(channel, suggestGame)).willReturn(true);
-		given(this.randomService.getRandom(command.messages())).willReturn("value");
 
 		// When
 		this.suggestGameInterpreter.interpret(channel, command, form);
 
 		// Then
 		then(this.suggestGameRepository).should().suggest(channel, suggestGame);
-		then(this.randomService).should().getRandom(command.messages());
 		then(this.messageRepository).should().sendMessage(message);
-		verifyNoMoreInteractions(this.messageRepository, this.randomService, this.suggestGameRepository);
+		verifyNoMoreInteractions(this.messageRepository, this.suggestGameRepository);
 	}
 
 }

@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 import fr.damnardev.twitch.bot.model.Channel;
-import fr.damnardev.twitch.bot.server.model.Command;
+import fr.damnardev.twitch.bot.server.model.GlobalCommand;
 import fr.damnardev.twitch.bot.server.model.Message;
 import fr.damnardev.twitch.bot.server.model.form.ChannelMessageEventForm;
 import fr.damnardev.twitch.bot.server.port.primary.DateService;
@@ -28,7 +28,7 @@ public abstract class NoseInterpreter implements CommandInterpreter {
 	private final DateService dateService;
 
 	@Override
-	public void interpret(Channel channel, Command command, ChannelMessageEventForm form) {
+	public void interpret(Channel channel, GlobalCommand globalCommand, ChannelMessageEventForm form) {
 		var now = this.dateService.now(zoneId).truncatedTo(ChronoUnit.MINUTES);
 		var value = now;
 
@@ -48,7 +48,7 @@ public abstract class NoseInterpreter implements CommandInterpreter {
 		var diff = isForward ? ChronoUnit.MINUTES.between(now, value) : ChronoUnit.MINUTES.between(value, now);
 		var formattedDateTime = value.format(formatter);
 		var string = isForward ? NEXT_NOSE : PREV_NOSE;
-		var content = String.format(string, diff, formattedDateTime, command.cooldown());
+		var content = String.format(string, diff, formattedDateTime, globalCommand.cooldown());
 		var message = Message.builder().channelId(channel.id()).channelName(channel.name()).content(content).build();
 		this.messageRepository.sendMessage(message);
 	}

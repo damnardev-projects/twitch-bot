@@ -5,8 +5,8 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 import fr.damnardev.twitch.bot.model.Channel;
-import fr.damnardev.twitch.bot.server.model.Command;
-import fr.damnardev.twitch.bot.server.model.CommandType;
+import fr.damnardev.twitch.bot.model.GlobalCommandType;
+import fr.damnardev.twitch.bot.server.model.GlobalCommand;
 import fr.damnardev.twitch.bot.server.model.Message;
 import fr.damnardev.twitch.bot.server.port.primary.DateService;
 import fr.damnardev.twitch.bot.server.port.secondary.MessageRepository;
@@ -44,7 +44,7 @@ class NextNoseInterpreterTests {
 		var commandType = this.nextNoseInterpreter.getCommandTypeInterpreter();
 
 		// Then
-		assertThat(commandType).isEqualTo(CommandType.NEXT_NOSE);
+		assertThat(commandType).isEqualTo(GlobalCommandType.NEXT_NOSE);
 	}
 
 	@Test
@@ -53,7 +53,7 @@ class NextNoseInterpreterTests {
 		var channelId = 1L;
 		var channelName = "channelName";
 		var channel = Channel.builder().id(channelId).name(channelName).build();
-		var command = Command.builder().cooldown(60).build();
+		var command = GlobalCommand.builder().cooldown(60).build();
 		var now = OffsetDateTime.of(2021, 1, 1, 12, 0, 0, 0, ZoneOffset.of("Z"));
 		var message = Message.builder().channelId(channelId).channelName(channelName).content("Le prochain nez sera dans 12 minutes 2021-01-01 12:12 [⏰ 60 s]").build();
 
@@ -74,7 +74,7 @@ class NextNoseInterpreterTests {
 		var channelId = 1L;
 		var channelName = "channelName";
 		var channel = Channel.builder().id(channelId).name(channelName).build();
-		var command = Command.builder().cooldown(60).build();
+		var command = GlobalCommand.builder().cooldown(60).build();
 		var now = OffsetDateTime.of(2021, 1, 1, 12, 13, 0, 0, ZoneOffset.of("Z"));
 		var message = Message.builder().channelId(channelId).channelName(channelName).content("Le prochain nez sera dans 60 minutes 2021-01-01 13:13 [⏰ 60 s]").build();
 
@@ -95,7 +95,7 @@ class NextNoseInterpreterTests {
 		var channelId = 1L;
 		var channelName = "channelName";
 		var channel = Channel.builder().id(channelId).name(channelName).build();
-		var command = Command.builder().cooldown(60).build();
+		var command = GlobalCommand.builder().cooldown(60).build();
 		var now = OffsetDateTime.of(2021, 1, 1, 12, 12, 0, 0, ZoneOffset.of("Z"));
 		var message = Message.builder().channelId(channelId).channelName(channelName).content("Le prochain nez sera dans 0 minutes 2021-01-01 12:12 [⏰ 60 s]").build();
 

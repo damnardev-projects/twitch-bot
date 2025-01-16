@@ -16,7 +16,7 @@ you have to define the following environment variables:
 - SECURITY_USER_NAME
 - SECURITY_USER_PASSWORD
 
-Run the following command:
+Run the following globalCommand:
 
 ```shell
 mvn -P server -pl bot-server-runner org.springframework.boot:spring-boot-maven-plugin:run

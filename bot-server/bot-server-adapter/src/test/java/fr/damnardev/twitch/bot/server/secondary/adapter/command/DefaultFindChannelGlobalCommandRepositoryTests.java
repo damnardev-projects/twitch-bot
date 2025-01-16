@@ -1,14 +1,13 @@
 package fr.damnardev.twitch.bot.server.secondary.adapter.command;
 
-import java.util.Collections;
 import java.util.Optional;
 
 import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.GlobalCommandType;
 import fr.damnardev.twitch.bot.server.database.entity.DbChannel;
-import fr.damnardev.twitch.bot.server.database.entity.DbChannelCommand;
-import fr.damnardev.twitch.bot.server.database.repository.DbChannelCommandRepository;
-import fr.damnardev.twitch.bot.server.model.Command;
-import fr.damnardev.twitch.bot.server.model.CommandType;
+import fr.damnardev.twitch.bot.server.database.entity.DbChannelGlobalCommand;
+import fr.damnardev.twitch.bot.server.database.repository.DbChannelGlobalCommandRepository;
+import fr.damnardev.twitch.bot.server.model.GlobalCommand;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,13 +23,13 @@ import static org.mockito.BDDMockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-class DefaultFindChannelCommandRepositoryTests {
+class DefaultFindChannelGlobalCommandRepositoryTests {
 
 	@InjectMocks
 	private DefaultFindChannelCommandRepository findChannelCommandRepository;
 
 	@Mock
-	private DbChannelCommandRepository dbChannelCommandRepository;
+	private DbChannelGlobalCommandRepository dbChannelGlobalCommandRepository;
 
 	@Test
 	void findByChannelAndName_shouldReturnEmptyMap_whenNotFound() {
@@ -39,14 +38,14 @@ class DefaultFindChannelCommandRepositoryTests {
 		var channel = Channel.builder().name(channelName).build();
 		var commandName = "commandName";
 
-		given(this.dbChannelCommandRepository.findByChannelNameAndName(channelName, commandName)).willReturn(Optional.empty());
+		given(this.dbChannelGlobalCommandRepository.findByChannelNameAndName(channelName, commandName)).willReturn(Optional.empty());
 
 		// When
 		var result = this.findChannelCommandRepository.findByChannelAndName(channel, commandName);
 
 		// Then
-		then(this.dbChannelCommandRepository).should().findByChannelNameAndName(channelName, commandName);
-		verifyNoMoreInteractions(this.dbChannelCommandRepository);
+		then(this.dbChannelGlobalCommandRepository).should().findByChannelNameAndName(channelName, commandName);
+		verifyNoMoreInteractions(this.dbChannelGlobalCommandRepository);
 
 		assertThat(result).isEmpty();
 	}
@@ -59,18 +58,18 @@ class DefaultFindChannelCommandRepositoryTests {
 		var commandName = "commandName";
 
 		var message = "message";
-		var dbChannelCommand = DbChannelCommand.builder().id(1L).channel(DbChannel.builder().name(channelName).build()).name("!foo").enabled(true).type(CommandType.SAINT).cooldown(60).lastExecution(null).messages(Collections.singletonList(message)).build();
+		var dbCommand = DbChannelGlobalCommand.builder().id(1L).channel(DbChannel.builder().name(channelName).build()).name("!foo").enabled(true).type(GlobalCommandType.SAINT).cooldown(60).lastExecution(null).build();
 
-		given(this.dbChannelCommandRepository.findByChannelNameAndName(channelName, commandName)).willReturn(Optional.of(dbChannelCommand));
+		given(this.dbChannelGlobalCommandRepository.findByChannelNameAndName(channelName, commandName)).willReturn(Optional.of(dbCommand));
 
 		// When
 		var result = this.findChannelCommandRepository.findByChannelAndName(channel, commandName);
 
 		// Then
-		then(this.dbChannelCommandRepository).should().findByChannelNameAndName(channelName, commandName);
-		verifyNoMoreInteractions(this.dbChannelCommandRepository);
+		then(this.dbChannelGlobalCommandRepository).should().findByChannelNameAndName(channelName, commandName);
+		verifyNoMoreInteractions(this.dbChannelGlobalCommandRepository);
 
-		var expected = Command.builder().channelId(1L).channelName(channelName).name("!foo").type(CommandType.SAINT).enabled(true).cooldown(60).lastExecution(null).messages(Collections.singletonList(message)).build();
+		var expected = GlobalCommand.builder().channelId(1L).channelName(channelName).name("!foo").type(GlobalCommandType.SAINT).enabled(true).cooldown(60).lastExecution(null).build();
 		assertThat(result).isNotEmpty().get().isEqualTo(expected);
 	}
 

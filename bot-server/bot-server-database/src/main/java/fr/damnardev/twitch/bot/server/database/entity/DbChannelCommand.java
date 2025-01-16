@@ -1,37 +1,32 @@
 package fr.damnardev.twitch.bot.server.database.entity;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
-import fr.damnardev.twitch.bot.server.model.CommandType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
-@Builder
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name = "t_channel_command")
-public class DbChannelCommand {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class DbChannelCommand {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "s_channel_command")
+	@SequenceGenerator(name = "s_channel_command", sequenceName = "s_channel_command", allocationSize = 1)
 	private Long id;
 
 	@ManyToOne
@@ -50,14 +45,5 @@ public class DbChannelCommand {
 
 	@Column(name = "cooldown")
 	private long cooldown;
-
-	@ElementCollection
-	@CollectionTable(name = "t_channel_command_message", joinColumns = @JoinColumn(name = "channel_command_id"))
-	@Column(name = "message")
-	private List<String> messages;
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "type")
-	private CommandType type;
 
 }

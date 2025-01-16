@@ -3,8 +3,8 @@ package fr.damnardev.twitch.bot.server.server.core.service.command;
 import java.util.Optional;
 
 import fr.damnardev.twitch.bot.model.Channel;
-import fr.damnardev.twitch.bot.server.model.Command;
-import fr.damnardev.twitch.bot.server.model.CommandType;
+import fr.damnardev.twitch.bot.model.GlobalCommandType;
+import fr.damnardev.twitch.bot.server.model.GlobalCommand;
 import fr.damnardev.twitch.bot.server.model.Message;
 import fr.damnardev.twitch.bot.server.model.form.ChannelMessageEventForm;
 import fr.damnardev.twitch.bot.server.port.secondary.MessageRepository;
@@ -44,14 +44,14 @@ class SaintInterpreterTests {
 		// Then
 		verifyNoMoreInteractions(this.messageRepository, this.saintRepository);
 
-		assertThat(result).isEqualTo(CommandType.SAINT);
+		assertThat(result).isEqualTo(GlobalCommandType.SAINT);
 	}
 
 	@Test
 	void interpret_shouldDoNothing_whenSaintIsNotFound() {
 		// Given
 		var channel = Channel.builder().id(1L).name("channel_name").build();
-		var command = Command.builder().name("saints").build();
+		var command = GlobalCommand.builder().name("saints").build();
 		var form = ChannelMessageEventForm.builder().build();
 
 		given(this.saintRepository.find()).willReturn(Optional.empty());
@@ -69,7 +69,7 @@ class SaintInterpreterTests {
 	void interpret_shouldSendMessage_whenSaintIsFound() {
 		// Given
 		var channel = Channel.builder().id(1L).name("channel_name").build();
-		var command = Command.builder().name("saints").cooldown(60).build();
+		var command = GlobalCommand.builder().name("saints").cooldown(60).build();
 		var form = ChannelMessageEventForm.builder().build();
 		var value = "saint_value";
 		var formatted = "saint_value [⏰ 60 s]";
