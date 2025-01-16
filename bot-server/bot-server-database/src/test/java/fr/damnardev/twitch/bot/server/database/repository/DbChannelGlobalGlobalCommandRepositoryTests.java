@@ -1,8 +1,7 @@
 package fr.damnardev.twitch.bot.server.database.repository;
 
-import java.util.List;
-
-import fr.damnardev.twitch.bot.server.database.entity.DbChannelCommand;
+import fr.damnardev.twitch.bot.model.GlobalCommandType;
+import fr.damnardev.twitch.bot.server.database.entity.DbChannelGlobalCommand;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Sql("/fr/damnardev/twitch/bot/server/database/repository/db_channel_command_repository_tests.sql")
-class DbChannelCommandRepositoryTests {
+@Sql("/fr/damnardev/twitch/bot/server/database/repository/db_channel_global_command_repository_tests.sql")
+class DbChannelGlobalGlobalCommandRepositoryTests {
 
 	@Autowired
-	private DbChannelCommandRepository dbChannelCommandRepository;
+	private DbChannelGlobalCommandRepository dbChannelGlobalCommandRepository;
 
 	@Test
 	@Transactional(readOnly = true)
 	void findByChannelName_shouldReturnEmptyList_whenChannelNameNotFound() {
 		// When
-		var result = this.dbChannelCommandRepository.findByChannelName("name");
+		var result = this.dbChannelGlobalCommandRepository.findByChannelName("name");
 
 		// Then
 		assertThat(result).isEmpty();
@@ -33,7 +32,7 @@ class DbChannelCommandRepositoryTests {
 	@Transactional(readOnly = true)
 	void findByChannelName_shouldReturnEmptyList_whenChannelNameExistButNoCommand() {
 		// When
-		var result = this.dbChannelCommandRepository.findByChannelName("channel_02");
+		var result = this.dbChannelGlobalCommandRepository.findByChannelName("channel_02");
 
 		// Then
 		assertThat(result).isEmpty();
@@ -43,13 +42,12 @@ class DbChannelCommandRepositoryTests {
 	@Transactional(readOnly = true)
 	void findByChannelName_shouldReturnListChannelConfiguration_whenNameFound() {
 		// When
-		var result = this.dbChannelCommandRepository.findByChannelName("channel_01");
+		var result = this.dbChannelGlobalCommandRepository.findByChannelName("channel_01");
 
 		// Then
-		var expected = DbChannelCommand.builder().id(1L).name("!foo")
+		var expected = DbChannelGlobalCommand.builder().id(1L).name("!foo")
 				.enabled(true)
-				.cooldown(60)
-				.messages(List.of("channel_command_message_01")).build();
+				.cooldown(60).type(GlobalCommandType.SUGGEST_GAME).build();
 		assertThat(result).hasSize(1).first()
 				.usingRecursiveComparison().ignoringFields("channel")
 				.isEqualTo(expected);
@@ -59,7 +57,7 @@ class DbChannelCommandRepositoryTests {
 	@Transactional(readOnly = true)
 	void findByChannelNameAndName_shouldReturnOptionalEmpty_whenChannelNameNotFound() {
 		// When
-		var result = this.dbChannelCommandRepository.findByChannelNameAndName("channel_02", "!foo");
+		var result = this.dbChannelGlobalCommandRepository.findByChannelNameAndName("channel_02", "!foo");
 
 		// Then
 		assertThat(result).isEmpty();
@@ -69,7 +67,7 @@ class DbChannelCommandRepositoryTests {
 	@Transactional(readOnly = true)
 	void findByChannelNameAndName_shouldReturnOptionalEmpty_whenChannelNameFoundButNotName() {
 		// When
-		var result = this.dbChannelCommandRepository.findByChannelNameAndName("channel_01", "!bar");
+		var result = this.dbChannelGlobalCommandRepository.findByChannelNameAndName("channel_01", "!bar");
 
 		// Then
 		assertThat(result).isEmpty();
@@ -80,13 +78,13 @@ class DbChannelCommandRepositoryTests {
 	@Transactional(readOnly = true)
 	void findByChannelNameAndName_shouldReturnOptionalChannelConfiguration_whenChannelNameAndNameFound() {
 		// When
-		var result = this.dbChannelCommandRepository.findByChannelNameAndName("channel_01", "!foo");
+		var result = this.dbChannelGlobalCommandRepository.findByChannelNameAndName("channel_01", "!foo");
 
 		// Then
-		var expected = DbChannelCommand.builder().id(1L).name("!foo")
+		var expected = DbChannelGlobalCommand.builder().id(1L).name("!foo")
 				.enabled(true)
 				.cooldown(60)
-				.messages(List.of("channel_command_message_01")).build();
+				.type(GlobalCommandType.SUGGEST_GAME).build();
 		assertThat(result).isNotEmpty().get()
 				.usingRecursiveComparison().ignoringFields("channel")
 				.isEqualTo(expected);

@@ -1,17 +1,14 @@
 package fr.damnardev.twitch.bot.server.secondary.adapter.command;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import fr.damnardev.twitch.bot.model.Channel;
-import fr.damnardev.twitch.bot.server.database.entity.DbChannelCommand;
-import fr.damnardev.twitch.bot.server.database.repository.DbChannelCommandRepository;
-import fr.damnardev.twitch.bot.server.model.Command;
+import fr.damnardev.twitch.bot.server.database.entity.DbChannelGlobalCommand;
+import fr.damnardev.twitch.bot.server.database.repository.DbChannelGlobalCommandRepository;
+import fr.damnardev.twitch.bot.server.model.GlobalCommand;
 import fr.damnardev.twitch.bot.server.port.secondary.command.FindChannelCommandRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,23 +18,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class DefaultFindChannelCommandRepository implements FindChannelCommandRepository {
 
-	private final DbChannelCommandRepository dbChannelCommandRepository;
-
-	private static @NotNull List<String> getMessages(DbChannelCommand dbChannelCommand) {
-		if (dbChannelCommand.getMessages() != null) {
-			return new ArrayList<>(dbChannelCommand.getMessages());
-		}
-		return new ArrayList<>();
-	}
+	private final DbChannelGlobalCommandRepository dbChannelGlobalCommandRepository;
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<Command> findByChannelAndName(Channel channel, String name) {
-		return this.dbChannelCommandRepository.findByChannelNameAndName(channel.name(), name).map(this::toModel);
+	public Optional<GlobalCommand> findByChannelAndName(Channel channel, String name) {
+		return this.dbChannelGlobalCommandRepository.findByChannelNameAndName(channel.name(), name).map(this::toModel);
 	}
 
-	private Command toModel(DbChannelCommand dbChannelCommand) {
-		return Command.builder().channelId(dbChannelCommand.getId()).channelName(dbChannelCommand.getChannel().getName()).name(dbChannelCommand.getName()).type(dbChannelCommand.getType()).enabled(dbChannelCommand.isEnabled()).cooldown(dbChannelCommand.getCooldown()).lastExecution(dbChannelCommand.getLastExecution()).messages(getMessages(dbChannelCommand)).build();
+	private GlobalCommand toModel(DbChannelGlobalCommand command) {
+		return GlobalCommand.builder().channelId(command.getId()).channelName(command.getChannel().getName()).name(command.getName()).type(command.getType()).enabled(command.isEnabled()).cooldown(command.getCooldown()).lastExecution(command.getLastExecution()).build();
 
 	}
 

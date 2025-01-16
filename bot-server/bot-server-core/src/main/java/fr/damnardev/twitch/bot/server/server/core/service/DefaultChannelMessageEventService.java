@@ -9,15 +9,15 @@ import java.util.stream.Collectors;
 
 import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.model.DomainService;
+import fr.damnardev.twitch.bot.model.GlobalCommandType;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
-import fr.damnardev.twitch.bot.server.model.Command;
-import fr.damnardev.twitch.bot.server.model.CommandType;
+import fr.damnardev.twitch.bot.server.model.GlobalCommand;
 import fr.damnardev.twitch.bot.server.model.form.ChannelMessageEventForm;
 import fr.damnardev.twitch.bot.server.port.primary.ChannelMessageEventService;
 import fr.damnardev.twitch.bot.server.port.primary.DateService;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.command.FindChannelCommandRepository;
-import fr.damnardev.twitch.bot.server.port.secondary.command.UpdateChannelCommandRepository;
+import fr.damnardev.twitch.bot.server.port.secondary.command.UpdateChannelGlobalCommandRepository;
 import fr.damnardev.twitch.bot.server.server.core.service.command.CommandInterpreter;
 
 @DomainService
@@ -29,17 +29,17 @@ public class DefaultChannelMessageEventService implements ChannelMessageEventSer
 
 	private final FindChannelCommandRepository channelCommandRepository;
 
-	private final UpdateChannelCommandRepository updateChannelCommandRepository;
+	private final UpdateChannelGlobalCommandRepository updateChannelGlobalCommandRepository;
 
-	private final Map<CommandType, CommandInterpreter> commandInterpreters;
+	private final Map<GlobalCommandType, CommandInterpreter> commandInterpreters;
 
 	private final DateService dateService;
 
-	public DefaultChannelMessageEventService(DefaultTryService tryService, FindChannelRepository findChannelRepository, FindChannelCommandRepository channelCommandRepository, UpdateChannelCommandRepository updateChannelCommandRepository, List<CommandInterpreter> commandInterpreters, DateService dateService) {
+	public DefaultChannelMessageEventService(DefaultTryService tryService, FindChannelRepository findChannelRepository, FindChannelCommandRepository channelCommandRepository, UpdateChannelGlobalCommandRepository updateChannelGlobalCommandRepository, List<CommandInterpreter> commandInterpreters, DateService dateService) {
 		this.tryService = tryService;
 		this.findChannelRepository = findChannelRepository;
 		this.channelCommandRepository = channelCommandRepository;
-		this.updateChannelCommandRepository = updateChannelCommandRepository;
+		this.updateChannelGlobalCommandRepository = updateChannelGlobalCommandRepository;
 		this.commandInterpreters = (commandInterpreters != null) ? commandInterpreters.stream().collect(Collectors.toMap(CommandInterpreter::getCommandTypeInterpreter, Function.identity())) : new HashMap<>();
 		this.dateService = dateService;
 	}
@@ -73,12 +73,12 @@ public class DefaultChannelMessageEventService implements ChannelMessageEventSer
 		}
 	}
 
-	private void message(Channel channel, Command command, ChannelMessageEventForm form, OffsetDateTime now) {
-		var commandInterpreter = this.commandInterpreters.get(command.type());
+	private void message(Channel channel, GlobalCommand globalCommand, ChannelMessageEventForm form, OffsetDateTime now) {
+		var commandInterpreter = this.commandInterpreters.get(globalCommand.type());
 		if (commandInterpreter != null) {
-			var updatedCommand = command.toBuilder().lastExecution(now).build();
-			commandInterpreter.interpret(channel, command, form);
-			this.updateChannelCommandRepository.update(updatedCommand);
+			var updatedCommand = globalCommand.toBuilder().lastExecution(now).build();
+			commandInterpreter.interpret(channel, globalCommand, form);
+			this.updateChannelGlobalCommandRepository.update(updatedCommand);
 		}
 	}
 

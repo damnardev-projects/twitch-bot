@@ -6,16 +6,16 @@ import java.util.Collections;
 import java.util.Optional;
 
 import fr.damnardev.twitch.bot.model.Channel;
+import fr.damnardev.twitch.bot.model.GlobalCommandType;
 import fr.damnardev.twitch.bot.model.exception.BusinessException;
-import fr.damnardev.twitch.bot.server.model.Command;
-import fr.damnardev.twitch.bot.server.model.CommandType;
+import fr.damnardev.twitch.bot.server.model.GlobalCommand;
 import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
 import fr.damnardev.twitch.bot.server.model.form.ChannelMessageEventForm;
 import fr.damnardev.twitch.bot.server.port.primary.DateService;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import fr.damnardev.twitch.bot.server.port.secondary.channel.FindChannelRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.command.FindChannelCommandRepository;
-import fr.damnardev.twitch.bot.server.port.secondary.command.UpdateChannelCommandRepository;
+import fr.damnardev.twitch.bot.server.port.secondary.command.UpdateChannelGlobalCommandRepository;
 import fr.damnardev.twitch.bot.server.server.core.service.command.CommandInterpreter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +54,7 @@ class DefaultChannelMessageEventServiceTests {
 	private FindChannelCommandRepository findChannelCommandRepository;
 
 	@Mock
-	private UpdateChannelCommandRepository updateChannelCommandRepository;
+	private UpdateChannelGlobalCommandRepository updateChannelGlobalCommandRepository;
 
 	@Mock
 	private CommandInterpreter commandInterpreter;
@@ -66,9 +66,9 @@ class DefaultChannelMessageEventServiceTests {
 	void setUp() {
 		this.tryService = new DefaultTryService(this.eventPublisher);
 		this.tryService = spy(this.tryService);
-		given(this.commandInterpreter.getCommandTypeInterpreter()).willReturn(CommandType.TEXT);
+		given(this.commandInterpreter.getCommandTypeInterpreter()).willReturn(GlobalCommandType.SUGGEST_GAME);
 		var commandInterpreters = Collections.singletonList(this.commandInterpreter);
-		this.channelMessageEventService = new DefaultChannelMessageEventService(this.tryService, this.findChannelRepository, this.findChannelCommandRepository, this.updateChannelCommandRepository, commandInterpreters, this.dateService);
+		this.channelMessageEventService = new DefaultChannelMessageEventService(this.tryService, this.findChannelRepository, this.findChannelCommandRepository, this.updateChannelGlobalCommandRepository, commandInterpreters, this.dateService);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ class DefaultChannelMessageEventServiceTests {
 		then(this.tryService).should().doTry(any(), eq(form));
 		then(this.findChannelRepository).should().findByName(channelName);
 		then(this.eventPublisher).should().publish(captor.capture());
-		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelCommandRepository, this.commandInterpreter, this.dateService);
+		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelGlobalCommandRepository, this.commandInterpreter, this.dateService);
 
 		var event = captor.getValue();
 		assertThat(event.getException()).isNotNull().isInstanceOf(BusinessException.class).hasMessage("Channel not found");
@@ -110,7 +110,7 @@ class DefaultChannelMessageEventServiceTests {
 		then(this.commandInterpreter).should().getCommandTypeInterpreter();
 		then(this.tryService).should().doTry(any(), eq(form));
 		then(this.findChannelRepository).should().findByName(channelName);
-		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelCommandRepository, this.commandInterpreter, this.dateService);
+		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelGlobalCommandRepository, this.commandInterpreter, this.dateService);
 	}
 
 	@Test
@@ -132,7 +132,7 @@ class DefaultChannelMessageEventServiceTests {
 		then(this.tryService).should().doTry(any(), eq(form));
 		then(this.findChannelRepository).should().findByName(channelName);
 		then(this.findChannelCommandRepository).should().findByChannelAndName(channel, "foo");
-		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelCommandRepository, this.commandInterpreter, this.dateService);
+		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelGlobalCommandRepository, this.commandInterpreter, this.dateService);
 	}
 
 	@Test
@@ -140,7 +140,7 @@ class DefaultChannelMessageEventServiceTests {
 		// Given
 		var channelName = "channelName";
 		var channel = Channel.builder().name(channelName).build();
-		var command = Command.builder().build();
+		var command = GlobalCommand.builder().build();
 		var form = ChannelMessageEventForm.builder().channelName(channelName).message("!foo").build();
 
 
@@ -157,7 +157,7 @@ class DefaultChannelMessageEventServiceTests {
 		then(this.findChannelRepository).should().findByName(channelName);
 		then(this.findChannelCommandRepository).should().findByChannelAndName(channel, "foo");
 		then(this.dateService).should().now();
-		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelCommandRepository, this.commandInterpreter, this.dateService);
+		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelGlobalCommandRepository, this.commandInterpreter, this.dateService);
 	}
 
 	@Test
@@ -166,7 +166,7 @@ class DefaultChannelMessageEventServiceTests {
 		var channelName = "channelName";
 		var channel = Channel.builder().name(channelName).build();
 		var now = OffsetDateTime.now();
-		var command = Command.builder().lastExecution(now).cooldown(60).build();
+		var command = GlobalCommand.builder().lastExecution(now).cooldown(60).build();
 		var form = ChannelMessageEventForm.builder().channelName(channelName).message("!foo").build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
@@ -182,7 +182,7 @@ class DefaultChannelMessageEventServiceTests {
 		then(this.findChannelRepository).should().findByName(channelName);
 		then(this.findChannelCommandRepository).should().findByChannelAndName(channel, "foo");
 		then(this.dateService).should().now();
-		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelCommandRepository, this.commandInterpreter, this.dateService);
+		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelGlobalCommandRepository, this.commandInterpreter, this.dateService);
 	}
 
 	@ParameterizedTest
@@ -192,7 +192,7 @@ class DefaultChannelMessageEventServiceTests {
 		var channelName = "channelName";
 		var channel = Channel.builder().name(channelName).build();
 		var now = OffsetDateTime.now();
-		var command = hasLastExecution ? Command.builder().lastExecution(now.minusHours(1)).cooldown(60).build() : Command.builder().build();
+		var command = hasLastExecution ? GlobalCommand.builder().lastExecution(now.minusHours(1)).cooldown(60).build() : GlobalCommand.builder().build();
 		var form = ChannelMessageEventForm.builder().channelName(channelName).message("!foo").build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
@@ -208,7 +208,7 @@ class DefaultChannelMessageEventServiceTests {
 		then(this.findChannelRepository).should().findByName(channelName);
 		then(this.findChannelCommandRepository).should().findByChannelAndName(channel, "foo");
 		then(this.dateService).should().now();
-		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelCommandRepository, this.commandInterpreter, this.dateService);
+		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelGlobalCommandRepository, this.commandInterpreter, this.dateService);
 	}
 
 	@ParameterizedTest
@@ -221,7 +221,7 @@ class DefaultChannelMessageEventServiceTests {
 		var now = OffsetDateTime.of(2024, 1, 1, 12, 1, 0, 0, ZoneOffset.of("Z"));
 		var previous = OffsetDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneOffset.of("Z"));
 
-		var command = hasLastExecution ? Command.builder().type(CommandType.TEXT).lastExecution(previous).cooldown(60).build() : Command.builder().type(CommandType.TEXT).build();
+		var command = hasLastExecution ? GlobalCommand.builder().type(GlobalCommandType.SUGGEST_GAME).lastExecution(previous).cooldown(60).build() : GlobalCommand.builder().type(GlobalCommandType.SUGGEST_GAME).build();
 		var form = ChannelMessageEventForm.builder().channelName(channelName).message("!foo").build();
 		var formWithoutToken = ChannelMessageEventForm.builder().channelName(channelName).message("").build();
 
@@ -239,8 +239,8 @@ class DefaultChannelMessageEventServiceTests {
 		then(this.findChannelCommandRepository).should().findByChannelAndName(channel, "foo");
 		then(this.dateService).should().now();
 		then(this.commandInterpreter).should().interpret(channel, command, formWithoutToken);
-		then(this.updateChannelCommandRepository).should().update(command.toBuilder().lastExecution(any()).build());
-		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelCommandRepository, this.commandInterpreter, this.dateService);
+		then(this.updateChannelGlobalCommandRepository).should().update(command.toBuilder().lastExecution(any()).build());
+		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelGlobalCommandRepository, this.commandInterpreter, this.dateService);
 	}
 
 	@Test
@@ -250,7 +250,7 @@ class DefaultChannelMessageEventServiceTests {
 		var channel = Channel.builder().name(channelName).build();
 		var now = OffsetDateTime.of(2024, 1, 1, 12, 1, 0, 0, ZoneOffset.of("Z"));
 		var previous = OffsetDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneOffset.of("Z"));
-		var command = Command.builder().type(CommandType.TEXT).lastExecution(previous).cooldown(60).build();
+		var command = GlobalCommand.builder().type(GlobalCommandType.SUGGEST_GAME).lastExecution(previous).cooldown(60).build();
 		var form = ChannelMessageEventForm.builder().channelName(channelName).message("!foo parameterA and parameterB").build();
 		var formWithoutToken = ChannelMessageEventForm.builder().channelName(channelName).message("parameterA and parameterB").build();
 
@@ -268,8 +268,8 @@ class DefaultChannelMessageEventServiceTests {
 		then(this.findChannelCommandRepository).should().findByChannelAndName(channel, "foo");
 		then(this.dateService).should().now();
 		then(this.commandInterpreter).should().interpret(channel, command, formWithoutToken);
-		then(this.updateChannelCommandRepository).should().update(command.toBuilder().lastExecution(now).build());
-		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelCommandRepository, this.commandInterpreter, this.dateService);
+		then(this.updateChannelGlobalCommandRepository).should().update(command.toBuilder().lastExecution(now).build());
+		verifyNoMoreInteractions(this.tryService, this.findChannelRepository, this.eventPublisher, this.findChannelCommandRepository, this.updateChannelGlobalCommandRepository, this.commandInterpreter, this.dateService);
 	}
 
 }
