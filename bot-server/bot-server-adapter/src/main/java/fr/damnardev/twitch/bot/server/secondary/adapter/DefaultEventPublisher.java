@@ -10,7 +10,6 @@ import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationUpdatedEvent;
-import fr.damnardev.twitch.bot.server.model.event.Event;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +25,8 @@ public class DefaultEventPublisher implements EventPublisher {
 	private final SimpMessagingTemplate messagingTemplate;
 
 	@Override
-	public <T extends Event> void publish(T event) {
-		// TODO: Implement this method
+	public void publish(Exception ex) {
+		log.error("Publishing exception", ex);
 	}
 
 	@Override

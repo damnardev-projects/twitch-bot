@@ -7,10 +7,6 @@ databaseChangeLog:
             sequenceName: s_channel_command
             startValue: 1
             incrementBy: 1
-            minValue: 1
-            maxValue: 9223372036854775807
-            ordered: true
-            cycle: false
         - createTable:
             columns:
               - column:

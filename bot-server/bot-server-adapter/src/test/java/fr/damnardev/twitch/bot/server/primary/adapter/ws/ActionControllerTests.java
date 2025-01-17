@@ -1,6 +1,7 @@
 package fr.damnardev.twitch.bot.server.primary.adapter.ws;
 
-import fr.damnardev.twitch.bot.server.port.primary.AuthenticationService;
+import fr.damnardev.twitch.bot.model.form.ActionForm;
+import fr.damnardev.twitch.bot.server.port.primary.action.ActionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -13,34 +14,35 @@ import org.mockito.quality.Strictness;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.BDDMockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-class ClientControllerTests {
+class ActionControllerTests {
 
 	@InjectMocks
-	private ClientController clientController;
+	private ActionController actionController;
+
+	@Mock
+	private ActionService actionService;
 
 	@Mock
 	private ThreadPoolTaskExecutor executor;
 
-	@Mock
-	private AuthenticationService authenticationService;
-
 	@Test
-	void fetch_shouldExecuteAuthenticationService_whenCalled() {
+	void fetchAll_shouldInvokeFetchAllChannelServiceFetchAll_whenCalled() {
 		// Given
 		var captor = ArgumentCaptor.forClass(Runnable.class);
+		var form = ActionForm.FETCH_AUTHENTICATED.builder().build();
 
 		// When
-		this.clientController.fetch();
+		this.actionController.action(form);
 
 		// Then
 		then(this.executor).should().execute(captor.capture());
 		captor.getValue().run();
-		then(this.authenticationService).should().isAuthenticated();
-		verifyNoMoreInteractions(this.executor, this.authenticationService);
+		then(this.actionService).should().process(form);
+		verifyNoMoreInteractions(this.executor);
 	}
 
 }
