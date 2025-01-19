@@ -1,6 +1,7 @@
 package fr.damnardev.twitch.bot.server.primary.adapter.ws;
 
-import fr.damnardev.twitch.bot.server.port.primary.AuthenticationService;
+import fr.damnardev.twitch.bot.model.form.ActionForm;
+import fr.damnardev.twitch.bot.server.port.primary.action.ActionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,16 +12,16 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 @Controller
 @Slf4j
-public class ClientController {
+public class ActionController {
 
-	private final AuthenticationService authenticationService;
+	private final ActionService actionService;
 
 	private final ThreadPoolTaskExecutor executor;
 
-	@MessageMapping("/status/fetch")
-	public void fetch() {
-		log.info("Received fetch status request");
-		this.executor.execute(this.authenticationService::isAuthenticated);
+	@MessageMapping("/actions")
+	public <T> void action(ActionForm<T> form) {
+		log.info("Received action: {}", form);
+		this.executor.execute(() -> this.actionService.process(form));
 	}
 
 }

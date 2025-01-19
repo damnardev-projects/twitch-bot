@@ -2,6 +2,7 @@ package fr.damnardev.twitch.bot.client.secondary.adapter;
 
 import fr.damnardev.twitch.bot.client.StompSessionWriter;
 import fr.damnardev.twitch.bot.client.port.secondary.ClientRepository;
+import fr.damnardev.twitch.bot.model.form.ActionForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +31,7 @@ public class DefaultClientRepository implements ClientRepository {
 
 	@Override
 	public void fetchAuthenticationStatus() {
-		this.stompSessionWriter.send("/request/status/fetch");
+		this.stompSessionWriter.send("/request/actions", ActionForm.FETCH_AUTHENTICATED.builder().build());
 	}
 
 }

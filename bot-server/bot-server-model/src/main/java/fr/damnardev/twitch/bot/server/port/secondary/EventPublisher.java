@@ -8,11 +8,10 @@ import fr.damnardev.twitch.bot.model.event.ChannelUpdatedEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedAllEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationFetchedEvent;
 import fr.damnardev.twitch.bot.model.event.RaidConfigurationUpdatedEvent;
-import fr.damnardev.twitch.bot.server.model.event.Event;
 
 public interface EventPublisher {
 
-	<T extends Event> void publish(T event);
+	void publish(Exception ex);
 
 	void publish(ChannelFetchedAllEvent event);
 

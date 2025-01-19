@@ -5,8 +5,8 @@ import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.common.events.domain.EventChannel;
 import com.github.twitch4j.events.ChannelGoOfflineEvent;
-import fr.damnardev.twitch.bot.model.form.UpdateChannelForm;
-import fr.damnardev.twitch.bot.server.port.primary.channel.UpdateChannelService;
+import fr.damnardev.twitch.bot.model.form.ActionForm;
+import fr.damnardev.twitch.bot.server.port.primary.action.ActionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -39,7 +39,7 @@ class ChannelGoOfflineEventConsumerTests {
 	private TwitchClient twitchClient;
 
 	@Mock
-	private UpdateChannelService handler;
+	private ActionService handler;
 
 	@Test
 	void init_shouldRegisterHandler_whenCalled() {
@@ -67,11 +67,10 @@ class ChannelGoOfflineEventConsumerTests {
 		var captor = ArgumentCaptor.forClass(Runnable.class);
 		var event = mock(ChannelGoOfflineEvent.class);
 		var channel = mock(EventChannel.class);
-		var model = UpdateChannelForm.builder().id(1L).name("channelName").online(false).build();
+		var model = ActionForm.UPDATE_RAID_ONLINE.builder().resourceId(1L).value(false).build();
 
 		given(event.getChannel()).willReturn(channel);
 		given(channel.getId()).willReturn("1");
-		given(channel.getName()).willReturn("channelName");
 
 		// When
 		this.consumer.handleEvent(event);
@@ -81,8 +80,7 @@ class ChannelGoOfflineEventConsumerTests {
 		captor.getValue().run();
 		then(event).should().getChannel();
 		then(channel).should().getId();
-		then(channel).should().getName();
-		then(this.handler).should().update(model);
+		then(this.handler).should().process(model);
 		verifyNoMoreInteractions(this.executor, this.twitchClient, this.handler, event, channel);
 	}
 

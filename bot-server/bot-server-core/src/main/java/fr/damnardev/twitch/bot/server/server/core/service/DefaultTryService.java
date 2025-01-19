@@ -3,13 +3,12 @@ package fr.damnardev.twitch.bot.server.server.core.service;
 import java.util.function.Consumer;
 
 import fr.damnardev.twitch.bot.model.DomainService;
-import fr.damnardev.twitch.bot.server.model.event.ErrorEvent;
 import fr.damnardev.twitch.bot.server.port.primary.TryService;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @DomainService
+@RequiredArgsConstructor
 public class DefaultTryService implements TryService {
 
 	private final EventPublisher eventPublisher;
@@ -20,8 +19,7 @@ public class DefaultTryService implements TryService {
 			runnable.run();
 		}
 		catch (Exception ex) {
-			var event = ErrorEvent.builder().exception(ex).build();
-			this.eventPublisher.publish(event);
+			this.eventPublisher.publish(ex);
 		}
 	}
 
@@ -31,8 +29,7 @@ public class DefaultTryService implements TryService {
 			consumer.accept(t);
 		}
 		catch (Exception ex) {
-			var event = ErrorEvent.builder().exception(ex).build();
-			this.eventPublisher.publish(event);
+			this.eventPublisher.publish(ex);
 		}
 	}
 

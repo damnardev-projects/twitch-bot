@@ -6,8 +6,6 @@ import fr.damnardev.twitch.bot.client.javafx.control.UnfocusableCheckBoxTableCel
 import fr.damnardev.twitch.bot.client.javafx.wrapper.ObservableChannel;
 import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
 import fr.damnardev.twitch.bot.model.DomainService;
-import fr.damnardev.twitch.bot.model.form.CreateChannelForm;
-import fr.damnardev.twitch.bot.model.form.DeleteChannelForm;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -83,21 +81,21 @@ public class DashboardController {
 
 	private void addChannel() {
 		var channelName = this.textFieldChannelName.getText();
-		var form = CreateChannelForm.builder().name(channelName).build();
-		this.channelRepository.create(form);
+//		var form = CreateChannelForm.builder().name(channelName).build();
+//		this.channelRepository.create(form);
 	}
 
 	private void onButtonDelete(ObservableChannel channel) {
-		var form = DeleteChannelForm.builder().id(channel.getId().getValue()).name(channel.getName().getValue()).build();
-		this.channelRepository.delete(form);
+//		var form = DeleteChannelForm.builder().id(channel.getId().getValue()).name(channel.getName().getValue()).build();
+//		this.channelRepository.delete(form);
 	}
 
 	public void onKeyPressed(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.DELETE)) {
 			var selectedItem = this.tableView.getSelectionModel().getSelectedItem();
 			if (selectedItem != null) {
-				var form = DeleteChannelForm.builder().id(selectedItem.getId().getValue()).name(selectedItem.getName().getValue()).build();
-				this.channelRepository.delete(form);
+//				var form = DeleteChannelForm.builder().id(selectedItem.getId().getValue()).name(selectedItem.getName().getValue()).build();
+//				this.channelRepository.delete(form);
 			}
 		}
 		if (keyEvent.getCode().equals(KeyCode.E)) {
