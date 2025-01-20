@@ -6,12 +6,12 @@ import fr.damnardev.twitch.bot.model.form.ActionForm;
 import fr.damnardev.twitch.bot.model.form.ActionKey;
 import fr.damnardev.twitch.bot.server.port.secondary.AuthenticationRepository;
 import fr.damnardev.twitch.bot.server.port.secondary.EventPublisher;
-import fr.damnardev.twitch.bot.server.server.core.service.action.ResourceProcessor;
+import fr.damnardev.twitch.bot.server.server.core.service.action.Processor;
 import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
-public class AuthenticatedResourceProcessor implements ResourceProcessor<Void> {
+public class AuthenticatedProcessor implements Processor<Void> {
 
 	private final AuthenticationRepository authenticationRepository;
 

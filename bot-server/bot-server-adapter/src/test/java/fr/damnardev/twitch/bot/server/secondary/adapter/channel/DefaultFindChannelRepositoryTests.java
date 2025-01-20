@@ -110,6 +110,44 @@ class DefaultFindChannelRepositoryTests {
 	}
 
 	@Test
+	void findById_shouldReturnOptionalEmpty_whenIdNotFound() {
+		// Given
+		var channelId = 1L;
+
+		given(this.dbChannelRepository.findById(channelId)).willReturn(Optional.empty());
+
+		// When
+		var result = this.findChannelRepository.findById(channelId);
+
+		// Then
+		then(this.dbChannelRepository).should().findById(channelId);
+		verifyNoMoreInteractions(this.dbChannelRepository, this.channelMapper);
+
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	void findById_shouldReturnChannel_whenIdFound() {
+		// Given
+		var channelId = 1L;
+		var dbChannel = DbChannel.builder().id(channelId).name("foo").enabled(true).online(true).build();
+
+		given(this.dbChannelRepository.findById(channelId)).willReturn(Optional.of(dbChannel));
+
+		// When
+		var result = this.findChannelRepository.findById(channelId);
+
+		// Then
+		then(this.dbChannelRepository).should().findById(channelId);
+		then(this.channelMapper).should().toModel(dbChannel);
+		verifyNoMoreInteractions(this.dbChannelRepository, this.channelMapper);
+
+		var expected = Channel.builder().id(channelId).name("foo").enabled(true).online(true).build();
+		assertThat(result).isPresent().get().isEqualTo(expected);
+	}
+
+
+	@Test
 	void findAll_shouldReturnEmptyList_whenNoChannelsExist() {
 		// Given
 		given(this.dbChannelRepository.findAll()).willReturn(Collections.emptyList());

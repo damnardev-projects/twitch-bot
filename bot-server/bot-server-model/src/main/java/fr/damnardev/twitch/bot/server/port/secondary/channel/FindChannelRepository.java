@@ -9,6 +9,8 @@ public interface FindChannelRepository {
 
 	List<Channel> findAllEnabled();
 
+	Optional<Channel> findById(long id);
+
 	Optional<Channel> findByName(String name);
 
 	List<Channel> findAll();
