@@ -33,11 +33,11 @@ public final class ActionForm<T> {
 		this.value = value;
 	}
 
-	public ResourceActionBuilder<T> builder() {
-		return new ResourceActionBuilder<T>().key(this.key);
+	public ActionFormBuilder<T> builder() {
+		return new ActionFormBuilder<T>().key(this.key);
 	}
 
-	public static class ResourceActionBuilder<T> {
+	public static class ActionFormBuilder<T> {
 
 		private ActionKey key;
 
@@ -45,20 +45,20 @@ public final class ActionForm<T> {
 
 		private T value;
 
-		ResourceActionBuilder() {
+		ActionFormBuilder() {
 		}
 
-		private ResourceActionBuilder<T> key(ActionKey key) {
+		private ActionFormBuilder<T> key(ActionKey key) {
 			this.key = key;
 			return this;
 		}
 
-		public ResourceActionBuilder<T> resourceId(long resourceId) {
+		public ActionFormBuilder<T> resourceId(long resourceId) {
 			this.resourceId = resourceId;
 			return this;
 		}
 
-		public ResourceActionBuilder<T> value(T value) {
+		public ActionFormBuilder<T> value(T value) {
 			this.value = value;
 			return this;
 		}
