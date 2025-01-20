@@ -21,10 +21,10 @@ import static org.mockito.BDDMockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-class AuthenticatedResourceProcessorTests {
+class AuthenticatedProcessorTests {
 
 	@InjectMocks
-	private AuthenticatedResourceProcessor authenticatedResourceProcessor;
+	private AuthenticatedProcessor authenticatedResourceProcessor;
 
 	@Mock
 	private AuthenticationRepository authenticationRepository;

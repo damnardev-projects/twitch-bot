@@ -5,7 +5,7 @@ import lombok.Value;
 @Value
 public final class ActionKey {
 
-	public static final ActionKey UPDATE_RAID_ONLINE = new ActionKey(ResourceType.RAID, ActionType.UPDATE, "online");
+	public static final ActionKey UPDATE_CHANNEL_ONLINE = new ActionKey(ResourceType.CHANNEL, ActionType.UPDATE, "online");
 
 	public static final ActionKey FETCH_AUTHENTICATED = new ActionKey(ResourceType.AUTHENTICATED, ActionType.FETCH, "");
 
