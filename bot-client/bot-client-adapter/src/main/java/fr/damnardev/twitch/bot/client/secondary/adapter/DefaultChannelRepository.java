@@ -2,6 +2,7 @@ package fr.damnardev.twitch.bot.client.secondary.adapter;
 
 import fr.damnardev.twitch.bot.client.StompSessionWriter;
 import fr.damnardev.twitch.bot.client.port.secondary.ChannelRepository;
+import fr.damnardev.twitch.bot.model.form.ActionForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,10 +15,10 @@ public class DefaultChannelRepository implements ChannelRepository {
 
 	private final StompSessionWriter stompSessionWriter;
 
-//	@Override
-//	public void fetchAll() {
-//		this.stompSessionWriter.send("/request/channels/fetchAll");
-//	}
+	@Override
+	public void fetchAll() {
+		this.stompSessionWriter.send("/request/actions", ActionForm.FETCH_ALL_CHANNEL);
+	}
 //
 //	@Override
 //	public void create(CreateChannelForm form) {
