@@ -109,7 +109,7 @@ public class ApplicationContext implements ApplicationService {
 
 	@Override
 	public void connected() {
-//		this.channelRepository.fetchAll();
+		this.channelRepository.fetchAll();
 		if (this.selectedChannel != null) {
 			this.raidRepository.fetch(this.selectedChannel.getName().getValue());
 		}

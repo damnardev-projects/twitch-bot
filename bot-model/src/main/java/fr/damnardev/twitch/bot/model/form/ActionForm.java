@@ -7,6 +7,8 @@ public final class ActionForm<T> {
 
 	public static final ActionForm<Boolean> UPDATE_RAID_ONLINE = new ActionForm<>(ActionKey.UPDATE_CHANNEL_ONLINE);
 
+	public static final ActionForm<Void> FETCH_ALL_CHANNEL = new ActionForm<>(ActionKey.FETCH_ALL_CHANNEL);
+
 	public static final ActionForm<Void> FETCH_AUTHENTICATED = new ActionForm<>(ActionKey.FETCH_AUTHENTICATED);
 
 	ActionKey key;
