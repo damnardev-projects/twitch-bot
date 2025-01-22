@@ -5,9 +5,11 @@ import lombok.Value;
 @Value
 public final class ActionKey {
 
-	public static final ActionKey UPDATE_CHANNEL_ONLINE = new ActionKey(ResourceType.CHANNEL, ActionType.UPDATE, "online");
-
 	public static final ActionKey FETCH_ALL_CHANNEL = new ActionKey(ResourceType.CHANNEL, ActionType.FETCH_ALL, "");
+
+	public static final ActionKey UPDATE_CHANNEL_ENABLED = new ActionKey(ResourceType.CHANNEL, ActionType.UPDATE, "enabled");
+
+	public static final ActionKey UPDATE_CHANNEL_ONLINE = new ActionKey(ResourceType.CHANNEL, ActionType.UPDATE, "online");
 
 	public static final ActionKey FETCH_AUTHENTICATED = new ActionKey(ResourceType.AUTHENTICATED, ActionType.FETCH, "");
 

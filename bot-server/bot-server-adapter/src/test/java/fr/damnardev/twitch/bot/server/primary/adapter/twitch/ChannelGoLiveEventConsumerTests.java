@@ -68,7 +68,7 @@ class ChannelGoLiveEventConsumerTests {
 		var captor = ArgumentCaptor.forClass(Runnable.class);
 		var event = mock(ChannelGoLiveEvent.class);
 		var channel = mock(EventChannel.class);
-		var model = ActionForm.UPDATE_RAID_ONLINE.builder().resourceId(1L).value(true).build();
+		var model = ActionForm.UPDATE_CHANNEL_ONLINE.builder().resourceId(1L).value(true).build();
 
 		given(event.getChannel()).willReturn(channel);
 		given(channel.getId()).willReturn("1");

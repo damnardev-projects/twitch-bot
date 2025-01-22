@@ -67,7 +67,7 @@ class ChannelGoOfflineEventConsumerTests {
 		var captor = ArgumentCaptor.forClass(Runnable.class);
 		var event = mock(ChannelGoOfflineEvent.class);
 		var channel = mock(EventChannel.class);
-		var model = ActionForm.UPDATE_RAID_ONLINE.builder().resourceId(1L).value(false).build();
+		var model = ActionForm.UPDATE_CHANNEL_ONLINE.builder().resourceId(1L).value(false).build();
 
 		given(event.getChannel()).willReturn(channel);
 		given(channel.getId()).willReturn("1");

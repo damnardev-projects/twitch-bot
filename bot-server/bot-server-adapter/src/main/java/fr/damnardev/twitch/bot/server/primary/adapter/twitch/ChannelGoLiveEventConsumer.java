@@ -19,7 +19,7 @@ public class ChannelGoLiveEventConsumer extends AbstractChannelEventConsumer<Cha
 	protected ActionForm<Boolean> toModel(ChannelGoLiveEvent event) {
 		var channel = event.getChannel();
 		var id = Long.parseLong(channel.getId());
-		return ActionForm.UPDATE_RAID_ONLINE.builder().resourceId(id).value(true).build();
+		return ActionForm.UPDATE_CHANNEL_ONLINE.builder().resourceId(id).value(true).build();
 	}
 
 }
