@@ -19,7 +19,7 @@ public class ChannelGoOfflineEventConsumer extends AbstractChannelEventConsumer<
 	protected ActionForm<Boolean> toModel(ChannelGoOfflineEvent event) {
 		var channel = event.getChannel();
 		var id = Long.parseLong(channel.getId());
-		return ActionForm.UPDATE_RAID_ONLINE.builder().resourceId(id).value(false).build();
+		return ActionForm.UPDATE_CHANNEL_ONLINE.builder().resourceId(id).value(false).build();
 	}
 
 }

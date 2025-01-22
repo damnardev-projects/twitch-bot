@@ -122,10 +122,7 @@ public class ApplicationContext implements ApplicationService {
 	}
 
 	private void update(ObservableValue<? extends Channel> observableValue, Channel oldValue, Channel newValue) {
-//		if (!this.disabledChannelUpdate) {
-//		}
-//		var form = UpdateChannelForm.builder().id(newValue.id()).name(newValue.name()).enabled(newValue.enabled()).build();
-//		this.channelRepository.update(form);
+		this.channelRepository.update(newValue.id(), newValue.enabled());
 	}
 
 	private ObservableRaidConfiguration buildObservableRaidConfiguration() {
