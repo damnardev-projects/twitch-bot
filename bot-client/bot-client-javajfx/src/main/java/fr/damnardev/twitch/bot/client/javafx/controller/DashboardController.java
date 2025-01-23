@@ -86,16 +86,14 @@ public class DashboardController {
 	}
 
 	private void onButtonDelete(ObservableChannel channel) {
-//		var form = DeleteChannelForm.builder().id(channel.getId().getValue()).name(channel.getName().getValue()).build();
-//		this.channelRepository.delete(form);
+		this.channelRepository.delete(channel.getId().get());
 	}
 
 	public void onKeyPressed(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.DELETE)) {
 			var selectedItem = this.tableView.getSelectionModel().getSelectedItem();
 			if (selectedItem != null) {
-//				var form = DeleteChannelForm.builder().id(selectedItem.getId().getValue()).name(selectedItem.getName().getValue()).build();
-//				this.channelRepository.delete(form);
+				this.channelRepository.delete(selectedItem.getId().get());
 			}
 		}
 		if (keyEvent.getCode().equals(KeyCode.E)) {

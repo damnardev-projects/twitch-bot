@@ -11,6 +11,8 @@ public final class ActionKey {
 
 	public static final ActionKey UPDATE_CHANNEL_ONLINE = new ActionKey(ResourceType.CHANNEL, ActionType.UPDATE, "online");
 
+	public static final ActionKey DELETE_CHANNEL = new ActionKey(ResourceType.CHANNEL, ActionType.DELETE, "");
+
 	public static final ActionKey FETCH_AUTHENTICATED = new ActionKey(ResourceType.AUTHENTICATED, ActionType.FETCH, "");
 
 	ResourceType resource;
