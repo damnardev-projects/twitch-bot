@@ -28,13 +28,12 @@ public class DefaultChannelRepository implements ChannelRepository {
 //
 	@Override
 	public void update(long channelId, boolean enabled) {
-		this.stompSessionWriter.send("/request/actions", ActionForm.UPDATE_CHANNEL_ENABLED.builder()
-				.resourceId(channelId).value(enabled).build());
+		this.stompSessionWriter.send("/request/actions", ActionForm.UPDATE_CHANNEL_ENABLED.builder().resourceId(channelId).value(enabled).build());
 	}
-//
-//	@Override
-//	public void delete(DeleteChannelForm form) {
-//		this.stompSessionWriter.send("/request/channels/delete", form);
-//	}
+
+	@Override
+	public void delete(long channelId) {
+		this.stompSessionWriter.send("/request/actions", ActionForm.DELETE_CHANNEL.builder().resourceId(channelId).build());
+	}
 
 }

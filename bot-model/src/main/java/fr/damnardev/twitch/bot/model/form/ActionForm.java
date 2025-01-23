@@ -5,11 +5,13 @@ import lombok.Value;
 @Value
 public final class ActionForm<T> {
 
-	public static final ActionForm<Boolean> UPDATE_CHANNEL_ONLINE = new ActionForm<>(ActionKey.UPDATE_CHANNEL_ONLINE);
-
 	public static final ActionForm<Void> FETCH_ALL_CHANNEL = new ActionForm<>(ActionKey.FETCH_ALL_CHANNEL);
 
 	public static final ActionForm<Boolean> UPDATE_CHANNEL_ENABLED = new ActionForm<>(ActionKey.UPDATE_CHANNEL_ENABLED);
+
+	public static final ActionForm<Boolean> UPDATE_CHANNEL_ONLINE = new ActionForm<>(ActionKey.UPDATE_CHANNEL_ONLINE);
+
+	public static final ActionForm<Void> DELETE_CHANNEL = new ActionForm<>(ActionKey.DELETE_CHANNEL);
 
 	public static final ActionForm<Void> FETCH_AUTHENTICATED = new ActionForm<>(ActionKey.FETCH_AUTHENTICATED);
 

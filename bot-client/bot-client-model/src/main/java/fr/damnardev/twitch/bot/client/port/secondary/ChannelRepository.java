@@ -8,7 +8,8 @@ public interface ChannelRepository {
 //	void create(CreateChannelForm form);
 //
 	void update(long channelId, boolean enabled);
-//
-//	void delete(DeleteChannelForm form);
+
+	//
+	void delete(long channelId);
 
 }
