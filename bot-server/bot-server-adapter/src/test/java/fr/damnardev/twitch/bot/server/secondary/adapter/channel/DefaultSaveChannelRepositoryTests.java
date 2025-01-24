@@ -46,7 +46,6 @@ class DefaultSaveChannelRepositoryTests {
 	void save_shouldReturnChannel_whenCalled() {
 		// Given
 		var channelName = "channelName";
-		var channel = Channel.builder().name(channelName).build();
 		var hystrixCommand = mock(HystrixCommand.class);
 		var userList = mock(UserList.class);
 		var user = mock(User.class);
@@ -62,7 +61,7 @@ class DefaultSaveChannelRepositoryTests {
 		given(this.dbChannelRepository.save(dbChannel)).willReturn(dbChannel);
 
 		// When
-		var result = this.createChannelRepository.save(channel);
+		var result = this.createChannelRepository.save(channelName);
 
 		// Then
 		then(this.twitchHelix).should().getUsers(null, null, Collections.singletonList(channelName));

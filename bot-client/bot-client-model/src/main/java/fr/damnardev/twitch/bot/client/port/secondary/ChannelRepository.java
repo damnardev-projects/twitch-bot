@@ -4,9 +4,8 @@ public interface ChannelRepository {
 
 	void fetchAll();
 
-	//
-//	void create(CreateChannelForm form);
-//
+	void create(String channel);
+
 	void update(long channelId, boolean enabled);
 
 	//

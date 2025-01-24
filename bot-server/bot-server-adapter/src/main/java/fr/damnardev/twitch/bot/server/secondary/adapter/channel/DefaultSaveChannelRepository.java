@@ -28,15 +28,15 @@ public class DefaultSaveChannelRepository implements SaveChannelRepository {
 
 	@Override
 	@Transactional
-	public Channel save(Channel channel) {
-		log.info("Creating channel {}", channel.name());
-		var user = this.twitchHelix.getUsers(null, null, Collections.singletonList(channel.name())).execute().getUsers().stream().findFirst().orElseThrow(() -> new RuntimeException("User %s not found".formatted(channel.name())));
+	public Channel save(String channel) {
+		log.info("Creating channel {}", channel);
+		var user = this.twitchHelix.getUsers(null, null, Collections.singletonList(channel)).execute().getUsers().stream().findFirst().orElseThrow(() -> new RuntimeException("User %s not found".formatted(channel)));
 		var id = Long.parseLong(user.getId());
 		var dbChannel = DbChannel.builder().id(id).name(user.getDisplayName()).build();
 		var dbRaidConfiguration = DbRaidConfiguration.builder().channel(dbChannel).build();
 		dbChannel.setRaidConfiguration(dbRaidConfiguration);
 		dbChannel = this.dbChannelRepository.save(dbChannel);
-		log.info("Created channel {}", channel.name());
+		log.info("Created channel {}", channel);
 		return this.channelMapper.toModel(dbChannel);
 	}
 

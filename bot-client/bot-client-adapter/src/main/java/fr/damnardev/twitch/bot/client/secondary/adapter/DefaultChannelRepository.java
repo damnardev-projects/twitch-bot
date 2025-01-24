@@ -20,12 +20,11 @@ public class DefaultChannelRepository implements ChannelRepository {
 		this.stompSessionWriter.send("/request/actions", ActionForm.FETCH_ALL_CHANNEL);
 	}
 
-	//
-//	@Override
-//	public void create(CreateChannelForm form) {
-//		this.stompSessionWriter.send("/request/channels/create", form);
-//	}
-//
+	@Override
+	public void create(String channel) {
+		this.stompSessionWriter.send("/request/actions", ActionForm.CREATE_CHANNEL.builder().value(channel).build());
+	}
+
 	@Override
 	public void update(long channelId, boolean enabled) {
 		this.stompSessionWriter.send("/request/actions", ActionForm.UPDATE_CHANNEL_ENABLED.builder().resourceId(channelId).value(enabled).build());

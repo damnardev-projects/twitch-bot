@@ -7,6 +7,8 @@ public final class ActionForm<T> {
 
 	public static final ActionForm<Void> FETCH_ALL_CHANNEL = new ActionForm<>(ActionKey.FETCH_ALL_CHANNEL);
 
+	public static final ActionForm<String> CREATE_CHANNEL = new ActionForm<>(ActionKey.CREATE_CHANNEL);
+
 	public static final ActionForm<Boolean> UPDATE_CHANNEL_ENABLED = new ActionForm<>(ActionKey.UPDATE_CHANNEL_ENABLED);
 
 	public static final ActionForm<Boolean> UPDATE_CHANNEL_ONLINE = new ActionForm<>(ActionKey.UPDATE_CHANNEL_ONLINE);
