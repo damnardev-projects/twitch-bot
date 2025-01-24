@@ -80,9 +80,7 @@ public class DashboardController {
 	}
 
 	private void addChannel() {
-		var channelName = this.textFieldChannelName.getText();
-//		var form = CreateChannelForm.builder().name(channelName).build();
-//		this.channelRepository.create(form);
+		this.channelRepository.create(this.textFieldChannelName.getText());
 	}
 
 	private void onButtonDelete(ObservableChannel channel) {

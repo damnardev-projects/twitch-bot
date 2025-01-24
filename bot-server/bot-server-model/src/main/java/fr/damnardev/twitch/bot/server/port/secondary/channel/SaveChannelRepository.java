@@ -4,6 +4,6 @@ import fr.damnardev.twitch.bot.model.Channel;
 
 public interface SaveChannelRepository {
 
-	Channel save(Channel channel);
+	Channel save(String channel);
 
 }
