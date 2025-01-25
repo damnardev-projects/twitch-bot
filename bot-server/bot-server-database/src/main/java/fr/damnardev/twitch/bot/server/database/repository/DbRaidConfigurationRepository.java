@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DbRaidConfigurationRepository extends JpaRepository<DbRaidConfiguration, Long> {
 
-	@Query("SELECT rc FROM DbRaidConfiguration rc JOIN FETCH rc.channel WHERE upper(rc.channel.name) = upper(:name)")
-	Optional<DbRaidConfiguration> findByChannelName(@Param("name") String name);
+	@Query("SELECT rc FROM DbRaidConfiguration rc JOIN FETCH rc.channel WHERE rc.channel.id = :id")
+	Optional<DbRaidConfiguration> findByChannelId(@Param("id") Long id);
 
 }

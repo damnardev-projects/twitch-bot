@@ -15,6 +15,8 @@ public final class ActionKey {
 
 	public static final ActionKey DELETE_CHANNEL = new ActionKey(ResourceType.CHANNEL, ActionType.DELETE, "");
 
+	public static final ActionKey FETCH_RAID = new ActionKey(ResourceType.RAID, ActionType.FETCH, "");
+
 	public static final ActionKey FETCH_AUTHENTICATED = new ActionKey(ResourceType.AUTHENTICATED, ActionType.FETCH, "");
 
 	ResourceType resource;

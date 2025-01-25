@@ -19,8 +19,8 @@ public class DefaultUpdateRaidConfigurationRepository implements UpdateRaidConfi
 	@Override
 	@Transactional
 	public void update(RaidConfiguration raidConfiguration) {
-		log.info("Updating raid configuration {}", raidConfiguration.channelName());
-		this.dbRaidConfigurationRepository.findByChannelName(raidConfiguration.channelName()).ifPresent((dbRaidConfiguration) -> {
+		log.info("Updating raid configuration {}", raidConfiguration.channelId());
+		this.dbRaidConfigurationRepository.findByChannelId(raidConfiguration.channelId()).ifPresent((dbRaidConfiguration) -> {
 			dbRaidConfiguration.setRaidMessageEnabled(raidConfiguration.raidMessageEnabled());
 			dbRaidConfiguration.setTwitchShoutoutEnabled(raidConfiguration.twitchShoutoutEnabled());
 			dbRaidConfiguration.setWizebotShoutoutEnabled(raidConfiguration.wizebotShoutoutEnabled());
@@ -28,7 +28,7 @@ public class DefaultUpdateRaidConfigurationRepository implements UpdateRaidConfi
 			dbRaidConfiguration.getMessages().addAll(raidConfiguration.messages());
 			this.dbRaidConfigurationRepository.save(dbRaidConfiguration);
 		});
-		log.info("Updated raid configuration {}", raidConfiguration.channelName());
+		log.info("Updated raid configuration {}", raidConfiguration.channelId());
 	}
 
 }

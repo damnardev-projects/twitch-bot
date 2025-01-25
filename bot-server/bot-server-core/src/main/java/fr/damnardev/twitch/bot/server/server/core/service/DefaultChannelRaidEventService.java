@@ -45,7 +45,7 @@ public class DefaultChannelRaidEventService implements ChannelRaidEventService {
 			return;
 		}
 
-		var optionalRaidConfiguration = this.findRaidConfigurationRepository.findByChannel(channel);
+		var optionalRaidConfiguration = this.findRaidConfigurationRepository.findByChannelId(channel.id());
 		if (optionalRaidConfiguration.isEmpty()) {
 			throw new BusinessException("Channel Raid Configuration not found");
 		}

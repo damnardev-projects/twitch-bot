@@ -21,9 +21,9 @@ class DbRaidConfigurationRepositoryTests {
 
 	@Test
 	@Transactional(readOnly = true)
-	void findByChannelName_shouldReturnOptionalEmpty_whenNameNotFound() {
+	void findByChannelIdNotFound() {
 		// When
-		var result = this.dbRaidConfigurationRepository.findByChannelName("name");
+		var result = this.dbRaidConfigurationRepository.findByChannelId(99L);
 
 		// Then
 		assertThat(result).isEmpty();
@@ -31,9 +31,9 @@ class DbRaidConfigurationRepositoryTests {
 
 	@Test
 	@Transactional(readOnly = true)
-	void findByChannelName_shouldReturnOptionalEmpty_whenNameExistButNoRaidConfiguration() {
+	void findByChannelIdExistButNoRaidConfiguration() {
 		// When
-		var result = this.dbRaidConfigurationRepository.findByChannelName("channel_02");
+		var result = this.dbRaidConfigurationRepository.findByChannelId(2L);
 
 		// Then
 		assertThat(result).isEmpty();
@@ -41,9 +41,9 @@ class DbRaidConfigurationRepositoryTests {
 
 	@Test
 	@Transactional(readOnly = true)
-	void findByChannelName_shouldReturnOptionalRaidConfiguration_whenNameFound() {
+	void findByChannelIdFound() {
 		// When
-		var result = this.dbRaidConfigurationRepository.findByChannelName("channel_01");
+		var result = this.dbRaidConfigurationRepository.findByChannelId(1L);
 
 		// Then
 		var expected = DbRaidConfiguration.builder().id(1L).twitchShoutoutEnabled(true).wizebotShoutoutEnabled(true)
