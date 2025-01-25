@@ -15,6 +15,8 @@ public final class ActionForm<T> {
 
 	public static final ActionForm<Void> DELETE_CHANNEL = new ActionForm<>(ActionKey.DELETE_CHANNEL);
 
+	public static final ActionForm<Void> FETCH_RAID = new ActionForm<>(ActionKey.FETCH_RAID);
+
 	public static final ActionForm<Void> FETCH_AUTHENTICATED = new ActionForm<>(ActionKey.FETCH_AUTHENTICATED);
 
 	ActionKey key;

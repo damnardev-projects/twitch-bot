@@ -31,7 +31,7 @@ public class DefaultClientRepository implements ClientRepository {
 
 	@Override
 	public void fetchAuthenticationStatus() {
-		this.stompSessionWriter.send("/request/actions", ActionForm.FETCH_AUTHENTICATED.builder().build());
+		this.stompSessionWriter.send(RepositoryConstants.PATH, ActionForm.FETCH_AUTHENTICATED.builder().build());
 	}
 
 }

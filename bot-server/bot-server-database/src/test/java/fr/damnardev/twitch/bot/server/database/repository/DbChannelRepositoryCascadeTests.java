@@ -79,7 +79,7 @@ class DbChannelRepositoryCascadeTests {
 		this.entityManager.clear();
 
 		var loadedChannel = this.dbChannelRepository.findById(1L);
-		var loadedRaidConfiguration = this.dbRaidConfigurationRepository.findById(1L);
+		var loadedRaidConfiguration = this.dbRaidConfigurationRepository.findByChannelId(1L);
 
 		// Then
 

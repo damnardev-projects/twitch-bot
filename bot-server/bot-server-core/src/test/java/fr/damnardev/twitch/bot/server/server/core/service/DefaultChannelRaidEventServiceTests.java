@@ -141,7 +141,7 @@ class DefaultChannelRaidEventServiceTests {
 		// Given
 		var channelName = "channelName";
 		var form = ChannelRaidEventForm.builder().channelId(1L).channelName(channelName).raiderId(2L).raiderName("raiderName").build();
-		var channel = Channel.builder().name(channelName).enabled(true).online(true).build();
+		var channel = Channel.builder().id(1L).name(channelName).enabled(true).online(true).build();
 		var messages = Collections.singletonList("hi %s");
 		var configuration = RaidConfiguration.builder().raidMessageEnabled(raidMessageEnabled).wizebotShoutoutEnabled(wizebotShoutoutEnabled).twitchShoutoutEnabled(twitchShoutoutEnabled).messages(messages).build();
 
@@ -150,7 +150,7 @@ class DefaultChannelRaidEventServiceTests {
 		var expectedShoutout = Shoutout.builder().raiderId(form.raiderId()).raiderName(form.raiderName()).channelId(channel.id()).channelName(channelName).build();
 
 		given(this.findChannelRepository.findByName(channelName)).willReturn(Optional.of(channel));
-		given(this.findRaidConfigurationRepository.findByChannel(channel)).willReturn(Optional.of(configuration));
+		given(this.findRaidConfigurationRepository.findByChannelId(channel.id())).willReturn(Optional.of(configuration));
 
 		// When
 		this.channelRaidEventService.raid(form);
@@ -158,7 +158,7 @@ class DefaultChannelRaidEventServiceTests {
 		// Then
 		then(this.tryService).should().doTry(any(), eq(form));
 		then(this.findChannelRepository).should().findByName(channelName);
-		then(this.findRaidConfigurationRepository).should().findByChannel(channel);
+		then(this.findRaidConfigurationRepository).should().findByChannelId(channel.id());
 		if (raidMessageEnabled) {
 			then(this.randomService).should().getRandom(messages);
 			then(this.messageRepository).should().sendMessage(expectedMessageHi);

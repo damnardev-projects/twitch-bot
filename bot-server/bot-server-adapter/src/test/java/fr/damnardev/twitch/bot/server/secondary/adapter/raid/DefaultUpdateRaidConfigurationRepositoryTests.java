@@ -36,16 +36,15 @@ class DefaultUpdateRaidConfigurationRepositoryTests {
 	@Test
 	void update_shouldNotUpdate_whenRaidConfigurationDoesNotExist() {
 		// Given
-		var channelName = "channelName";
-		var raidConfiguration = RaidConfiguration.builder().channelName(channelName).messages(List.of("message1", "message2")).build();
+		var raidConfiguration = RaidConfiguration.builder().channelId(1L).messages(List.of("message1", "message2")).build();
 
-		given(this.dbRaidConfigurationRepository.findByChannelName(channelName)).willReturn(Optional.empty());
+		given(this.dbRaidConfigurationRepository.findByChannelId(1L)).willReturn(Optional.empty());
 
 		// When
 		this.updateRaidConfigurationRepository.update(raidConfiguration);
 
 		// Then
-		then(this.dbRaidConfigurationRepository).should().findByChannelName(channelName);
+		then(this.dbRaidConfigurationRepository).should().findByChannelId(1L);
 		verifyNoMoreInteractions(this.dbRaidConfigurationRepository);
 	}
 
@@ -55,20 +54,20 @@ class DefaultUpdateRaidConfigurationRepositoryTests {
 		// Given
 		var name = "channelName";
 		var messages = List.of("message1", "message2");
-		var raidConfiguration = RaidConfiguration.builder().channelName(name).messages(messages)
+		var raidConfiguration = RaidConfiguration.builder().channelId(1L).channelName(name).messages(messages)
 				.raidMessageEnabled(raidMessageEnabled).twitchShoutoutEnabled(twitchShoutoutEnabled).wizebotShoutoutEnabled(wizebotShoutoutEnabled).build();
 		var dbMessages = spy(new ArrayList<String>());
 		var dbRaidConfiguration = DbRaidConfiguration.builder().id(1L)
 				.messages(dbMessages).raidMessageEnabled(!raidMessageEnabled)
 				.wizebotShoutoutEnabled(!wizebotShoutoutEnabled).twitchShoutoutEnabled(!twitchShoutoutEnabled).build();
 
-		given(this.dbRaidConfigurationRepository.findByChannelName(name)).willReturn(Optional.of(dbRaidConfiguration));
+		given(this.dbRaidConfigurationRepository.findByChannelId(1L)).willReturn(Optional.of(dbRaidConfiguration));
 
 		// When
 		this.updateRaidConfigurationRepository.update(raidConfiguration);
 
 		// Then
-		then(this.dbRaidConfigurationRepository).should().findByChannelName(name);
+		then(this.dbRaidConfigurationRepository).should().findByChannelId(1L);
 		then(this.dbRaidConfigurationRepository).should().save(dbRaidConfiguration);
 		then(dbMessages).should().clear();
 		then(dbMessages).should().addAll(messages);

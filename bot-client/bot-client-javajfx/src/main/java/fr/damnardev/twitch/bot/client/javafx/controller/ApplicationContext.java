@@ -47,7 +47,7 @@ public class ApplicationContext implements ApplicationService {
 	public void setSelectedChannel(ObservableChannel selectedChannel) {
 		this.selectedChannel = selectedChannel;
 		if (selectedChannel != null) {
-			this.raidRepository.fetch(selectedChannel.getName().getValue());
+			this.raidRepository.fetch(selectedChannel.getId().getValue());
 		}
 	}
 
@@ -111,7 +111,7 @@ public class ApplicationContext implements ApplicationService {
 	public void connected() {
 		this.channelRepository.fetchAll();
 		if (this.selectedChannel != null) {
-			this.raidRepository.fetch(this.selectedChannel.getName().getValue());
+			this.raidRepository.fetch(this.selectedChannel.getId().getValue());
 		}
 	}
 

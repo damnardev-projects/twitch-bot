@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
-import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.server.database.entity.DbChannel;
 import fr.damnardev.twitch.bot.server.database.entity.DbRaidConfiguration;
@@ -35,18 +34,15 @@ class DefaultFindRaidConfigurationRepositoryTests {
 	private DbRaidConfigurationRepository dbRaidConfigurationRepository;
 
 	@Test
-	void findByChannel_shouldReturnOptionalEmpty_whenNotFound() {
+	void findByChannel_Id_shouldReturnOptionalEmpty_whenNotFound() {
 		// Given
-		var channelName = "channelName";
-		var channel = Channel.builder().name(channelName).build();
-
-		given(this.dbRaidConfigurationRepository.findByChannelName(channelName)).willReturn(Optional.empty());
+		given(this.dbRaidConfigurationRepository.findByChannelId(1L)).willReturn(Optional.empty());
 
 		// When
-		var result = this.findRaidConfigurationRepository.findByChannel(channel);
+		var result = this.findRaidConfigurationRepository.findByChannelId(1L);
 
 		// Then
-		then(this.dbRaidConfigurationRepository).should().findByChannelName(channelName);
+		then(this.dbRaidConfigurationRepository).should().findByChannelId(1L);
 		verifyNoMoreInteractions(this.dbRaidConfigurationRepository);
 
 		assertThat(result).isEmpty();
@@ -54,23 +50,22 @@ class DefaultFindRaidConfigurationRepositoryTests {
 
 	@ParameterizedTest
 	@CsvSource({ "true,true,true", "true,true,false", "true,false,true", "true,false,false", "false,true,true", "false,true,false", "false,false,true", "false,false,false" })
-	void findByChannel_shouldReturnChannel_whenNameFound(boolean raidMessageEnabled, boolean wizebotShoutoutEnabled, boolean twitchShoutoutEnabled) {
+	void findByChannel_shouldReturnChannel_Id_whenNameFound(boolean raidMessageEnabled, boolean wizebotShoutoutEnabled, boolean twitchShoutoutEnabled) {
 		// Given
 		var channelName = "channelName";
-		var channel = Channel.builder().name(channelName).build();
 		var message = "message";
 		var dbRaidConfiguration = DbRaidConfiguration.builder().id(1L)
 				.channel(DbChannel.builder().name(channelName).build())
 				.raidMessageEnabled(raidMessageEnabled).twitchShoutoutEnabled(twitchShoutoutEnabled).wizebotShoutoutEnabled(wizebotShoutoutEnabled)
 				.messages(Collections.singletonList(message)).build();
 
-		given(this.dbRaidConfigurationRepository.findByChannelName(channelName)).willReturn(Optional.of(dbRaidConfiguration));
+		given(this.dbRaidConfigurationRepository.findByChannelId(1L)).willReturn(Optional.of(dbRaidConfiguration));
 
 		// When
-		var result = this.findRaidConfigurationRepository.findByChannel(channel);
+		var result = this.findRaidConfigurationRepository.findByChannelId(1L);
 
 		// Then
-		then(this.dbRaidConfigurationRepository).should().findByChannelName(channelName);
+		then(this.dbRaidConfigurationRepository).should().findByChannelId(1L);
 		verifyNoMoreInteractions(this.dbRaidConfigurationRepository);
 
 		var expected = RaidConfiguration.builder().channelId(1L).channelName(channelName)

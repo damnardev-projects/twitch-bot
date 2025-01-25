@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import fr.damnardev.twitch.bot.model.Channel;
 import fr.damnardev.twitch.bot.model.RaidConfiguration;
 import fr.damnardev.twitch.bot.server.database.entity.DbRaidConfiguration;
 import fr.damnardev.twitch.bot.server.database.repository.DbRaidConfigurationRepository;
@@ -32,8 +31,8 @@ public class DefaultFindRaidConfigurationRepository implements FindRaidConfigura
 
 	@Override
 	@Transactional(readOnly = true)
-	public Optional<RaidConfiguration> findByChannel(Channel channel) {
-		return this.dbRaidConfigurationRepository.findByChannelName(channel.name()).map(this::toModel);
+	public Optional<RaidConfiguration> findByChannelId(long channelId) {
+		return this.dbRaidConfigurationRepository.findByChannelId(channelId).map(this::toModel);
 	}
 
 	@Override
