@@ -4,6 +4,6 @@ public interface RaidRepository {
 
 	void fetch(long channelId);
 
-//	void update(UpdateRaidConfigurationForm form);
+	void updateTwitchShoutout(long channelId, boolean value);
 
 }

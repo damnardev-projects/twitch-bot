@@ -35,14 +35,14 @@ public class ApplicationContext implements ApplicationService {
 	private final RaidRepository raidRepository;
 
 	@Getter
-	private final ObservableRaidConfiguration raidConfiguration = buildObservableRaidConfiguration();
-
-	@Getter
 	private ObservableChannel selectedChannel;
 
 	private boolean disabledChannelUpdate = true;
 
 	private boolean disabledRaidUpdate = true;
+
+	@Getter
+	private final ObservableRaidConfiguration raidConfiguration = buildObservableRaidConfiguration();
 
 	public void setSelectedChannel(ObservableChannel selectedChannel) {
 		this.selectedChannel = selectedChannel;
@@ -122,6 +122,9 @@ public class ApplicationContext implements ApplicationService {
 	}
 
 	private void update(ObservableValue<? extends Channel> observableValue, Channel oldValue, Channel newValue) {
+		if (!this.disabledChannelUpdate) {
+			return;
+		}
 		this.channelRepository.update(newValue.id(), newValue.enabled());
 	}
 
@@ -132,10 +135,12 @@ public class ApplicationContext implements ApplicationService {
 	}
 
 	private void update(ObservableValue<? extends RaidConfiguration> observableValue, RaidConfiguration oldValue, RaidConfiguration newValue) {
-//		if (!this.disabledRaidUpdate) {
-//		}
-//		var form = UpdateRaidConfigurationForm.builder().channelId(newValue.channelId()).channelName(newValue.channelName()).wizebotShoutoutEnabled(newValue.wizebotShoutoutEnabled()).twitchShoutoutEnabled(newValue.twitchShoutoutEnabled()).raidMessageEnabled(newValue.raidMessageEnabled()).messages(newValue.messages()).build();
-//		this.raidRepository.update(form);
+		if (!this.disabledRaidUpdate) {
+			return;
+		}
+		if (oldValue.twitchShoutoutEnabled() != newValue.twitchShoutoutEnabled()) {
+			this.raidRepository.updateTwitchShoutout(newValue.channelId(), newValue.twitchShoutoutEnabled());
+		}
 	}
 
 }
