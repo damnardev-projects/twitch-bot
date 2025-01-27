@@ -17,6 +17,8 @@ public final class ActionForm<T> {
 
 	public static final ActionForm<Void> FETCH_RAID = new ActionForm<>(ActionKey.FETCH_RAID);
 
+	public static final ActionForm<Boolean> UPDATE_RAID_TWITCH_SHOUTOUT = new ActionForm<>(ActionKey.UPDATE_RAID_TWITCH_SHOUTOUT);
+
 	public static final ActionForm<Void> FETCH_AUTHENTICATED = new ActionForm<>(ActionKey.FETCH_AUTHENTICATED);
 
 	ActionKey key;

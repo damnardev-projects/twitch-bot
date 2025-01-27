@@ -20,6 +20,11 @@ public class DefaultRaidRepository implements RaidRepository {
 		this.stompSessionWriter.send(RepositoryConstants.PATH, ActionForm.FETCH_RAID.builder().resourceId(channelId).build());
 	}
 
+	@Override
+	public void updateTwitchShoutout(long channelId, boolean value) {
+		this.stompSessionWriter.send(RepositoryConstants.PATH, ActionForm.UPDATE_RAID_TWITCH_SHOUTOUT.builder().resourceId(channelId).value(value).build());
+	}
+
 //	@Override
 //	public void update(ActionFor form) {
 //		this.stompSessionWriter.send("/request/raids/update", form);
