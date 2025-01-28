@@ -19,6 +19,8 @@ public final class ActionKey {
 
 	public static final ActionKey UPDATE_RAID_TWITCH_SHOUTOUT = new ActionKey(ResourceType.RAID, ActionType.UPDATE, "twitchShoutout");
 
+	public static final ActionKey UPDATE_RAID_WIZEBOT_SHOUTOUT = new ActionKey(ResourceType.RAID, ActionType.UPDATE, "wizebotShoutout");
+
 	public static final ActionKey FETCH_AUTHENTICATED = new ActionKey(ResourceType.AUTHENTICATED, ActionType.FETCH, "");
 
 	ResourceType resource;
