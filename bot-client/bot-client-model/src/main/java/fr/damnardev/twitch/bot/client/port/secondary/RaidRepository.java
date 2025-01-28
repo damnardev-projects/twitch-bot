@@ -6,4 +6,6 @@ public interface RaidRepository {
 
 	void updateTwitchShoutout(long channelId, boolean value);
 
+	void updateWizebotShoutout(long channelId, boolean value);
+
 }

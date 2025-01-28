@@ -25,6 +25,11 @@ public class DefaultRaidRepository implements RaidRepository {
 		this.stompSessionWriter.send(RepositoryConstants.PATH, ActionForm.UPDATE_RAID_TWITCH_SHOUTOUT.builder().resourceId(channelId).value(value).build());
 	}
 
+	@Override
+	public void updateWizebotShoutout(long channelId, boolean value) {
+		this.stompSessionWriter.send(RepositoryConstants.PATH, ActionForm.UPDATE_RAID_WIZEBOT_SHOUTOUT.builder().resourceId(channelId).value(value).build());
+	}
+
 //	@Override
 //	public void update(ActionFor form) {
 //		this.stompSessionWriter.send("/request/raids/update", form);
