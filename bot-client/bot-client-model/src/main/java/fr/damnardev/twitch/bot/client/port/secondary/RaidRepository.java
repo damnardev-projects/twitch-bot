@@ -8,4 +8,6 @@ public interface RaidRepository {
 
 	void updateWizebotShoutout(long channelId, boolean value);
 
+	void updateRaidMessageEnabled(long channelId, boolean value);
+
 }

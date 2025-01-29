@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @DomainService
 @RequiredArgsConstructor
-public class RaidConfigurationWizebotEnabledProcessor implements Processor<Boolean> {
+public class RaidConfigurationMessageEnabledProcessor implements Processor<Boolean> {
 
 	private final FindRaidConfigurationRepository findRaidConfigurationRepository;
 
@@ -23,13 +23,13 @@ public class RaidConfigurationWizebotEnabledProcessor implements Processor<Boole
 
 	@Override
 	public ActionKey getActionKey() {
-		return ActionKey.UPDATE_RAID_WIZEBOT_SHOUTOUT;
+		return ActionKey.UPDATE_RAID_MESSAGE_ENABLED;
 	}
 
 	@Override
 	public void process(ActionForm<Boolean> form) {
 		this.findRaidConfigurationRepository.findByChannelId(form.getResourceId()).ifPresentOrElse((raidConfiguration) -> {
-			raidConfiguration = raidConfiguration.toBuilder().wizebotShoutoutEnabled(form.getValue()).build();
+			raidConfiguration = raidConfiguration.toBuilder().raidMessageEnabled(form.getValue()).build();
 			this.updateRaidConfigurationRepository.update(raidConfiguration);
 			this.eventPublisher.publish(RaidConfigurationUpdatedEvent.builder().value(raidConfiguration).build());
 		}, () -> {
