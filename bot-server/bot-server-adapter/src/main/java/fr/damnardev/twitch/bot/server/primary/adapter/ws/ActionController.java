@@ -19,7 +19,7 @@ public class ActionController {
 	private final ThreadPoolTaskExecutor executor;
 
 	@MessageMapping("/actions")
-	public <T> void action(ActionForm<T> form) {
+	public <T> void action(ActionForm<?> form) {
 		log.info("Received action: {}", form);
 		this.executor.execute(() -> this.actionService.process(form));
 	}

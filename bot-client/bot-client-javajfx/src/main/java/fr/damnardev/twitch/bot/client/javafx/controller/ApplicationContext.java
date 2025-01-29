@@ -142,7 +142,10 @@ public class ApplicationContext implements ApplicationService {
 			this.raidRepository.updateTwitchShoutout(newValue.channelId(), newValue.twitchShoutoutEnabled());
 		}
 		if (oldValue.wizebotShoutoutEnabled() != newValue.wizebotShoutoutEnabled()) {
-			this.raidRepository.updateWizebotShoutout(newValue.channelId(), newValue.twitchShoutoutEnabled());
+			this.raidRepository.updateWizebotShoutout(newValue.channelId(), newValue.wizebotShoutoutEnabled());
+		}
+		if (oldValue.raidMessageEnabled() != newValue.raidMessageEnabled()) {
+			this.raidRepository.updateRaidMessageEnabled(newValue.channelId(), newValue.raidMessageEnabled());
 		}
 	}
 

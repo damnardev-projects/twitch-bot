@@ -21,6 +21,8 @@ public final class ActionForm<T> {
 
 	public static final ActionForm<Boolean> UPDATE_RAID_WIZEBOT_SHOUTOUT = new ActionForm<>(ActionKey.UPDATE_RAID_WIZEBOT_SHOUTOUT);
 
+	public static final ActionForm<Boolean> UPDATE_RAID_MESSAGE_ENABLED = new ActionForm<>(ActionKey.UPDATE_RAID_MESSAGE_ENABLED);
+
 	public static final ActionForm<Void> FETCH_AUTHENTICATED = new ActionForm<>(ActionKey.FETCH_AUTHENTICATED);
 
 	ActionKey key;
