@@ -5,14 +5,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  compile:
+  sonar:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
       - name: Set up JDK 21 & Maven 3.9.9
-        uses: s4u/setup-maven-action@v1.17.0
+        uses: s4u/setup-maven-action@v1.18.0
         with:
           java-version: '21'
           java-distribution: 'temurin'
