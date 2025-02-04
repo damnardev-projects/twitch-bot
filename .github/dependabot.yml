@@ -3,7 +3,13 @@ updates:
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
+      interval: "daily"
+      time: "21:00"
+    open-pull-requests-limit: 10
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
       interval: "weekly"
-      day: "friday"
+      day: "wednesday"
       time: "21:00"
     open-pull-requests-limit: 10
